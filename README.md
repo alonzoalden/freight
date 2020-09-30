@@ -1,7 +1,7 @@
 Freight
 
 Freight.Web (Angular Application)
-Make sure to run these commands to install 
+Make sure to run these commands to install
 	***oidc***
 	npm install angular-auth-oidc-client
 
@@ -9,3 +9,5 @@ Make sure to run these commands to install
 	npm install @ngrx/store --save
 	npm install @ngrx/effects --save
 	npm install @ngrx/store-devtools --save
+	
+Used source from: https://github.com/damienbod/angular-auth-oidc-client 
