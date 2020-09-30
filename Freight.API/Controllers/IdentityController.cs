@@ -1,6 +1,7 @@
 ﻿using Freight.API.BAL;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using System.Linq;
 
 namespace Freight.API.Controllers
@@ -9,6 +10,13 @@ namespace Freight.API.Controllers
     [Authorize]
     public class IdentityController : ControllerBase
     {
+        private TestBAL _bal;
+
+        public IdentityController(IOptions<Common.Configuration.Connection> connection, IOptions<Common.Configuration.Setting> settings)
+        {
+            _bal = new BAL.TestBAL(connection.Value, settings.Value);
+        }
+
         [HttpGet]
         public IActionResult Get()
         {
@@ -18,8 +26,7 @@ namespace Freight.API.Controllers
         [HttpGet, Route("test")]
         public IActionResult Test()
         {
-            TestBAL test = new TestBAL();
-            return Ok(test.getValue());
+            return Ok(_bal.getValue());
         }
     }
 }

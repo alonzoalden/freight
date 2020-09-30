@@ -36,6 +36,9 @@ namespace Freight.API
                     p => p.AllowAnyOrigin()
                         .AllowAnyMethod()
                         .AllowAnyHeader()));
+
+            services.Configure<Common.Configuration.Connection>(Configuration.GetSection("ConnectionStrings"));
+            services.Configure<Common.Configuration.Setting>(Configuration.GetSection("Settings"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

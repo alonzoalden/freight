@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Freight.API.BAL;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace Freight.API.Controllers
 {
@@ -17,10 +19,14 @@ namespace Freight.API.Controllers
         };
 
         private readonly ILogger<WeatherForecastController> _logger;
+        private readonly TestBAL _bal;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger, 
+            IOptions<Common.Configuration.Connection> connection, 
+            IOptions<Common.Configuration.Setting> settings)
         {
             _logger = logger;
+            _bal = new BAL.TestBAL(connection.Value, settings.Value);
         }
 
         [HttpGet]
@@ -34,6 +40,12 @@ namespace Freight.API.Controllers
                 Summary = Summaries[rng.Next(Summaries.Length)]
             })
             .ToArray();
+        }
+
+        [HttpGet, Route("2")]
+        public IActionResult Get2()
+        {
+            return Ok(_bal.getValue());
         }
     }
 }

@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Libraries\**" />
+    <Content Remove="Libraries\**" />
+    <EmbeddedResource Remove="Libraries\**" />
+    <None Remove="Libraries\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.8" />
   </ItemGroup>
 
