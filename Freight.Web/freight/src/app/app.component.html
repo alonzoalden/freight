@@ -1,0 +1,7 @@
+<div *ngIf="businessEntities$ | async as businessEntities">
+  <select *ngIf="businessEntities.length > 0" (change)="changeBusiness($event)">
+    <option *ngFor="let business of businessEntities" [value]="business.id">{{business.name}}</option>
+  </select>
+</div>
+
+<router-outlet></router-outlet>

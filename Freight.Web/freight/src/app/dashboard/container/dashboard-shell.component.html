@@ -1,0 +1,18 @@
+<div id="dashboard-container">
+  
+  <div *ngIf="!(isSelected$ | async)">
+    <dashboard-home
+      [businesses]="businessEntities$ | async"
+      (selected)="businessSelected($event)"
+    ></dashboard-home>
+  </div>
+  
+  <div *ngIf="(isSelected$ | async)">
+    <button (click)="test()">TEST</button>
+    <div>
+      <dashboard-business
+        [id]="selectedBusinessEntityId$ | async"
+      ></dashboard-business>
+    </div>
+  </div>
+</div>

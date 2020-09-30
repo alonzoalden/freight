@@ -1,0 +1,8 @@
+<div>ID: {{ id }}</div>
+
+<div>Headers</div>
+<div *ngIf="accesses$ | async as accesses">
+  <div *ngFor="let header of accesses.headers; index as i">
+    {{ header }}
+  </div>
+</div>
