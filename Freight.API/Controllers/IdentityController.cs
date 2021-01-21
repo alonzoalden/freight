@@ -17,6 +17,10 @@ namespace Freight.API.Controllers
             _bal = new BAL.TestBAL(connection.Value, settings.Value);
         }
 
+        /// <summary>
+        /// Get all Claims for that User
+        /// </summary>
+        /// <returns>Json Value of the user claims</returns>
         [HttpGet]
         public IActionResult Get()
         {

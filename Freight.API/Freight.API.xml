@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Freight.API</name>
+    </assembly>
+    <members>
+        <member name="M:Freight.API.Controllers.IdentityController.Get">
+            <summary>
+            Get all Claims for that User
+            </summary>
+            <returns>Json Value of the user claims</returns>
+        </member>
+    </members>
+</doc>

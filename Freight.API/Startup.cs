@@ -4,6 +4,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using System;
+using System.IO;
+using System.Reflection;
 
 namespace Freight.API
 {
@@ -20,12 +23,10 @@ namespace Freight.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-
             services.AddAuthentication("Bearer")
                 .AddJwtBearer("Bearer", options =>
                 {
                     options.Authority = "https://localhost:5001";
-
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateAudience = false
@@ -40,6 +41,22 @@ namespace Freight.API
 
             services.Configure<Common.Configuration.Connection>(Configuration.GetSection("ConnectionStrings"));
             services.Configure<Common.Configuration.Setting>(Configuration.GetSection("Settings"));
+
+            services.AddSwaggerGen(setupAction =>
+            {
+                setupAction.SwaggerDoc(
+                    "FreightOpenAPISpecification",
+                    new Microsoft.OpenApi.Models.OpenApiInfo()
+                    {
+                        Title = "Freight API",
+                        Version = "1",
+                        Description = "Through this API you can access Freight"
+                    });
+
+                var xmlCommentsFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlCommentsFullPath = Path.Combine(AppContext.BaseDirectory, xmlCommentsFile);
+                setupAction.IncludeXmlComments(xmlCommentsFullPath);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -53,6 +70,15 @@ namespace Freight.API
             app.UseCors("AllowAll");
 
             app.UseHttpsRedirection();
+
+            app.UseSwagger();
+            app.UseSwaggerUI(setupAction =>
+            {
+                setupAction.SwaggerEndpoint(
+                    "/swagger/FreightOpenAPISpecification/swagger.json",
+                    "Freight API");
+                setupAction.RoutePrefix = "";
+            });
 
             app.UseRouting();
 
