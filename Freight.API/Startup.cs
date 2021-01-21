@@ -20,6 +20,7 @@ namespace Freight.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
             services.AddAuthentication("Bearer")
                 .AddJwtBearer("Bearer", options =>
                 {
