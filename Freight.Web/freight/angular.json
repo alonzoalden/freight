@@ -119,6 +119,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "freight"
+    }
+  },
+  "defaultProject": "freight",
+  "cli": {
+    "analytics": false
+  }
 }

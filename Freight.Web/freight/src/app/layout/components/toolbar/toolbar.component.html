@@ -1,0 +1,117 @@
+<mat-toolbar class="p-0 mat-elevation-z1">
+
+    <div fxFlex fxFill fxLayout="row" fxLayoutAlign="start center">
+
+        <div fxFlex="1 0 auto" fxLayout="row" fxLayoutAlign="start center">
+
+            <button mat-icon-button class="navbar-toggle-button"
+                    *ngIf="!hiddenNavbar && !rightNavbar" (click)="toggleSidebarOpen('navbar')" fxHide.gt-md>
+                <mat-icon class="secondary-text">menu</mat-icon>
+            </button>
+
+            <div class="toolbar-separator" *ngIf="!hiddenNavbar && !rightNavbar" fxHide.gt-md></div>
+
+            <div fxLayout="row" fxLayoutAlign="start center" *ngIf="horizontalNavbar">
+                <div class="logo ml-16">
+                    <img class="logo-icon" src="assets/images/logos/fuse.svg">
+                </div>
+            </div>
+
+            <div class="px-8 px-md-16">
+                <!-- <fuse-shortcuts [navigation]="navigation"></fuse-shortcuts> -->
+            </div>
+
+        </div>
+
+        <div class="" fxFlex="0 1 auto" fxLayout="row" fxLayoutAlign="start center">
+
+            <button [disabled]="isLoading" mat-button [matMenuTriggerFor]="locationMenu" *ngIf="userInfo?.WarehouseID"
+                    class="user-button">
+                <div fxLayout="row" fxLayoutAlign="center center" style="min-width: 100px;">
+                    <div class="mr-12" fxFlex fxLayout="column" fxLayoutAlign="center center">
+                        <ng-container *ngIf="!isLoading">
+                            <span class="sm-header" style="margin: 0;">Location</span>
+                            <span class="username">{{appService.warehouseMap[userInfo.WarehouseID]}}</span>
+                        </ng-container>
+                        <mat-spinner diameter="20" *ngIf="isLoading"></mat-spinner>
+                    </div>
+                    <mat-icon class="s-16">keyboard_arrow_down</mat-icon>
+                </div>
+            </button>
+
+            <mat-menu #locationMenu="matMenu" [overlapTrigger]="false">
+                <button mat-menu-item *ngFor="let key of objectKeys(appService.warehouseMap)"
+                    (click)="onUpdateLocation(key)">
+                    <span>{{appService.warehouseMap[key]}}</span>
+                    <!-- <mat-icon *ngIf="userInfo.WarehouseID === key" style="margin-left: 7px;">done</mat-icon> -->
+                </button>
+            </mat-menu>
+            
+            <button mat-button [matMenuTriggerFor]="userMenu"
+                    class="user-button">
+                <div fxLayout="row" fxLayoutAlign="center center">
+                    <ng-container >
+                        <img class="avatar mr-0 mr-sm-16" src='assets/images/avatars/Velazquez.jpg'>
+                        <!-- <mat-icon class="s-16 mr-12">account_circle</mat-icon> -->
+                        <span class="username mr-12">Charlie Adams</span>
+                        <mat-icon class="s-16">keyboard_arrow_down</mat-icon>
+                    </ng-container>
+                </div>
+            </button>
+
+            <mat-menu #userMenu="matMenu" [overlapTrigger]="false">
+
+                <button mat-menu-item (click)=logout()>
+                    <mat-icon>exit_to_app</mat-icon>
+                    <span>Logout</span>
+                </button>
+
+            </mat-menu>
+
+            <div class="toolbar-separator"></div>
+
+            <!-- <fuse-search-bar (input)="search($event)"></fuse-search-bar> -->
+
+            <div class="toolbar-separator"></div>
+
+            <!-- <button mat-button fxHide fxShow.gt-xs
+                    class="language-button"
+                    [matMenuTriggerFor]="languageMenu">
+                <div fxLayout="row" fxLayoutAlign="center center">
+                    <img class="flag mr-8" [src]="'assets/icons/flags/'+selectedLanguage.flag+'.png'">
+                    <span class="iso text-uppercase">{{selectedLanguage.id}}</span>
+                </div>
+            </button>
+
+            <mat-menu #languageMenu="matMenu" [overlapTrigger]="false">
+
+                <button mat-menu-item *ngFor="let lang of languages" (click)="setLanguage(lang)">
+                    <span fxLayout="row" fxLayoutAlign="start center">
+                        <img class="flag mr-16" [src]="'assets/icons/flags/'+lang.flag+'.png'">
+                        <span class="iso">{{lang.title}}</span>
+                    </span>
+                </button>
+
+            </mat-menu>
+
+            <div class="toolbar-separator" fxHide fxShow.gt-xs></div>
+
+            <button mat-icon-button
+                    class="quick-panel-toggle-button"
+                    (click)="toggleSidebarOpen('quickPanel')"
+                    aria-label="Toggle quick panel">
+                <mat-icon class="secondary-text">format_list_bulleted</mat-icon>
+            </button>
+
+            <div class="toolbar-separator" *ngIf="!hiddenNavbar && rightNavbar" fxHide fxShow.gt-xs></div>
+
+            <button mat-icon-button class="navbar-toggle-button"
+                    *ngIf="!hiddenNavbar && rightNavbar" (click)="toggleSidebarOpen('navbar')" fxHide.gt-md>
+                <mat-icon class="secondary-text">menu</mat-icon>
+            </button> -->
+
+        </div>
+
+    </div>
+
+</mat-toolbar>
