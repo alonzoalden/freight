@@ -8,30 +8,29 @@ namespace Freight.API.BAL
 {
     public class UserBAL
     {
-        DAL.UserDAL userDAL;
+        private DAL.UserDAL UserDAL;
 
         public UserBAL(Connection connection, Setting setting)
         {
-            userDAL = new DAL.UserDAL(connection, setting);
+            UserDAL = new DAL.UserDAL(connection, setting);
         }
 
         public List<User> GetUsers()
         {
-            return userDAL.GetUsers();
+            return UserDAL.GetUsers();
         }
 
         public User GetUser(int id)
         {
-            return userDAL.GetUser(id);
+            return UserDAL.GetUser(id);
         }
         public User UpdateUser(User user)
         {
-            return userDAL.UpdateUser(user);
+            return UserDAL.UpdateUser(user);
         }
         public User CreateUser(User user)
         {
-            return userDAL.CreateUser(user);
-        }
-        
+            return UserDAL.CreateUser(user);
+        }        
     }
 }

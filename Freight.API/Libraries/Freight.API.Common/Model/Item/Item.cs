@@ -6,9 +6,9 @@ namespace Freight.API.Common.Model.Item
 {
     public class Item
     {
-        public string ItemID { get; set; }
-        public string BusinessID { get; set; }
-        public string ShipperID { get; set; }
+        public int ItemID { get; set; }
+        public int BusinessID { get; set; }
+        public int ShipperID { get; set; }
         public string ItemNumber { get; set; }
         public string ItemName { get; set; }
         public string HTSCode { get; set; }

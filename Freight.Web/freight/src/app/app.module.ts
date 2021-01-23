@@ -25,10 +25,11 @@ import { PageNotFoundComponent } from './_general/page-not-found.component';
 export function configureAuth(oidcConfigService: OidcConfigService): () => any {
   return () =>
     oidcConfigService.withConfig({
-      stsServer: 'https://localhost:5001',
+      stsServer: 'https://login.fbasimplify.com',
       redirectUrl: window.location.origin,
       postLogoutRedirectUri: window.location.origin,
-      clientId: 'angularfreightappclient',
+      //clientId: 'angularfreightappclient',
+      clientId: 'localangularfreightappclient',
       scope: 'openid profile freightapiscope',
       responseType: 'code',
       silentRenew: true,

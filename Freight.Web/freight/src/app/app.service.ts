@@ -72,7 +72,7 @@ export class AppService {
       'Content-Type': 'application/json',
       Authorization: 'Bearer ' + token
     });
-    return this.http.get<any>('https://localhost:44357/identity', { headers })
+    return this.http.get<any>('https://webapi.fbasimplify.com/identity', { headers })
       .pipe(
         tap(data => console.log('TEST DATA: ' + JSON.stringify(data))),
         catchError(this.handleError)

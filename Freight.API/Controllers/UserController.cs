@@ -12,11 +12,11 @@ namespace Freight.API.Controllers
     [Route("user")]
     public class UserController : ControllerBase
     {
-        private UserBAL userBAL;
+        private UserBAL UserBAL;
 
         public UserController(IOptions<Common.Configuration.Connection> connection, IOptions<Common.Configuration.Setting> settings)
         {
-            userBAL = new BAL.UserBAL(connection.Value, settings.Value);
+            UserBAL = new BAL.UserBAL(connection.Value, settings.Value);
         }
 
         [HttpGet]
@@ -24,7 +24,7 @@ namespace Freight.API.Controllers
         {
             try
             {
-                return new JsonResult(userBAL.GetUsers());
+                return new JsonResult(UserBAL.GetUsers());
             }
             catch (Exception ex)
             {
@@ -38,7 +38,7 @@ namespace Freight.API.Controllers
         {
             try
             {
-                return new JsonResult(userBAL.GetUser(id));
+                return new JsonResult(UserBAL.GetUser(id));
             }
             catch (Exception ex)
             {
@@ -51,7 +51,7 @@ namespace Freight.API.Controllers
         {
             try
             {
-                return new JsonResult(userBAL.UpdateUser(user));
+                return new JsonResult(UserBAL.UpdateUser(user));
                 //userBAL.UpdateUser(user);
                 //return Ok();
             }
@@ -66,7 +66,7 @@ namespace Freight.API.Controllers
         {
             try
             {
-                return new JsonResult(userBAL.CreateUser(user));
+                return new JsonResult(UserBAL.CreateUser(user));
                 //userBAL.CreateUser(user);
                 //return Ok();
             }

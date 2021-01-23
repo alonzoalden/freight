@@ -22,7 +22,7 @@ namespace Freight.API.DAL
         {
             using (SqlConnection connection = new SqlConnection(DefaultConnection))
             {
-                List<Item> results = connection.Query<Item>("spItems", commandType: CommandType.StoredProcedure).ToList();
+                List<Item> results = connection.Query<Item>("spGetItems", commandType: CommandType.StoredProcedure).ToList();
 
                 return results;
             }
@@ -40,7 +40,7 @@ namespace Freight.API.DAL
             }
         }
 
-        public void CreateItem(Item item)
+        public Item CreateItem(Item item)
         {
             using (SqlConnection connection = new SqlConnection(DefaultConnection))
             {
@@ -57,10 +57,12 @@ namespace Freight.API.DAL
                 p.Add("unitprice", item.UnitPrice);
                 p.Add("currency", item.Currency);
                 Item result = connection.Query<Item>("spCreateItem", p, commandType: CommandType.StoredProcedure).Single();
+
+                return result;
             }
         }
 
-        public void UpdateItem(Item item)
+        public Item UpdateItem(Item item)
         {
             using (SqlConnection connection = new SqlConnection(DefaultConnection))
             {
@@ -77,7 +79,9 @@ namespace Freight.API.DAL
                 p.Add("weightunit", item.WeightUnit);
                 p.Add("unitprice", item.UnitPrice);
                 p.Add("currency", item.Currency);
-                Item result = connection.Query<Item>("spCreateItem", p, commandType: CommandType.StoredProcedure).Single();
+                Item result = connection.Query<Item>("spUpdateItem", p, commandType: CommandType.StoredProcedure).Single();
+
+                return result;
             }
         }
     }

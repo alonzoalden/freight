@@ -6,7 +6,7 @@ namespace Freight.API.Common.Model.Address
 {
     public class Address
     {
-        public string AddressID { get; set; }
+        public int AddressID { get; set; }
         public string FullName { get; set; }
         public string Attention { get; set; }
         public string CompanyName { get; set; }

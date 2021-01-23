@@ -26,7 +26,8 @@ namespace Freight.API
             services.AddAuthentication("Bearer")
                 .AddJwtBearer("Bearer", options =>
                 {
-                    options.Authority = "https://localhost:5001";
+                    options.Authority = "https://login.fbasimplify.com";
+
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateAudience = false

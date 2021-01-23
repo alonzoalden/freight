@@ -12,11 +12,11 @@ namespace Freight.API.Controllers
     [Route("item")]
     public class ItemController : ControllerBase
     {
-        private ItemBAL itemBAL;
+        private ItemBAL ItemBAL;
 
         public ItemController(IOptions<Common.Configuration.Connection> connection, IOptions<Common.Configuration.Setting> settings)
         {
-            itemBAL = new BAL.ItemBAL(connection.Value, settings.Value);
+            ItemBAL = new BAL.ItemBAL(connection.Value, settings.Value);
         }
 
         [HttpGet]
@@ -24,10 +24,11 @@ namespace Freight.API.Controllers
         {
             try
             {
-                return new JsonResult(itemBAL.GetItems());
+                return new JsonResult(ItemBAL.GetItems());
             }
             catch (Exception ex)
             {
+                //return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, "Failed to get Items");
             }
         }
@@ -38,10 +39,11 @@ namespace Freight.API.Controllers
         {
             try
             {
-                return new JsonResult(itemBAL.GetItem(id));
+                return new JsonResult(ItemBAL.GetItem(id));
             }
             catch (Exception ex)
             {
+                //return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, "Failed to get Item");
             }
         }
@@ -51,25 +53,25 @@ namespace Freight.API.Controllers
         {
             try
             {
-                itemBAL.UpdateItem(item);
-                return Ok();
+                return new JsonResult(ItemBAL.UpdateItem(item));
             }
             catch (Exception ex)
             {
+                //return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, "Failed to update Item");
             }
         }
 
         [HttpPost]
-        public IActionResult CreateUser(Item item)
+        public IActionResult CreateItem(Item item)
         {
             try
             {
-                itemBAL.CreateItem(item);
-                return Ok();
+                return new JsonResult(ItemBAL.CreateItem(item));
             }
             catch (Exception ex)
             {
+                //return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, "Failed to create Item");
             }
         }

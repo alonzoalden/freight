@@ -8,30 +8,30 @@ namespace Freight.API.BAL
 {
     public class ItemBAL
     {
-        DAL.ItemDAL itemDAL;
+        private DAL.ItemDAL ItemDAL;
 
         public ItemBAL(Connection connection, Setting setting)
         {
-            itemDAL = new DAL.ItemDAL(connection, setting);
+            ItemDAL = new DAL.ItemDAL(connection, setting);
         }
 
         public List<Item> GetItems()
         {
-            return itemDAL.GetItems();
+            return ItemDAL.GetItems();
         }
 
         public Item GetItem(int id)
         {
-            return itemDAL.GetItem(id);
+            return ItemDAL.GetItem(id);
         }
 
-        public void CreateItem(Item item)
+        public Item CreateItem(Item item)
         {
-            itemDAL.CreateItem(item);
+            return ItemDAL.CreateItem(item);
         }
-        public void UpdateItem(Item item)
+        public Item UpdateItem(Item item)
         {
-            itemDAL.UpdateItem(item);
+            return ItemDAL.UpdateItem(item);
         }
     }
 }
