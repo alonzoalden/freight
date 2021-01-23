@@ -2,7 +2,7 @@ import { createReducer, on } from '@ngrx/store';
 import { DashboardApiActions } from './actions';
 
 import { BusinessEntity } from '../../_shared/model/business-entity';
-import { BusinessAccess } from 'src/app/_shared/model/business-access';
+import { BusinessAccess } from 'app/_shared/model/business-access';
 
 export interface DashboardState {
   access: BusinessAccess;

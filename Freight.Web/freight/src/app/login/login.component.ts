@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Store } from '@ngrx/store';
@@ -7,17 +7,30 @@ import * as fromAppState from '../_state';
 import { AppPageActions } from '../_state/actions';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
 import { Observable } from 'rxjs';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { fuseAnimations } from '@fuse/animations';
+import { FuseConfigService } from '@fuse/services/config.service';
 
 @Component({
-  templateUrl: './login.component.html'
+  selector: 'login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss'],
+  animations: fuseAnimations,
+  encapsulation: ViewEncapsulation.None,
 })
 
 export class LoginComponent implements OnInit {
   test$: Observable<string>;
+  loginForm: FormGroup;
 
-  constructor(private store: Store<fromAppState.State>, private router: Router, public oidcSecurityService: OidcSecurityService) { }
+  constructor(private store: Store<fromAppState.State>, private router: Router, public oidcSecurityService: OidcSecurityService, private _fuseConfigService: FuseConfigService, private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
+    this._fuseConfigService.config = this._fuseConfigService.hideLayoutConfig();
+    this.loginForm = this.formBuilder.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required]
+    });
   }
 
   login(): void {

@@ -1,5 +1,6 @@
 import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { filter } from 'rxjs/operators';
 
@@ -20,7 +21,24 @@ import { AppEffects } from './_state/app.effect';
 
 import { HomeComponent } from './_general/home.component';
 import { LoginComponent } from './login/login.component';
+import { SignupComponent } from './signup/signup.component';
 import { PageNotFoundComponent } from './_general/page-not-found.component';
+import { PasswordAssistanceComponent } from './_general/password-assistance.component';
+import { FuseProgressBarModule, FuseSidebarModule, FuseThemeOptionsModule } from '@fuse/components';
+import { FuseModule } from '@fuse/fuse.module';
+import { FuseSharedModule } from '@fuse/shared.module';
+import { fuseConfig } from './_general/fuse-config';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
+import { RouterModule } from '@angular/router';
+import { LayoutModule } from './layout/layout.module';
+import { SimpleNotificationsModule } from 'angular2-notifications';
 
 export function configureAuth(oidcConfigService: OidcConfigService): () => any {
   return () =>
@@ -44,10 +62,13 @@ export function configureAuth(oidcConfigService: OidcConfigService): () => any {
     AppComponent,
     HomeComponent,
     LoginComponent,
-    PageNotFoundComponent
+    SignupComponent,
+    PageNotFoundComponent,
+    PasswordAssistanceComponent
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     HttpClientModule,
     AppRoutingModule,
     StoreModule.forRoot({ app: fromApp.appReducer }),
@@ -56,16 +77,33 @@ export function configureAuth(oidcConfigService: OidcConfigService): () => any {
       maxAge: 25
     }),
     EffectsModule.forRoot([AppEffects]),
-    AuthModule.forRoot()
+    AuthModule.forRoot(),
+    // Fuse modules
+    FuseModule.forRoot(fuseConfig),
+    FuseProgressBarModule,
+    FuseSharedModule,
+    FuseSidebarModule,
+    FuseThemeOptionsModule,
+    RouterModule,
+    MatButtonModule,
+    MatCheckboxModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatExpansionModule,
+    MatMomentDateModule,
+    LayoutModule,
+    SimpleNotificationsModule.forRoot(),
   ],
   providers: [
-    OidcConfigService,
-      {
-        provide: APP_INITIALIZER,
-        useFactory: configureAuth,
-        deps: [OidcConfigService],
-        multi: true,
-      }
+    // OidcConfigService,
+    //   {
+    //     provide: APP_INITIALIZER,
+    //     useFactory: configureAuth,
+    //     deps: [OidcConfigService],
+    //     multi: true,
+    //   }
   ],
   bootstrap: [AppComponent]
 })

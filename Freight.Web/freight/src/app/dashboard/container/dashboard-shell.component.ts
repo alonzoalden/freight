@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 import * as fromDashboard from '../state';
 import { AppPageActions } from '../../_state/actions';
 
-import { BusinessEntity } from 'src/app/_shared/model/business-entity';
+import { BusinessEntity } from 'app/_shared/model/business-entity';
 
 @Component({
   selector     : 'dashboard-shell',

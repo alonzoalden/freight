@@ -1,3 +1,208 @@
-<div>
-    HOME PAGE
+<div *ngIf="isLoggedin" class="spinner-container" style="width: 100%;">
+  <div class="sk-spinner sk-spinner-three-bounce big-spinner">
+    <div class="sk-bounce1"></div>
+    <div class="sk-bounce2"></div>
+    <div class="sk-bounce3"></div>
+  </div>
+  <br>
+  <p class="text-center" style="letter-spacing: 1px;">LOADING</p>
+</div>
+<div class="home-theme-layout" id="page-top" #home *ngIf="!isLoggedin" style="width: 100%;">
+  <div class="toolbar" fxLayoutAlign="center center">
+    <div class="toolbar-body" fxLayoutAlign="space-between center">
+
+      <div fxLayoutAlign="flex-start center">
+        <div class="logo">
+          <img src="assets/images/logos/fuse.svg">
+        </div>
+        <span>Company</span>
+      </div>
+      <div class="buttons">
+        <div class="button-link">
+          <a (click)="scrollToElement('faq')" fxLayoutAlign="flex-end center">FAQ</a>
+        </div>
+        <div class="button-link">
+          <a href="/login" fxLayoutAlign="flex-end center">Log In <mat-icon
+              style="font-size: 24; width: 24; height: 24; margin-left: 8px;">arrow_forward</mat-icon></a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <section class="main-display-container">
+    <div class="background-img">
+      <div class="main-display-content">
+        <h1 class="main-title animated fadeInRight">
+          FULL TRUCKLOAD SERVICES
+        </h1>
+        <div class="sign-up-button-section">
+          <button class="btn btn-default btn-home-signup animated fadeInLeft" [routerLink]="['/registration']">Create an
+            Account</button>
+          <a>Become a partner</a>
+        </div>
+      </div>
+    </div>
+    <div #features class="features-start-point"></div>
+  </section>
+
+  <!-- Content -->
+  <div class="landing-page" fxLayout="column" fxLayoutAlign="start center">
+    <div class="section after-header-message">Use our network to ship your full truckload freight.</div>
+
+    <div class="section instant-quotes-container">
+      <div class="inner-container">
+        <div class="header">
+          <mat-icon>flash_on</mat-icon>INSTANT QUOTES
+        </div>
+        <div class="message">We use 53' dry vans to haul your full truckload freight.</div>
+        <form name="composeForm" [formGroup]="composeForm">
+          <div class="input-container">
+            <mat-form-field appearance="outline" floatLabel="always">
+              <mat-label>Pickup ZIP Code</mat-label>
+              <input matInput placeholder="Enter Pickup Zip Code" name="PickupZipCode" formControlName="PickupZipCode"
+                type="tel" min="0" required>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" floatLabel="always">
+              <mat-label>Delivery Zip Code</mat-label>
+              <input matInput placeholder="Enter Delivery Zip Code" name="DeliveryZipCode"
+                formControlName="DeliveryZipCode" type="tel" min="0" required>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" floatLabel="always">
+              <mat-label>Pickup Date</mat-label>
+              <input placeholder="Choose Pickup date" #pickupDateInput formControlName="pickupDate" matInput
+                [matDatepicker]="pickupDate" required>
+              <mat-datepicker-toggle matSuffix [for]="pickupDate"></mat-datepicker-toggle>
+              <mat-datepicker #pickupDate></mat-datepicker>
+            </mat-form-field>
+
+            <button mat-raised-button class="quotes-submit primary">View Rates</button>
+          </div>
+        </form>
+        <div class="message">Our coverage includes all US states except Alaska and Hawaii.</div>
+      </div>
+    </div>
+    <section id="features" class="container services" style="max-width: 1100px;">
+      <div class="feature-section">
+        <mat-icon>star_rate</mat-icon>
+        <div class="title">RELIABLE CAPACITY & COMMITMENT</div>
+        <p class="message">We treat your shipment like our own, securing capacity with our reliable carrier network.</p>
+      </div>
+      <div class="feature-section">
+        <mat-icon>attach_money</mat-icon>
+        <div class="title">GREAT RATES, NO SURPRISES</div>
+        <p class="message">Our instant rates are transparent through booking. We offer spot shipments and dedicated
+          lanes.</p>
+      </div>
+      <div class="feature-section">
+        <mat-icon>access_time</mat-icon>
+        <div class="title">24/7 SERVICE</div>
+        <p class="message">As earth's most customer-centric company, we provide the support and technology to make
+          shipping easy with full shipment visibility and no blackout dates.</p>
+      </div>
+    </section>
+
+    <section class="gray-section bg-signup2 m-t-n" style="padding: 40px 20px;">
+      <div class="container">
+        <div class="ready col-lg-12 text-center" animateOnScroll animationName="animated fadeIn">
+          <h1>Ready to get started?</h1>
+          <div class="sign-up-button-section" style="justify-content: center !important;">
+            <button class="btn btn-default btn-home-signup animated fadeInLeft" [routerLink]="['/registration']">Create
+              an Account</button>
+          </div>
+          <div class="message">Are you a carrier? <a>Become a carrier partner.</a></div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <section>
+      <div id="faq" class="faq">
+        <div class="title">Frequently Asked Questions</div>
+        <mat-accordion>
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>What are the benefits of shipping with us?</mat-panel-title>
+            </mat-expansion-panel-header>
+            <p>We offer the dependability, tracking, visibility, and high performance you deserve from your shipping
+              partner. Our network runs 24/7, 365 days a year with zero blackout dates, and since we're
+              customer-obsessed, we've built technology to ensure reliability and visibility from quote to payment.</p>
+          </mat-expansion-panel>
+
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>What services are available for shippers?</mat-panel-title>
+            </mat-expansion-panel-header>
+            <p>We provide full truckload services using 53’ dry van equipment. Spot shipments are live loaded at pickup
+              and live unloaded at your delivery destination. Additional services include straps. Our online tools allow
+              all shippers to manage their loads on demand. We offer dedicated account managers and 24/7 customer
+              support from our operations specialists.
+              Today, we do not support multi-stop shipments, intermodal, ocean, personal shipments, flatbed, LTL, small
+              parcel, residential, drayage, or offer lift gates.</p>
+
+          </mat-expansion-panel>
+
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>Where can I ship?</mat-panel-title>
+            </mat-expansion-panel-header>
+            <p>We offer coverage in all 48 contiguous US states, thanks to our carrier network and Universal Trailer
+              Pool.</p>
+          </mat-expansion-panel>
+
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>How do I book my first load?</mat-panel-title>
+            </mat-expansion-panel-header>
+            <p>Easy. Create a shipper account in just a few minutes by clicking here. As soon as your account is
+              created, you can begin booking shipments immediately.</p>
+          </mat-expansion-panel>
+
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>How do you selected carrier partners?</mat-panel-title>
+            </mat-expansion-panel-header>
+            <p>All carriers in our network are pre-screened to meet our compliance standards, including insurance,
+              operating authority and safety. We hold our carriers to the same high standard, whether they are shipping
+              our freight or yours, and consistently monitor on-time delivery records. We are continuously adding
+              carriers to our network to offer great rates and expanded coverage.</p>
+          </mat-expansion-panel>
+
+        </mat-accordion>
+      </div>
+    </section>
+  </div>
+  <section id="contact" class="gray-section contact m-t-lg" style="padding: 40px 20px;">
+    <div class="container">
+      <div class="row m-b-lg">
+        <div class="col-lg-12 text-center">
+          <div class="navy-line"></div>
+          <h1>Contact Us</h1>
+          <p>Feel free to reach out any time!</p>
+        </div>
+      </div>
+      <div class="row m-b-lg">
+        <div class="col-lg-12 text-center">
+          <address>
+            <strong><span class="navy">Company (Headquarters)</span></strong><br />
+            555 Apple Lane<br />
+            Los Angeles, CA 90012<br />
+          </address>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12 text-center">
+          <p>(888) 888-8888
+            <br><a href="mailto:info@info.com">info@info.com</a>
+          </p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 text-center m-t-lg m-b-lg">
+          <p><strong>&copy; 2021</strong><br /></p>
+        </div>
+      </div>
+    </div>
+  </section>
 </div>

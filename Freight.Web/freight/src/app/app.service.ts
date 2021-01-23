@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { Observable, of, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { BusinessEntity } from './_shared/model/business-entity';
 import { BusinessAccess } from './_shared/model/business-access';
 import { tap, catchError } from 'rxjs/operators';
@@ -10,6 +10,13 @@ import { tap, catchError } from 'rxjs/operators';
     providedIn: 'root',
 })
 export class AppService {
+  userInfo: BehaviorSubject<any>;
+  warehouseMap = {
+      1: 'Los Angeles',
+      2: 'San Francisco',
+      3: 'New York',
+  };
+  allItemList: BehaviorSubject<any>;
   constructor(
     protected http: HttpClient,
     protected router: Router) { }
@@ -77,6 +84,26 @@ export class AppService {
         tap(data => console.log('TEST DATA: ' + JSON.stringify(data))),
         catchError(this.handleError)
       );
+  }
+
+  getCurrentMember(): any {
+    return new Promise((resolve, reject) => {
+        this.http.get('api/member')
+            .subscribe((response: any) => {
+                //this.onFilesChanged.next(response);
+                //this.onFileSelected.next(response[0]);
+                this.userInfo.next(response);
+                resolve(response);
+            }, reject);
+    });
+    // return this._httpClient.get<any>('member')
+    //     .pipe(
+    //         tap((data: Member) => {
+    //             console.log(data)
+    //             this.userInfo.next(data);
+    //         }),
+    //         catchError(this.handleError)
+    //     );
   }
 
   private handleError(err) {
