@@ -52,8 +52,6 @@ namespace Freight.API.Controllers
             try
             {
                 return new JsonResult(UserBAL.UpdateUser(user));
-                //userBAL.UpdateUser(user);
-                //return Ok();
             }
             catch (Exception ex)
             {
@@ -67,12 +65,25 @@ namespace Freight.API.Controllers
             try
             {
                 return new JsonResult(UserBAL.CreateUser(user));
-                //userBAL.CreateUser(user);
-                //return Ok();
             }
             catch(Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "Failed to create User");
+            }
+        }
+
+        [HttpDelete]
+        [Route("{id}")]
+        public IActionResult DeleteUser(int id)
+        {
+            try
+            {
+                UserBAL.DeleteUser(id);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Failed to delete User");
             }
         }
     }

@@ -30,7 +30,21 @@ namespace Freight.API.BAL
         }
         public User CreateUser(User user)
         {
-            return UserDAL.CreateUser(user);
+            User User = UserDAL.CreateUser(user);
+
+            //CreateIdentiyServerUSer()
+
+            return User;
         }        
+
+        public void DeleteUser(int id)
+        {
+            UserDAL.DeleteUser(id);
+        }
+
+        protected void CreateIdentityServerUser()
+        {
+
+        }
     }
 }

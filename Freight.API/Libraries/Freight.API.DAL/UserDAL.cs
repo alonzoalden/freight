@@ -67,5 +67,15 @@ namespace Freight.API.DAL
                 return result;
             }
         }
+
+        public void DeleteUser(int id)
+        {
+            using (SqlConnection connection = new SqlConnection(DefaultConnection))
+            {
+                DynamicParameters p = new DynamicParameters();
+                p.Add("userid", id);
+                connection.Query<User>("spDeleteUser", p, commandType: CommandType.StoredProcedure);
+            }
+        }
     }
 }
