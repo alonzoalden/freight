@@ -23,16 +23,6 @@
           </button>
         </div>
       </div>
-      <div class="new-item-section" [@animate]="{value:'*',params:{delay:'250ms',scale:'0.2'}}">
-        <button class="main-action darkblue" (click)="openEditItemDialog()" style="border-radius: 40px; height: 56px;"
-          mat-raised-button [disabled]="isLoading" fxLayoutAlign="center center">
-          <span class="btn-title" style="font-size: 22px; color: #fff;"
-            fxLayoutAlign="center center">
-            <mat-icon class="button-icon">
-              add_circle_outline</mat-icon> Add New Item
-          </span>
-        </button>
-      </div>
     </div>
 
     <div class="hero-text">
@@ -141,5 +131,13 @@
     [@animate]="{value:'*',params:{delay:'400ms', y:'225px'}}" class="center-box-message">
     No items found.
   </div>
-  <mat-paginator #paginator [pageSizeOptions]="[10, 20, 50, 100, 200]" [showFirstLastButtons]="true"></mat-paginator>
+  <div fxLayout="row" fxLayoutAlign="space-between center">
+    <div class="new-item-section" [@animate]="{value:'*',params:{delay:'250ms',scale:'0.2'}}" style="padding: 16px 24px 16px 24px;">
+      <button mat-raised-button class="accent" (click)="openEditItemDialog()"  [disabled]="isLoading" fxLayoutAlign="center center" style="height: 44px;">
+          <mat-icon>add_circle_outline</mat-icon>
+          Add New Item
+      </button>
+    </div>
+    <mat-paginator #paginator [pageSizeOptions]="[10, 20, 50, 100, 200]" [showFirstLastButtons]="true"></mat-paginator>
+  </div>
 </div>
