@@ -45,7 +45,19 @@ namespace Freight.API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Failed to get Item");
             }
         }
-
+        [HttpGet]
+        [Route("business/{businessid}")]
+        public IActionResult GetItemByBusinessID(int businessid)
+        {
+            try
+            {
+                return new JsonResult(ItemBAL.GetItemByBusinessID(businessid));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Failed to get Items");
+            }
+        }
         [HttpPut]
         public IActionResult UpdateItem(Item item)
         {
