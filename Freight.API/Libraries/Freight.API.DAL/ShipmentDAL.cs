@@ -171,8 +171,7 @@ namespace Freight.API.DAL
                 DynamicParameters p = new DynamicParameters();
                 p.Add("shipmentfeeid", shipmentfee.ShipmentFeeID);
                 p.Add("shipmentid", shipmentfee.ShipmentID);
-                p.Add("feetype", shipmentfee.FeeType);
-                p.Add("description", shipmentfee.Description);
+                p.Add("feeid", shipmentfee.FeeID);
                 p.Add("feeamount", shipmentfee.FeeAmount);
 
                 ShipmentFee result = connection.Query<ShipmentFee>("spUpdateShipmentFee", p, commandType: CommandType.StoredProcedure).Single();
@@ -279,8 +278,7 @@ namespace Freight.API.DAL
             {
                 DynamicParameters p = new DynamicParameters();
                 p.Add("shipmentid", shipmentfee.ShipmentID);
-                p.Add("feetype", shipmentfee.FeeType);
-                p.Add("description", shipmentfee.Description);
+                p.Add("feeid", shipmentfee.FeeID);
                 p.Add("feeamount", shipmentfee.FeeAmount);
 
                 ShipmentFee result = connection.Query<ShipmentFee>("spCreateShipmentFee", p, commandType: CommandType.StoredProcedure).Single();
