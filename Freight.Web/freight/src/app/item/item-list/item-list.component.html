@@ -12,8 +12,8 @@
       </div>
     </div>
     <!-- SEARCH BAR  -->
-    <div class="action-container">
-      <div fxFlex class="search-wrapper" [@animate]="{value:'*',params:{delay:'250ms',scale:'0.2'}}">
+    <div class="action-container" fxLayout="column" fxLayout.gt-sm="row">
+      <div class="search-wrapper" [@animate]="{value:'*',params:{delay:'250ms',scale:'0.2'}}">
         <div class="search" fxLayout="row" fxLayoutAlign="start center">
           <mat-icon class="secondary-text">search</mat-icon>
           <input #mainInput [disabled]="isLoading" (keyup)="applyFilter(searchTerm)" [(ngModel)]="searchTerm"
@@ -22,11 +22,8 @@
             <mat-icon>clear</mat-icon>
           </button>
         </div>
-        <div>
-          button
-        </div>
       </div>
-      <div fxLayout="row" fxLayoutAlign="center center" [@slideInRight] style="width: 300px;">
+      <div class="new-item-section" [@animate]="{value:'*',params:{delay:'250ms',scale:'0.2'}}">
         <button class="main-action darkblue" (click)="openEditItemDialog()" style="border-radius: 40px; height: 56px;"
           mat-raised-button [disabled]="isLoading" fxLayoutAlign="center center">
           <span class="btn-title" style="font-size: 22px; color: #fff;"

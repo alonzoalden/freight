@@ -83,6 +83,20 @@ item-list {
       @include media-breakpoint('gt-md') {
         flex-direction: row;
       }
+      .new-item-section {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        width: 300px;
+        margin-left: 0px;
+        margin-top: 16px;
+        
+        @include media-breakpoint('gt-md') {
+          margin-left: 44px;
+          margin-top: 0px;
+          justify-content: center;
+        }
+      }
       .search-wrapper {
         z-index: 12 !important;
         border-radius: 28px;
