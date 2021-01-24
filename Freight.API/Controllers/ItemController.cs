@@ -28,7 +28,6 @@ namespace Freight.API.Controllers
             }
             catch (Exception ex)
             {
-                //return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, "Failed to get Items");
             }
         }
@@ -43,7 +42,6 @@ namespace Freight.API.Controllers
             }
             catch (Exception ex)
             {
-                //return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, "Failed to get Item");
             }
         }
@@ -57,7 +55,6 @@ namespace Freight.API.Controllers
             }
             catch (Exception ex)
             {
-                //return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, "Failed to update Item");
             }
         }
@@ -71,8 +68,22 @@ namespace Freight.API.Controllers
             }
             catch (Exception ex)
             {
-                //return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, "Failed to create Item");
+            }
+        }
+
+        [HttpDelete]
+        [Route("{id}")]
+        public IActionResult DeleteItem(int id)
+        {
+            try
+            {
+                ItemBAL.DeleteItem(id);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Failed to delete Item");
             }
         }
     }

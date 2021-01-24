@@ -33,5 +33,10 @@ namespace Freight.API.BAL
         {
             return ItemDAL.UpdateItem(item);
         }
+        public void DeleteItem(int id)
+        {
+            ItemDAL.DeleteItem(id);
+        }
+
     }
 }

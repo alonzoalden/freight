@@ -84,5 +84,15 @@ namespace Freight.API.DAL
                 return result;
             }
         }
+
+        public void DeleteItem(int id)
+        {
+            using (SqlConnection connection = new SqlConnection(DefaultConnection))
+            {
+                DynamicParameters p = new DynamicParameters();
+                p.Add("itemid", id);
+                connection.Query<Item>("spDeleteItem", p, commandType: CommandType.StoredProcedure);
+            }
+        }
     }
 }

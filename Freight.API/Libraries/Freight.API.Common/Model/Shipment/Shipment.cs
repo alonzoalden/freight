@@ -29,9 +29,5 @@ namespace Freight.API.Common.Model.Shipment
         public DateTime? UpdatedOn { get; set; }
         public int CreatedBy { get; set; }
         public DateTime CreatedOn { get; set; }
-        public List<ShipmentLine> ShipmentLines { get; set; }
-        public List<ShipmentPackage> ShipmentPackages { get; set; }
-        public List<ShipmentFee> ShipmentFees { get; set; }
-        public List<ShipmentContact> ShipmentContacts { get; set; }
     }
 }

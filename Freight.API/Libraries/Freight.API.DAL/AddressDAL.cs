@@ -30,7 +30,7 @@ namespace Freight.API.DAL
             }
         }
 
-        public void CreateAddress(Address address)
+        public Address CreateAddress(Address address)
         {
             using (SqlConnection connection = new SqlConnection(DefaultConnection))
             {
@@ -49,10 +49,12 @@ namespace Freight.API.DAL
                 p.Add("phone", address.Phone);
 
                 Address result = connection.Query<Address>("spCreateAddress", p, commandType: CommandType.StoredProcedure).Single();
+
+                return result;
             }
         }
 
-        public void UpdateUser(Address address)
+        public Address UpdateAddress(Address address)
         {
             using (SqlConnection connection = new SqlConnection(DefaultConnection))
             {
@@ -71,7 +73,19 @@ namespace Freight.API.DAL
                 p.Add("email", address.Email);
                 p.Add("phone", address.Phone);
 
-                Address result = connection.Query<Address>("spUpdateUser", p, commandType: CommandType.StoredProcedure).Single();
+                Address result = connection.Query<Address>("spUpdateAddress", p, commandType: CommandType.StoredProcedure).Single();
+
+                return result;
+            }
+        }
+
+        public void DeleteAddress(int id)
+        {
+            using (SqlConnection connection = new SqlConnection(DefaultConnection))
+            {
+                DynamicParameters p = new DynamicParameters();
+                p.Add("addressid", id);
+                connection.Query<Address>("spDeleteAddress", p, commandType: CommandType.StoredProcedure);
             }
         }
     }
