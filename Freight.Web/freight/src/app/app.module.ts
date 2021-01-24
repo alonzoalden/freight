@@ -99,13 +99,13 @@ export function configureAuth(oidcConfigService: OidcConfigService): () => any {
     SimpleNotificationsModule.forRoot(),
   ],
   providers: [
-    // OidcConfigService,
-    //   {
-    //     provide: APP_INITIALIZER,
-    //     useFactory: configureAuth,
-    //     deps: [OidcConfigService],
-    //     multi: true,
-    //   }
+    OidcConfigService,
+      {
+        provide: APP_INITIALIZER,
+        useFactory: configureAuth,
+        deps: [OidcConfigService],
+        multi: true,
+      }
   ],
   bootstrap: [AppComponent]
 })
