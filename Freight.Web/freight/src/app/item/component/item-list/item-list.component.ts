@@ -10,7 +10,7 @@ import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { fuseAnimations } from "@fuse/animations";
 import { FuseSidebarService } from "@fuse/components/sidebar/sidebar.service";
-import { ItemService } from "../item.service";
+import { ItemService } from "../../item.service";
 import { MatTableDataSource } from "@angular/material/table";
 import { environment } from "environments/environment";
 import { MatPaginator } from "@angular/material/paginator";
@@ -19,20 +19,19 @@ import { MatDialog } from "@angular/material/dialog";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { AppService } from "app/app.service";
 import { NotificationsService } from "angular2-notifications";
-import { EditItemDialogComponent } from "../dialogs/edit-item/edit-item.component";
+import { EditItemDialogComponent } from "../../component/edit-item/edit-item-dialog.component";
 
 @Component({
-  selector: "item-list",
-  templateUrl: "./item-list.component.html",
-  styleUrls: ["./item-list.component.scss"],
-  encapsulation: ViewEncapsulation.None,
+  selector: 'item-list',
+  templateUrl: './item-list.component.html',
+  styleUrls: ['./item-list.component.scss'],
   animations: [fuseAnimations],
 })
 export class ItemListComponent implements OnInit, OnDestroy {
   //imageURL = environment.imageURL;
   files: any;
   dataSource: any;
-  displayedColumns = ["Actions", "ItemName", "detail-button"];
+  displayedColumns = ['itemNumber', 'itemName', 'htsCode', 'fnsku', 'unitPrice', 'actions'];
   selected: any;
   isLoading: boolean;
   isLeadRole: boolean;
@@ -68,8 +67,7 @@ export class ItemListComponent implements OnInit, OnDestroy {
         this.selected = selected;
       });
     this.isLoading = true;
-
-    this.itemService.allItemList
+    this.itemService.getAllItemList()
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((items) => {
         if (items.length) {
@@ -100,10 +98,6 @@ export class ItemListComponent implements OnInit, OnDestroy {
         this.itemService.onItemSelected.next(selected),
       0
     );
-    this.itemService
-      .getItemDimension(selected.ItemID)
-      .subscribe();
-    // .subscribe(item => this.selected.Dimensions.push(item));
   }
 
   toggleSidebar(name): void {
@@ -139,9 +133,11 @@ export class ItemListComponent implements OnInit, OnDestroy {
     }
     this.itemService.onItemSelected.next({});
   }
-  openEditItemDialog(): void {
+  openEditItemDialog(data = {}): void {
     this.dialogRef = this._matDialog.open(EditItemDialogComponent, {
-      panelClass: 'edit-fields-dialog'
+      panelClass: 'edit-fields-dialog',
+      width: '100%',
+      data: data
     });
     this.dialogRef.afterClosed()
       .subscribe(response => {

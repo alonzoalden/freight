@@ -41,10 +41,10 @@ export class HomeComponent implements OnInit {
         this.componentActive = false;
     }
     login(): void {
-        this.oidcSecurityService.authorize();
-        this.store.dispatch(AppPageActions.loadBusinesses());
-        this.router.navigate(['']);
-      }
+    this.oidcSecurityService.authorize();
+    this.store.dispatch(AppPageActions.loadBusinesses());
+    this.router.navigate(['']);
+    }
     
     logout(): void {
         this.oidcSecurityService.logoff();

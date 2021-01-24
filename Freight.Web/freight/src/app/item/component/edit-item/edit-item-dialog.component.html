@@ -1,0 +1,73 @@
+<div class="dialog-content-wrapper">
+  <mat-toolbar class="mat-accent m-0">
+    <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+      <span class="title dialog-title">{{selectedItem.itemID ? 'Edit' : 'Create' }} Item</span>
+      <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-toolbar-row>
+  </mat-toolbar>
+  <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>
+    <form name="itemForm" [formGroup]="itemForm" class="compose-form" fxLayout="column" fxFlex>
+
+      <div fxLayout="column" fxLayoutAlign="start center">
+        
+        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+          <mat-label> Item Number </mat-label>
+          <input matInput placeholder="Item Number" name="itemNumber" formControlName="ItemNumber" required>
+        </mat-form-field>
+        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+          <mat-label> Item Name </mat-label>
+          <input matInput placeholder="Item Name" name="itemName" formControlName="ItemName"required>
+        </mat-form-field>
+        
+        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+          <mat-label> HTS Code </mat-label>
+          <input matInput placeholder="HTS Code" name="htsCode" formControlName="HTSCode" required>
+        </mat-form-field>
+        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+          <mat-label> FNSKU </mat-label>
+          <input matInput placeholder="FNSKU" name="fnsku" formControlName="FNSKU" required>
+        </mat-form-field>
+        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+          <mat-label> ASIN </mat-label>
+          <input matInput placeholder="ASIN" name="ASIN" formControlName="ASIN" required>
+        </mat-form-field>
+        <div fxLayout="row" fxLayoutAlign="start center" class="w-100-p">
+          <mat-form-field fxFlex="67%" appearance="outline" floatLabel="always" class="mr-16">
+            <mat-label> Weight </mat-label>
+            <input matInput placeholder="Weight" name="weight" formControlName="Weight" required>
+          </mat-form-field>
+          <mat-form-field fxFlex="33%" appearance="outline" floatLabel="always">
+            <mat-label>Weight Units</mat-label>
+            <mat-select placeholder="Weight Units" name="weightUnit" formControlName="WeightUnit" required>
+              <mat-option *ngFor="let item of warehouseService.dropDownTypes.weights" value="{{item}}">{{ item }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center" class="w-100-p">
+          <mat-form-field fxFlex="67%" appearance="outline" floatLabel="always" class="mr-16">
+            <mat-label> Unit Price </mat-label>
+            <input matInput placeholder="Unit Price" name="unitPrice" formControlName="UnitPrice" required>
+          </mat-form-field>
+          <mat-form-field fxFlex="33%" appearance="outline" floatLabel="always">
+            <mat-label>Currency</mat-label>
+            <mat-select placeholder="Select Currency" name="currency" formControlName="Currency" required>
+              <mat-option *ngFor="let item of warehouseService.dropDownTypes.currency" value="{{item}}">{{ item }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="space-between center">
+    <button  mat-raised-button color="accent" (click)="save()" class="dialog-button" [disabled]="itemForm.invalid" aria-label="SAVE">
+      <div fxLayoutAlign="center">
+        <span *ngIf="!isSaving">SAVE</span>
+        <mat-spinner diameter="20" *ngIf="isSaving"></mat-spinner>
+      </div>
+    </button>
+  </div>
+</div>

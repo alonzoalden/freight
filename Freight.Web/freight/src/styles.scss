@@ -1,8 +1,8 @@
 // Import Fuse core library
 @import "src/assets/@fuse/scss/core";
-
 // Import app.theme.scss
 @import "app/app.theme";
+
 
 app-root {
   position: relative;
@@ -156,9 +156,9 @@ simple-notifications {
   max-width: 100vw !important;
 }
 
-// mat-cell:first-of-type, mat-header-cell:first-of-type, mat-footer-cell:first-of-type {
-//   margin-left: 24px;
-// }
+mat-cell:first-of-type, mat-header-cell:first-of-type, mat-footer-cell:first-of-type {
+  margin-left: 24px;
+}
 @keyframes ellipsis {
   to {
     width: 20px;    
@@ -169,4 +169,7 @@ simple-notifications {
   to {
     width: 20px;    
   }
+}
+.dialog-button {
+  height: 39px;
 }

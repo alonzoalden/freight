@@ -1,18 +1,18 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { ItemComponent } from './item.component';
-import { ItemListComponent } from './item-list/item-list.component';
+import { ItemShellComponent } from './container/item-shell.component';
+import { ItemListComponent } from './component/item-list/item-list.component';
 
 const ITEM_ROUTES: Routes = [
   {
     path: '**',
-    component: ItemComponent,
-    children: [
-      {
-        path: '',
-        component: ItemListComponent,
-      },
-    ],
+    component: ItemShellComponent,
+    // children: [
+    //   {
+    //     path: '',
+    //     component: ItemListComponent,
+    //   },
+    // ],
   },
 ];
 

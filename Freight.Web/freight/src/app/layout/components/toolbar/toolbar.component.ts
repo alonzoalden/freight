@@ -7,7 +7,7 @@ import * as _ from 'lodash-es';
 import { FuseConfigService } from '@fuse/services/config.service';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 
-import { navigation } from 'app/navigation/navigation';
+import { navigation } from 'app/_general/navigation/navigation';
 //import { OAuthService } from 'angular-oauth2-oidc';
 import { AppService } from '../../../app.service';
 // import { Member } from 'app/shared/class/member';

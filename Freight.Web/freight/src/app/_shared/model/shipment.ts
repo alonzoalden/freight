@@ -65,8 +65,7 @@ export class ShipmentFee {
   constructor(
     public ShipmentFeeID: number,
     public ShipmentID: number,
-    public FeeType: number,
-    public Description: number,
+    public FeeID: number,
     public FeeAmount: number,
     public UpdatedOn: Date,
     public CreatedOn: Date,

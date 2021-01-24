@@ -29,7 +29,12 @@ const routes: Routes = [
         path: 'item',
         loadChildren: () =>
           import('./item/item.module').then(m => m.ItemModule)
-      }
+      },
+      {
+        path: 'item/:filter',
+        loadChildren: () =>
+          import('./item/item.module').then(m => m.ItemModule)
+      },
     ]
   },
   { path: '**', component: PageNotFoundComponent }

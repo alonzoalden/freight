@@ -18,22 +18,22 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { ItemService } from './item.service';
-import { ItemListComponent } from './item-list/item-list.component';
-import { ItemDetailsSidebarComponent } from './sidebars/item-details/item-details.component';
+import { ItemListComponent } from './component/item-list/item-list.component';
+import { ItemDetailsSidebarComponent } from './component/sidebars/item-details/item-details.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { ItemComponent } from './item.component';
-import { EditItemDialogComponent } from './dialogs/edit-item/edit-item.component';
+import { ItemShellComponent } from './container/item-shell.component';
+import { EditItemDialogComponent } from './component/edit-item/edit-item-dialog.component';
 import { ItemRoutingModule } from './item-routing.module';
 
 const routes: Routes = [];
 
 @NgModule({
   declarations: [
-    ItemComponent,
+    ItemShellComponent,
     ItemListComponent,
     ItemDetailsSidebarComponent,
     EditItemDialogComponent

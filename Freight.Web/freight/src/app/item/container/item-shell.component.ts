@@ -4,13 +4,13 @@ import { fuseAnimations } from '@fuse/animations';
 import { MatDialog } from '@angular/material/dialog';
 
 @Component({
-  selector: 'item',
-  templateUrl: './item.component.html',
-  styleUrls: ['./item.component.scss'],
+  selector: 'item-shell',
+  templateUrl: './item-shell.component.html',
+  styleUrls: ['./item-shell.component.scss'],
   encapsulation: ViewEncapsulation.None,
   animations: fuseAnimations
 })
-export class ItemComponent implements OnDestroy {
+export class ItemShellComponent implements OnDestroy {
   selected: any;
   pathArr: string[];
   dialogRef: any;

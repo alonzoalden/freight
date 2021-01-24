@@ -36,73 +36,43 @@
   </div>
 
 
-  <mat-table class="item-list" matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}"
-    *ngIf="!isLoading  && dataSource?.filteredData.length !== dataSource?.data.length && dataSource?.filteredData.length !== 0">
-
-    <!-- ImagePath Column -->
-    <ng-container matColumnDef="ImagePath">
-      <mat-header-cell *matHeaderCellDef fxFlex="64px"></mat-header-cell>
-      <mat-cell *matCellDef="let row" fxFlex="64px">
-        <!-- <img *ngIf="row.ImagePath" src="{{imageURL}}{{row.ImagePath}}"> -->
-      </mat-cell>
+  <mat-table class="item-list" matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}" *ngIf="!isLoading && dataSource?.data.length">
+    <!-- ItemNumber Column -->
+    <ng-container matColumnDef="itemNumber">
+      <mat-header-cell *matHeaderCellDef>Item Number</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{row.itemNumber}}</mat-cell>
     </ng-container>
-
     <!-- ItemName Column -->
-    <ng-container matColumnDef="ItemName">
-      <mat-header-cell *matHeaderCellDef>Item</mat-header-cell>
-      <mat-cell *matCellDef="let row" fxLayout="row" fxLayoutAlign="start center"
-        style="padding-top: 6px; padding-bottom: 6px;">
-        <div *ngIf="row.ImagePath" fxLayoutAlign="start center" style="padding-right: 20px;">
-          <!-- <img style="max-width: 64px; max-height: 64px;" *ngIf="row.ImagePath" src="{{imageURL}}{{row.ImagePath}}"> -->
-        </div>
-        <div>
-          <div style="font-weight: 600;">{{row.ItemName}}</div>
-          <div><span class="sm-header">TPIN: </span><span class="smaller" style="font-weight: 400;">{{row.TPIN}}</span>
-          </div>
-          <div><span class="sm-header">SKU: </span><span class="smaller"
-              style="font-weight: 400;">{{row.VendorSKU}}</span></div>
-        </div>
-      </mat-cell>
+    <ng-container matColumnDef="itemName">
+      <mat-header-cell *matHeaderCellDef>Item Name</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{row.itemName}}</mat-cell>
     </ng-container>
-
-    <!-- TPIN Column -->
-    <ng-container matColumnDef="TPIN">
-      <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-md>TPIN</mat-header-cell>
-      <mat-cell *matCellDef="let row" fxHide fxShow.gt-md width="20%"> {{row.TPIN}}</mat-cell>
+    <!-- HTSCode Column -->
+    <ng-container matColumnDef="htsCode">
+      <mat-header-cell *matHeaderCellDef>HTS Code</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{row.htsCode}}</mat-cell>
     </ng-container>
-
-    <!-- VendorSKU Column -->
-    <ng-container matColumnDef="VendorSKU">
-      <mat-header-cell *matHeaderCellDef fxHide.xs>Vendor SKU</mat-header-cell>
-      <mat-cell *matCellDef="let row" fxHide.xs width="20%"> {{row.VendorSKU}}</mat-cell>
+    <!-- FNSKU Column -->
+    <ng-container matColumnDef="fnsku">
+      <mat-header-cell *matHeaderCellDef>FNSKU</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{row.fnsku}}</mat-cell>
     </ng-container>
-
-    <!-- FOBPrice Column -->
-    <ng-container matColumnDef="FOBPrice">
-      <mat-header-cell *matHeaderCellDef fxHide.xs>FOB Price</mat-header-cell>
-      <mat-cell *matCellDef="let row" fxHide.xs width="20%">{{row.FOBPrice}}</mat-cell>
+    <!-- UnitPrice Column -->
+    <ng-container matColumnDef="unitPrice">
+      <mat-header-cell *matHeaderCellDef>Unit Price</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{row.unitPrice | currency}}</mat-cell>
     </ng-container>
-
-    <!-- Description Column -->
-    <ng-container matColumnDef="Description">
-      <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-md>Description</mat-header-cell>
-      <mat-cell *matCellDef="let row" fxHide fxShow.gt-md>{{row.Description}}</mat-cell>
-    </ng-container>
-
     <!-- Actions Column -->
-    <ng-container matColumnDef="Actions">
+    <ng-container matColumnDef="actions">
       <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
       <mat-cell *matCellDef="let row">
-
         <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="more">
-          <mat-icon>more_vert</mat-icon>
+          <mat-icon>more_horiz</mat-icon>
         </button>
-
         <mat-menu #moreMenu="matMenu">
-          <button [disabled]="!isLeadRole" mat-menu-item (click)="openEditItemDialog()">
-            <mat-icon>build</mat-icon> Edit Dimensions
+          <button mat-menu-item (click)="openEditItemDialog(row)">
+            <mat-icon>build</mat-icon> Edit
           </button>
-          <hr>
         </mat-menu>
       </mat-cell>
     </ng-container>
@@ -120,19 +90,19 @@
 
     <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="onSelect(row)"
-      [ngClass]="{'selected' : row == selected}" [@animate]="{value:'*',params:{y:'100%'}}" matRipple>
+      [ngClass]="{'selected' : row.itemID == selected.itemID}" [@animate]="{value:'*',params:{y:'100%'}}" matRipple>
     </mat-row>
   </mat-table>
-  <div *ngIf="!isLoading && dataSource?.filteredData.length === dataSource?.data.length"
+  <!-- <div *ngIf="!isLoading && dataSource?.filteredData.length === dataSource?.data.length"
     [@animate]="{value:'*',params:{delay:'500ms', y:'225px'}}" class="center-box-message">
     Please search for an item.
-  </div>
-  <div *ngIf="!isLoading && dataSource?.filteredData.length === 0"
+  </div> -->
+  <div *ngIf="!isLoading && dataSource?.data.length === 0"
     [@animate]="{value:'*',params:{delay:'400ms', y:'225px'}}" class="center-box-message">
     No items found.
   </div>
-  <div fxLayout="row" fxLayoutAlign="space-between center">
-    <div class="new-item-section" [@animate]="{value:'*',params:{delay:'250ms',scale:'0.2'}}" style="padding: 16px 24px 16px 24px;">
+  <div class="bottom-section" fxLayout="row" fxLayoutAlign="space-between center">
+    <div [@animate]="{value:'*',params:{delay:'500ms',scale:'0.2'}}" >
       <button mat-raised-button class="accent" (click)="openEditItemDialog()"  [disabled]="isLoading" fxLayoutAlign="center center" style="height: 44px;">
           <mat-icon>add_circle_outline</mat-icon>
           Add New Item

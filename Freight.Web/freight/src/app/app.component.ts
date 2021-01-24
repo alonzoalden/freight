@@ -17,7 +17,7 @@ import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { FuseConfigService } from '@fuse/services/config.service';
 import { FuseSplashScreenService } from '@fuse/services/splash-screen.service';
 import { AppService } from './app.service';
-import { navigation } from 'app/navigation/navigation';
+import { navigation } from 'app/_general/navigation/navigation';
 import { FuseProgressBarService } from '@fuse/components/progress-bar/progress-bar.service';
 @Component({
   selector: 'app-root',

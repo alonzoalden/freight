@@ -1,6 +1,6 @@
 @import "src/assets/@fuse/scss/core";
 
-item {
+item-shell {
   display: flex;
   -webkit-box-flex: 1;
   flex: 1 0 auto;
@@ -44,4 +44,7 @@ item {
       display: flex;
     }
   }
+}
+.edit-fields-dialog {
+  max-width: 800px !important;
 }

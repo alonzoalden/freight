@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { ItemService } from '../../item.service';
+import { ItemService } from '../../../item.service';
 import { Router, NavigationEnd } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
@@ -10,7 +10,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { environment } from 'environments/environment';
 import { AppService } from 'app/app.service';
-import { EditItemDialogComponent } from 'app/item/dialogs/edit-item/edit-item.component';
+import { EditItemDialogComponent } from 'app/item/component/edit-item/edit-item-dialog.component';
 
 @Component({
   selector: 'item-details-sidebar',

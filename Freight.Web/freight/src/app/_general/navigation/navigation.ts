@@ -1,137 +1,149 @@
 import { FuseNavigation } from '@fuse/types';
 
 export const navigation: FuseNavigation[] = [
-    {
-        id       : 'applications',
-        title    : '',
-        translate: '',
-        type     : 'group',
-        icon     : 'apps',
-        children : [
-            {
-                id       : 'Shipments',
-                title    : 'Shipments',
-                translate: 'Shipments',
-                type     : 'collapsable',
-                icon     : '',
-                url       : '/shipments',
-                children : [
-                    {
-                        id        : 'allshipments',
-                        title     : 'All Shipments',
-                        type      : 'item',
-                        url       : '/shipments/all',
-                    },
-                    {
-                        id        : 'openshipments',
-                        title     : 'Open Shipments',
-                        type      : 'item',
-                        url       : '/shipments/open',
-                    },
-                    {
-                        id        : 'closedshipments',
-                        title     : 'Closed Shipments',
-                        type      : 'item',
-                        url       : '/shipments/closed',
-                    },
-                ]
-            },
-            {
-                id       : 'Billing',
-                title    : 'Billing',
-                translate: 'Billing',
-                type     : 'collapsable',
-                icon     : '',
-                url       : '/billing',
-                children : [
-                    {
-                        id        : 'allinvoices',
-                        title     : 'All Invoices',
-                        type      : 'item',
-                        url       : '/billing/all',
-                    },
-                    {
-                        id        : 'openinvoices',
-                        title     : 'Open Invoices',
-                        type      : 'item',
-                        url       : '/billing/open',
-                    },
-                    {
-                        id        : 'closedinvoices',
-                        title     : 'Closed Invoices',
-                        type      : 'item',
-                        url       : '/billing/closed',
-                    },
-                ]
-            },
-            {
-                id       : 'Claims',
-                title    : 'Claims',
-                translate: 'Claims',
-                type     : 'collapsable',
-                icon     : '',
-                url       : '/claims',
-                children : [
-                    {
-                        id        : 'allclaims',
-                        title     : 'All Claims',
-                        type      : 'item',
-                        url       : '/claims/all',
-                    },
-                    {
-                        id        : 'openclaims',
-                        title     : 'Open Claims',
-                        type      : 'item',
-                        url       : '/claims/open',
-                    },
-                    {
-                        id        : 'closedclaims',
-                        title     : 'Closed Claims',
-                        type      : 'item',
-                        url       : '/claims/closed',
-                    },
-                ]
-            },
-            {
-                id       : 'Reports',
-                title    : 'Reports',
-                translate: 'Reports',
-                type     : 'collapsable',
-                icon     : '',
-                url       : '/reports',
-                children : [
-                    {
-                        id        : 'allreports',
-                        title     : 'All Reports',
-                        type      : 'item',
-                        url       : '/reports/all',
-                    },
-                ]
-            },
-            // {
-            //     id       : 'e-commerce-2',
-            //     title    : 'E-Commerce-2',
-            //     translate: 'Category 2',
-            //     type     : 'collapsable',
-            //     icon     : 'edit',
-            //     children : [
-            //         {
-            //             id        : 'products',
-            //             title     : 'Link 1',
-            //             type      : 'item',
-            //             url       : '/e-commerce/products2',
-            //             exactMatch: true
-            //         },
-            //         {
-            //             id        : 'productDetail',
-            //             title     : 'Link 2',
-            //             type      : 'item',
-            //             url       : '/e-commerce/products/1/printed-dress2',
-            //             // exactMatch: true
-            //         }
-            //     ]
-            // },
+  {
+    id: 'applications',
+    title: '',
+    translate: '',
+    type: 'group',
+    icon: 'apps',
+    children: [
+      {
+        id: 'Shipments',
+        title: 'Manage Shipments',
+        translate: 'Manage Shipments',
+        type: 'collapsable',
+        icon: '',
+        url: '/shipments',
+        children: [
+          {
+            id: 'allshipments',
+            title: 'All Shipments',
+            type: 'item',
+            url: '/shipments',
+          },
+          {
+            id: 'openshipments',
+            title: 'Open Shipments',
+            type: 'item',
+            url: '/shipments/open',
+          },
+          {
+            id: 'closedshipments',
+            title: 'Closed Shipments',
+            type: 'item',
+            url: '/shipments/closed',
+          },
+          {
+            id: 'cancelledshipments',
+            title: 'Cancelled Shipments',
+            type: 'item',
+            url: '/shipments/closed',
+          }
         ]
+      },
+      {
+        id: 'Items',
+        title: 'Items',
+        translate: 'Items',
+        type: 'collapsable',
+        icon: '',
+        url: '/item',
+        exactMatch: true,
+        children: [
+          {
+            id: 'allitems',
+            title: 'All Items',
+            type: 'item',
+            url: '/item/all',
+            exactMatch: true,
+          }
+        ]
+      },
+      {
+        id: 'Billing',
+        title: 'Billing',
+        translate: 'Billing',
+        type: 'collapsable',
+        icon: '',
+        url: '/billing',
+        children: [
+          {
+            id: 'openinvoices',
+            title: 'Open Invoices',
+            type: 'item',
+            url: '/billing/open',
+          },
+          {
+            id: 'pastdueinvoices',
+            title: 'Paid Invoices',
+            type: 'item',
+            url: '/billing/paid',
+          },
+          {
+            id: 'pastdueinvoices',
+            title: 'Past Due Invoices',
+            type: 'item',
+            url: '/billing/pastdue',
+          },
+        ]
+      },
+      {
+        id: 'Customers',
+        title: 'Customers',
+        translate: 'Customers',
+        type: 'collapsable',
+        icon: '',
+        url: '/customers',
+        children: [
+          {
+            id: 'allcustomers',
+            title: 'All Customers',
+            type: 'item',
+            url: '/customers',
+          }
+        ]
+      },
+      {
+        id: 'Users',
+        title: 'Users',
+        translate: 'Users',
+        type: 'collapsable',
+        icon: '',
+        url: '/users',
+        children: [
+          {
+            id: 'allusers',
+            title: 'All Users',
+            type: 'item',
+            url: '/users',
+          },
+        ]
+      },
+      // {
+      //     id       : 'e-commerce-2',
+      //     title    : 'E-Commerce-2',
+      //     translate: 'Category 2',
+      //     type     : 'collapsable',
+      //     icon     : 'edit',
+      //     children : [
+      //         {
+      //             id        : 'products',
+      //             title     : 'Link 1',
+      //             type      : 'item',
+      //             url       : '/e-commerce/products2',
+      //             exactMatch: true
+      //         },
+      //         {
+      //             id        : 'productDetail',
+      //             title     : 'Link 2',
+      //             type      : 'item',
+      //             url       : '/e-commerce/products/1/printed-dress2',
+      //             // exactMatch: true
+      //         }
+      //     ]
+      // },
+    ]
     //         {
     //             id       : 'dashboards',
     //             title    : 'Dashboards',
@@ -951,5 +963,5 @@ export const navigation: FuseNavigation[] = [
     //             ]
     //         }
     //     ]
-    }
+  }
 ];

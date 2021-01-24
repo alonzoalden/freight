@@ -3,14 +3,13 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from "@angular/common/http
 import { Observable, BehaviorSubject, throwError, Subject } from "rxjs";
 import { environment } from "../../environments/environment";
 import { catchError, tap, takeUntil } from "rxjs/operators";
-import { User } from "app/_shared/model/user";
-
+import { Item } from "app/_shared/model/item";
 @Injectable()
 export class ItemService implements OnDestroy {
   private apiURL = environment.webapiURL;
   private _unsubscribeAll: Subject<any>;
   onItemSelected: BehaviorSubject<any>;
-  allItemList: BehaviorSubject<any>;
+  allItems: BehaviorSubject<Item[]>;
   isEdit: BehaviorSubject<any>;
   filteredCourses: any[];
   currentCategory: string;
@@ -21,13 +20,16 @@ export class ItemService implements OnDestroy {
       'CM'
     ],
     weights: [
-      'LB',
-      'KG'
+      'lb',
+      'kg'
+    ],
+    currency: [
+      'USD'
     ]
   }
   constructor(private http: HttpClient) {
     this.onItemSelected = new BehaviorSubject({});
-    this.allItemList = new BehaviorSubject([]);
+    this.allItems = new BehaviorSubject([]);
     this.isEdit = new BehaviorSubject({});
     this.searchTerm = new BehaviorSubject("");
     this._unsubscribeAll = new Subject();
@@ -38,45 +40,49 @@ export class ItemService implements OnDestroy {
     this._unsubscribeAll.complete();
   }
 
-  loadAllItemList(): any {
-    if (this.allItemList.value.length) {
-      return;
-    }
-    this.http
-      .get<any>(this.apiURL + "/item/allitemlist")
-      .pipe(takeUntil(this._unsubscribeAll))
-      .subscribe(
-        (data) => {
-          this.allItemList.next(data);
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
-  }
 
   getAllItemList(): Observable<any> {
-    if (this.allItemList.value.length) {
-      return this.allItemList;
+    if (this.allItems.value.length) {
+      return this.allItems;
     }
     return this.http
-      .get<any>(this.apiURL + "/item/allitemlist")
+      .get(this.apiURL + "/item")
       .pipe(
-        tap((data) => {
-          this.allItemList.next(data);
+        tap((data: Item[]) => {
+          this.allItems.next(data);
         }),
         catchError(this.handleError)
       );
   }
 
-  getItemDimension(id: string): Observable<any> {
-    return this.http.get<any>(this.apiURL + "/item/" + id).pipe(
-      tap((data) => {
-        this.onItemSelected.value.Data = data;
-        this.onItemSelected.next(this.onItemSelected.value);
-      }),
-      catchError(this.handleError)
-    );
+  getItem(id: string): Observable<any> {
+    return this.http.get<any>(this.apiURL + "/item/" + id)
+      .pipe(
+        tap((data: Item) => {
+          this.onItemSelected.next(data);
+        }),
+        catchError(this.handleError)
+      );
+  }
+
+  updateItem(body: Item): Observable<any> {
+    return this.http.put<any>(this.apiURL + "/item", body)
+      .pipe(
+        tap((data: Item) => {
+          this.onItemSelected.next(data);
+        }),
+        catchError(this.handleError)
+      );
+  }
+
+  createItem(body: Item): Observable<any> {
+    return this.http.post<any>(this.apiURL + "/item", body)
+      .pipe(
+        tap((data: Item) => {
+          this.onItemSelected.next(data);
+        }),
+        catchError(this.handleError)
+      );
   }
 
   // getUser(userid: string): Observable<string> {
