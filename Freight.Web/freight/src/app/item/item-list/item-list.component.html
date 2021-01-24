@@ -1,0 +1,143 @@
+<div class="main-list-layout list-container">
+
+  <!-- HEADER  -->
+  <div class="sub-header accent" fxLayout="column" fxLayoutAlign="center start">
+    <div class="breadcrumb text-truncate h1 p24" [@animate]="{value:'*',params:{x:'50px'}}">
+      <div fxLayout="row" fxLayoutAlign="start center">
+        <h1 fxLayout="row" fxLayoutAlign="start center"> <button mat-icon-button [routerLink]="['../../']">
+            <mat-icon>business</mat-icon>
+          </button>
+          <mat-icon>chevron_right</mat-icon> Item Management
+        </h1>
+      </div>
+    </div>
+    <!-- SEARCH BAR  -->
+    <div class="action-container" fxLayout="column" fxLayout.gt-sm="row">
+      <div class="search-wrapper" [@animate]="{value:'*',params:{delay:'250ms',scale:'0.2'}}">
+        <div class="search" fxLayout="row" fxLayoutAlign="start center">
+          <mat-icon class="secondary-text">search</mat-icon>
+          <input #mainInput [disabled]="isLoading" (keyup)="applyFilter(searchTerm)" [(ngModel)]="searchTerm"
+            [placeholder]="isLoading ? 'Please wait...' : 'Search Item'">
+          <button mat-icon-button (click)="searchTerm = ''; applyFilter(searchTerm)">
+            <mat-icon>clear</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-text">
+      <mat-icon class="hero-icon">build</mat-icon>
+    </div>
+  </div>
+  <!-- /HEADER  -->
+
+  <div *ngIf="isLoading" class="loader">
+    <mat-spinner [@animate]="{value:'*',params:{delay:'400ms', y:'225px'}}"></mat-spinner>
+  </div>
+
+
+  <mat-table class="item-list" matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}"
+    *ngIf="!isLoading  && dataSource?.filteredData.length !== dataSource?.data.length && dataSource?.filteredData.length !== 0">
+
+    <!-- ImagePath Column -->
+    <ng-container matColumnDef="ImagePath">
+      <mat-header-cell *matHeaderCellDef fxFlex="64px"></mat-header-cell>
+      <mat-cell *matCellDef="let row" fxFlex="64px">
+        <!-- <img *ngIf="row.ImagePath" src="{{imageURL}}{{row.ImagePath}}"> -->
+      </mat-cell>
+    </ng-container>
+
+    <!-- ItemName Column -->
+    <ng-container matColumnDef="ItemName">
+      <mat-header-cell *matHeaderCellDef>Item</mat-header-cell>
+      <mat-cell *matCellDef="let row" fxLayout="row" fxLayoutAlign="start center"
+        style="padding-top: 6px; padding-bottom: 6px;">
+        <div *ngIf="row.ImagePath" fxLayoutAlign="start center" style="padding-right: 20px;">
+          <!-- <img style="max-width: 64px; max-height: 64px;" *ngIf="row.ImagePath" src="{{imageURL}}{{row.ImagePath}}"> -->
+        </div>
+        <div>
+          <div style="font-weight: 600;">{{row.ItemName}}</div>
+          <div><span class="sm-header">TPIN: </span><span class="smaller" style="font-weight: 400;">{{row.TPIN}}</span>
+          </div>
+          <div><span class="sm-header">SKU: </span><span class="smaller"
+              style="font-weight: 400;">{{row.VendorSKU}}</span></div>
+        </div>
+      </mat-cell>
+    </ng-container>
+
+    <!-- TPIN Column -->
+    <ng-container matColumnDef="TPIN">
+      <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-md>TPIN</mat-header-cell>
+      <mat-cell *matCellDef="let row" fxHide fxShow.gt-md width="20%"> {{row.TPIN}}</mat-cell>
+    </ng-container>
+
+    <!-- VendorSKU Column -->
+    <ng-container matColumnDef="VendorSKU">
+      <mat-header-cell *matHeaderCellDef fxHide.xs>Vendor SKU</mat-header-cell>
+      <mat-cell *matCellDef="let row" fxHide.xs width="20%"> {{row.VendorSKU}}</mat-cell>
+    </ng-container>
+
+    <!-- FOBPrice Column -->
+    <ng-container matColumnDef="FOBPrice">
+      <mat-header-cell *matHeaderCellDef fxHide.xs>FOB Price</mat-header-cell>
+      <mat-cell *matCellDef="let row" fxHide.xs width="20%">{{row.FOBPrice}}</mat-cell>
+    </ng-container>
+
+    <!-- Description Column -->
+    <ng-container matColumnDef="Description">
+      <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-md>Description</mat-header-cell>
+      <mat-cell *matCellDef="let row" fxHide fxShow.gt-md>{{row.Description}}</mat-cell>
+    </ng-container>
+
+    <!-- Actions Column -->
+    <ng-container matColumnDef="Actions">
+      <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+      <mat-cell *matCellDef="let row">
+
+        <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="more">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+
+        <mat-menu #moreMenu="matMenu">
+          <button [disabled]="!isLeadRole" mat-menu-item (click)="openEditItemDialog()">
+            <mat-icon>build</mat-icon> Edit Dimensions
+          </button>
+          <hr>
+        </mat-menu>
+      </mat-cell>
+    </ng-container>
+
+    <!-- Detail Button Column -->
+    <ng-container matColumnDef="detail-button">
+
+      <mat-header-cell *matHeaderCellDef fxHide.gt-sm></mat-header-cell>
+      <mat-cell *matCellDef="let row" fxHide.gt-sm>
+        <button mat-icon-button class="sidebar-toggle" (click)="toggleSidebar('file-manager-details-sidebar')">
+          <mat-icon class="secondary-text">info</mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="onSelect(row)"
+      [ngClass]="{'selected' : row == selected}" [@animate]="{value:'*',params:{y:'100%'}}" matRipple>
+    </mat-row>
+  </mat-table>
+  <div *ngIf="!isLoading && dataSource?.filteredData.length === dataSource?.data.length"
+    [@animate]="{value:'*',params:{delay:'500ms', y:'225px'}}" class="center-box-message">
+    Please search for an item.
+  </div>
+  <div *ngIf="!isLoading && dataSource?.filteredData.length === 0"
+    [@animate]="{value:'*',params:{delay:'400ms', y:'225px'}}" class="center-box-message">
+    No items found.
+  </div>
+  <div fxLayout="row" fxLayoutAlign="space-between center">
+    <div class="new-item-section" [@animate]="{value:'*',params:{delay:'250ms',scale:'0.2'}}" style="padding: 16px 24px 16px 24px;">
+      <button mat-raised-button class="accent" (click)="openEditItemDialog()"  [disabled]="isLoading" fxLayoutAlign="center center" style="height: 44px;">
+          <mat-icon>add_circle_outline</mat-icon>
+          Add New Item
+      </button>
+    </div>
+    <mat-paginator #paginator [pageSizeOptions]="[10, 20, 50, 100, 200]" [showFirstLastButtons]="true"></mat-paginator>
+  </div>
+</div>

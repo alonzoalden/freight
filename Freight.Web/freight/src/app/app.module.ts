@@ -38,6 +38,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { RouterModule } from '@angular/router';
 import { LayoutModule } from './layout/layout.module';
+import { ItemModule } from './item/item.module';
 import { SimpleNotificationsModule } from 'angular2-notifications';
 
 export function configureAuth(oidcConfigService: OidcConfigService): () => any {
@@ -94,16 +95,17 @@ export function configureAuth(oidcConfigService: OidcConfigService): () => any {
     MatExpansionModule,
     MatMomentDateModule,
     LayoutModule,
+    ItemModule,
     SimpleNotificationsModule.forRoot(),
   ],
   providers: [
-    // OidcConfigService,
-    //   {
-    //     provide: APP_INITIALIZER,
-    //     useFactory: configureAuth,
-    //     deps: [OidcConfigService],
-    //     multi: true,
-    //   }
+    OidcConfigService,
+      {
+        provide: APP_INITIALIZER,
+        useFactory: configureAuth,
+        deps: [OidcConfigService],
+        multi: true,
+      }
   ],
   bootstrap: [AppComponent]
 })
@@ -111,8 +113,8 @@ export function configureAuth(oidcConfigService: OidcConfigService): () => any {
 export class AppModule {
   constructor(private readonly eventService: PublicEventsService) {
     this.eventService
-        .registerForEvents()
-        .pipe(filter((notification) => notification.type === EventTypes.ConfigLoaded))
-        .subscribe((config) => console.log('ConfigLoaded', config));
+      .registerForEvents()
+      .pipe(filter((notification) => notification.type === EventTypes.ConfigLoaded))
+      .subscribe((config) => console.log('ConfigLoaded', config));
   }
 }

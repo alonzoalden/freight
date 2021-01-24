@@ -5,18 +5,13 @@ import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { BusinessEntity } from './_shared/model/business-entity';
 import { BusinessAccess } from './_shared/model/business-access';
 import { tap, catchError } from 'rxjs/operators';
-
+import { environment } from 'environments/environment';
+import { User } from './_shared/model/user';
 @Injectable({
     providedIn: 'root',
 })
 export class AppService {
-  userInfo: BehaviorSubject<any>;
-  warehouseMap = {
-      1: 'Los Angeles',
-      2: 'San Francisco',
-      3: 'New York',
-  };
-  allItemList: BehaviorSubject<any>;
+  private apiURL = environment.webapiURL;
   constructor(
     protected http: HttpClient,
     protected router: Router) { }
@@ -85,28 +80,29 @@ export class AppService {
         catchError(this.handleError)
       );
   }
-
-  getCurrentMember(): any {
-    return new Promise((resolve, reject) => {
-        this.http.get('api/member')
-            .subscribe((response: any) => {
-                //this.onFilesChanged.next(response);
-                //this.onFileSelected.next(response[0]);
-                this.userInfo.next(response);
-                resolve(response);
-            }, reject);
+  getUser(userid: string): Observable<User> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      //Authorization: 'Bearer ' + token
     });
-    // return this._httpClient.get<any>('member')
-    //     .pipe(
-    //         tap((data: Member) => {
-    //             console.log(data)
-    //             this.userInfo.next(data);
-    //         }),
-    //         catchError(this.handleError)
-    //     );
+    return this.http.get<any>(`${this.apiURL}/user/${userid}`, { headers })
+      .pipe(
+        tap((data: User) => {}),
+        catchError(this.handleError)
+      );
   }
-
-  private handleError(err) {
+  updateUser(userid: string): Observable<User> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      //Authorization: 'Bearer ' + token
+    });
+    return this.http.put<any>(`${this.apiURL}/user`, { headers })
+      .pipe(
+        tap((data: User) => {}),
+        catchError(this.handleError)
+      );
+  }
+  public handleError(err) {
     // in a real world app, we may send the server to some remote logging infrastructure
     // instead of just logging it to the console
     let errorMessage: string;

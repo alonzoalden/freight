@@ -18,6 +18,7 @@ import { FuseConfigService } from '@fuse/services/config.service';
 import { FuseSplashScreenService } from '@fuse/services/splash-screen.service';
 import { AppService } from './app.service';
 import { navigation } from 'app/navigation/navigation';
+import { FuseProgressBarService } from '@fuse/components/progress-bar/progress-bar.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -35,6 +36,7 @@ export class AppComponent implements OnInit {
     private _fuseNavigationService: FuseNavigationService,
     private _fuseSidebarService: FuseSidebarService,
     private _fuseSplashScreenService: FuseSplashScreenService,
+    private _fuseProgressBarService: FuseProgressBarService,
     //private _fuseTranslationLoaderService: FuseTranslationLoaderService,
     //private _translateService: TranslateService,
     private _platform: Platform,
@@ -62,7 +64,8 @@ export class AppComponent implements OnInit {
 
     // Set the main navigation as our current navigation
     this._fuseNavigationService.setCurrentNavigation('main');
-
+    
+    
     // Add languages
     //this._translateService.addLangs(['en', 'tr']);
 

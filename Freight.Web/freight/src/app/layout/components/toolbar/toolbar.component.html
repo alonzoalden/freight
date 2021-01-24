@@ -31,7 +31,7 @@
                     <div class="mr-12" fxFlex fxLayout="column" fxLayoutAlign="center center">
                         <ng-container *ngIf="!isLoading">
                             <span class="sm-header" style="margin: 0;">Location</span>
-                            <span class="username">{{appService.warehouseMap[userInfo.WarehouseID]}}</span>
+                            <span class="username">warehouse</span>
                         </ng-container>
                         <mat-spinner diameter="20" *ngIf="isLoading"></mat-spinner>
                     </div>
@@ -40,11 +40,10 @@
             </button>
 
             <mat-menu #locationMenu="matMenu" [overlapTrigger]="false">
-                <button mat-menu-item *ngFor="let key of objectKeys(appService.warehouseMap)"
+                <!-- <button mat-menu-item *ngFor="let key of objectKeys(appService.warehouseMap)"
                     (click)="onUpdateLocation(key)">
                     <span>{{appService.warehouseMap[key]}}</span>
-                    <!-- <mat-icon *ngIf="userInfo.WarehouseID === key" style="margin-left: 7px;">done</mat-icon> -->
-                </button>
+                </button> -->
             </mat-menu>
             
             <button mat-button [matMenuTriggerFor]="userMenu"
