@@ -28,6 +28,10 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ItemShellComponent } from './container/item-shell.component';
 import { EditItemDialogComponent } from './component/edit-item/edit-item-dialog.component';
 import { ItemRoutingModule } from './item-routing.module';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreModule } from '@ngrx/store';
+import { itemReducer } from './state/item.reducer';
+import { ItemEffects } from './state/item.effect';
 
 const routes: Routes = [];
 
@@ -65,6 +69,8 @@ const routes: Routes = [];
     FuseSharedModule,
     FuseSidebarModule,
     ItemRoutingModule,
+    StoreModule.forFeature('item', itemReducer),
+    EffectsModule.forFeature([ItemEffects])
   ],
   providers: [
     ItemService,

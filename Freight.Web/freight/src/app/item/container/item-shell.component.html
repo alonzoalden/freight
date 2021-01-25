@@ -6,7 +6,11 @@
     <!-- CONTENT -->
     <div class="content" #scrollContainer fusePerfectScrollbar>
       <!-- <router-outlet (activate)="onActivate($event, scrollContainer)"></router-outlet> -->
-      <item-list></item-list>
+      <item-list
+        [items]="itemEntities$ | async"
+        [selected]="selectedItem$ | async"
+        (select)="selectItem($event)"
+      ></item-list>
     </div>
     <!-- / CONTENT -->
 
@@ -14,7 +18,7 @@
   <!-- / CENTER -->
 
   <!-- SIDEBAR -->
-  <!-- <fuse-sidebar lockedOpen="gt-sm" class="sidebar details-sidebar" name="file-manager-details-sidebar" position="right">
+  <!-- <fuse-sidebar lockedOpen="gt-sm" class="sidebar details-sidebar" name="item-details-sidebar" position="right">
     <item-details-sidebar></item-details-sidebar>
   </fuse-sidebar> -->
   <!-- / SIDEBAR -->

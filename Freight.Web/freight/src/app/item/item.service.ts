@@ -42,9 +42,6 @@ export class ItemService implements OnDestroy {
 
 
   getAllItemList(): Observable<any> {
-    if (this.allItems.value.length) {
-      return this.allItems;
-    }
     return this.http
       .get(this.apiURL + "/item")
       .pipe(
@@ -56,7 +53,7 @@ export class ItemService implements OnDestroy {
   }
 
   getItem(id: string): Observable<any> {
-    return this.http.get<any>(this.apiURL + "/item/" + id)
+    return this.http.get<any>(this.apiURL + '/item/' + id)
       .pipe(
         tap((data: Item) => {
           this.onItemSelected.next(data);
@@ -66,7 +63,7 @@ export class ItemService implements OnDestroy {
   }
 
   updateItem(body: Item): Observable<any> {
-    return this.http.put<any>(this.apiURL + "/item", body)
+    return this.http.put<any>(this.apiURL + '/item/', body)
       .pipe(
         tap((data: Item) => {
           this.onItemSelected.next(data);
@@ -76,48 +73,13 @@ export class ItemService implements OnDestroy {
   }
 
   createItem(body: Item): Observable<any> {
-    return this.http.post<any>(this.apiURL + "/item", body)
+    return this.http.post<any>(this.apiURL + '/item/', body)
       .pipe(
         tap((data: Item) => {
           this.onItemSelected.next(data);
         }),
         catchError(this.handleError)
       );
-  }
-
-  // getUser(userid: string): Observable<string> {
-  //   const headers = new HttpHeaders({
-  //     'Content-Type': 'application/json',
-  //     Authorization: 'Bearer ' + token
-  //   });
-  //   return this.http.get<any>(`https://webapi.fbasimplify.com/user/${userid}`, { headers })
-  //     .pipe(
-  //       tap((data: User) => console.log('TEST DATA: ' + JSON.stringify(data)))()),
-  //       catchError(this.handleError)
-  //     );
-  // }
-
-  editItemDimension(itemdimension: any): Observable<any> {
-    return this.http
-      .put<any>(
-        this.apiURL + "/item/" + itemdimension.ItemID,
-        itemdimension
-      )
-      .pipe(catchError(this.handleError));
-  }
-
-  resyncInventoryDetail(itemId: string): Observable<any> {
-    return this.http
-      .put<any>(this.apiURL + `/Item/${itemId}/resync`, {})
-      .pipe(catchError(this.handleError));
-  }
-  editSpecialInstruction(id: any, item: any): Observable<any> {
-    return this.http
-      .put<any>(
-        this.apiURL + `/item/${id}/specialinstruction`,
-        item
-      )
-      .pipe(catchError(this.handleError));
   }
 
   handleError = (err: HttpErrorResponse) => {
