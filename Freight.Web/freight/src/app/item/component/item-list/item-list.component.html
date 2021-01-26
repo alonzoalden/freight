@@ -35,7 +35,6 @@
     <mat-spinner [@animate]="{value:'*',params:{delay:'400ms', y:'225px'}}"></mat-spinner>
   </div>
 
-
   <mat-table class="item-list" matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}" *ngIf="!isLoading && dataSource?.data.length">
     <!-- ItemNumber Column -->
     <ng-container matColumnDef="itemNumber">
@@ -90,7 +89,7 @@
 
     <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="onSelect(row)"
-      [ngClass]="{'selected' : row.itemID == selected.itemID}" [@animate]="{value:'*',params:{y:'100%'}}" matRipple>
+      [ngClass]="{'selected' : row.itemID == selected?.itemID}" [@animate]="{value:'*',params:{y:'100%'}}" matRipple>
     </mat-row>
   </mat-table>
   <!-- <div *ngIf="!isLoading && dataSource?.filteredData.length === dataSource?.data.length"

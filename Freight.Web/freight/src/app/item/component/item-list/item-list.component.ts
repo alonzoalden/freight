@@ -5,14 +5,16 @@ import {
   ViewEncapsulation,
   ViewChild,
   ElementRef,
+  Input,
+  EventEmitter,
+  Output,
 } from "@angular/core";
-import { Subject } from "rxjs";
+import { Observable, Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { fuseAnimations } from "@fuse/animations";
 import { FuseSidebarService } from "@fuse/components/sidebar/sidebar.service";
 import { ItemService } from "../../item.service";
 import { MatTableDataSource } from "@angular/material/table";
-import { environment } from "environments/environment";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { MatDialog } from "@angular/material/dialog";
@@ -20,7 +22,9 @@ import { MatSnackBar } from "@angular/material/snack-bar";
 import { AppService } from "app/app.service";
 import { NotificationsService } from "angular2-notifications";
 import { EditItemDialogComponent } from "../../component/edit-item/edit-item-dialog.component";
-
+import { Item } from "app/_shared/model/item";
+import * as fromItem from '../../state';
+import { Store } from "@ngrx/store";
 @Component({
   selector: 'item-list',
   templateUrl: './item-list.component.html',
@@ -28,12 +32,13 @@ import { EditItemDialogComponent } from "../../component/edit-item/edit-item-dia
   animations: [fuseAnimations],
 })
 export class ItemListComponent implements OnInit, OnDestroy {
-  //imageURL = environment.imageURL;
+  @Input() items: Item[] = [];
+  @Input() selected: Item;
+  @Output() select = new EventEmitter<Item>();
   files: any;
   dataSource: any;
   displayedColumns = ['itemNumber', 'itemName', 'htsCode', 'fnsku', 'unitPrice', 'actions'];
-  selected: any;
-  isLoading: boolean;
+  isLoading: boolean = true;
   isLeadRole: boolean;
   filteredCourses: any[];
   currentCategory: string;
@@ -44,7 +49,6 @@ export class ItemListComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild("mainInput") mainInput: ElementRef;
-  // Private
   private _unsubscribeAll: Subject<any>;
 
   constructor(
@@ -52,6 +56,7 @@ export class ItemListComponent implements OnInit, OnDestroy {
     private _fuseSidebarService: FuseSidebarService,
     private itemService: ItemService,
     public _matDialog: MatDialog,
+    private store: Store<fromItem.State>,
     private notifyService: NotificationsService
   ) {
     this._unsubscribeAll = new Subject();
@@ -59,25 +64,16 @@ export class ItemListComponent implements OnInit, OnDestroy {
     this.searchEnabled = false;
     this.inputEnabled = true;
   }
-
+  ngOnChanges(): void {
+    if (this.items && this.items.length) {
+      this.dataSource = new MatTableDataSource<any>(this.items);
+      this.dataSource.sort = this.sort;
+      this.dataSource.paginator = this.paginator;
+      this.isLoading = false;
+      this.focusMainInput();
+    }
+  }
   ngOnInit(): void {
-    this.itemService.onItemSelected
-      .pipe(takeUntil(this._unsubscribeAll))
-      .subscribe((selected) => {
-        this.selected = selected;
-      });
-    this.isLoading = true;
-    this.itemService.getAllItemList()
-      .pipe(takeUntil(this._unsubscribeAll))
-      .subscribe((items) => {
-        if (items.length) {
-          this.dataSource = new MatTableDataSource<any>(items);
-          this.dataSource.sort = this.sort;
-          this.dataSource.paginator = this.paginator;
-          this.isLoading = false;
-          this.focusMainInput();
-        }
-      });
     this.focusMainInput();
   }
 
@@ -88,16 +84,8 @@ export class ItemListComponent implements OnInit, OnDestroy {
     this._unsubscribeAll.complete();
   }
 
-  onSelect(selected: any): void {
-    if (this.selected.ItemID !== selected.ItemID) {
-      this.itemService.onItemSelected.next({});
-    }
-    // Use setTimeout to repeat animation
-    setTimeout(
-      () =>
-        this.itemService.onItemSelected.next(selected),
-      0
-    );
+  onSelect(row: Item): void {
+    this.select.emit(row);
   }
 
   toggleSidebar(name): void {
@@ -144,6 +132,7 @@ export class ItemListComponent implements OnInit, OnDestroy {
         if (!response) {
           return;
         }
+        this.dataSource.data.push(response);
       });
   }
   focusMainInput() {

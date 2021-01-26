@@ -1,7 +1,11 @@
 import { Component, OnDestroy, ViewEncapsulation } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Store } from '@ngrx/store';
+import * as fromItem from '../state';
+import { ItemPageActions } from '../state/actions';
+import { Observable, Subject } from 'rxjs';
 import { fuseAnimations } from '@fuse/animations';
 import { MatDialog } from '@angular/material/dialog';
+import { Item } from 'app/_shared/model/item';
 
 @Component({
   selector: 'item-shell',
@@ -11,24 +15,27 @@ import { MatDialog } from '@angular/material/dialog';
   animations: fuseAnimations
 })
 export class ItemShellComponent implements OnDestroy {
-  selected: any;
-  pathArr: string[];
-  dialogRef: any;
-  isEdit: boolean;
-  searchTerm: string;
-  searchEnabled: boolean;
-  filteredCourses: any[];
+  itemEntities$: Observable<Item[]>;
+  selectedItem$: Observable<Item>;
 
   private _unsubscribeAll: Subject<any>;
 
   constructor(
     public _matDialog: MatDialog,
+    private store: Store<fromItem.State>
   ) {
     this._unsubscribeAll = new Subject();
   }
 
+  ngOnInit(): void {
+    this.itemEntities$ = this.store.select(fromItem.getAllItemList);
+    this.selectedItem$ = this.store.select(fromItem.getSelectedItem);
+    this.store.dispatch(ItemPageActions.loadItemList());
+  }
+  selectItem(item: Item): void {
+    this.store.dispatch(ItemPageActions.setCurrentItem({ currentItem: item }));
+  }
   ngOnDestroy(): void {
-    // Unsubscribe from all subscriptions
     this._unsubscribeAll.next();
     this._unsubscribeAll.complete();
   }
