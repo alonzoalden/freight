@@ -28,11 +28,11 @@ namespace Freight.API.BAL
         {
             return LocationDAL.GetLocationByBusinessID(businessid);
         }
-        public Location CreateLocation(Location Location)
+        public Location CreateLocation(LocationInsert Location)
         {
             return LocationDAL.CreateLocation(Location);
         }
-        public Location UpdateLocation(Location Location)
+        public Location UpdateLocation(LocationUpdate Location)
         {
             return LocationDAL.UpdateLocation(Location);
         }

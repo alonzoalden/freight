@@ -28,7 +28,8 @@ namespace Freight.API.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Failed to get Items");
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+                //return StatusCode(StatusCodes.Status500InternalServerError, "Failed to get Items");
             }
         }
 
@@ -59,7 +60,7 @@ namespace Freight.API.Controllers
             }
         }
         [HttpPut]
-        public IActionResult UpdateItem(Item item)
+        public IActionResult UpdateItem(ItemUpdate item)
         {
             try
             {
@@ -72,7 +73,7 @@ namespace Freight.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateItem(Item item)
+        public IActionResult CreateItem(ItemInsert item)
         {
             try
             {

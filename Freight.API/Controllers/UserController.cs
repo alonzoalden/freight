@@ -47,7 +47,7 @@ namespace Freight.API.Controllers
         }
 
         [HttpPut]
-        public IActionResult UpdateUser(User user)
+        public IActionResult UpdateUser(UserUpdate user)
         {
             try
             {
@@ -60,7 +60,7 @@ namespace Freight.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateUser(User user)
+        public IActionResult CreateUser(UserInsert user)
         {
             try
             {

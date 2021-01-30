@@ -24,11 +24,11 @@ namespace Freight.API.BAL
         {
             return UserDAL.GetUser(id);
         }
-        public User UpdateUser(User user)
+        public User UpdateUser(UserUpdate user)
         {
             return UserDAL.UpdateUser(user);
         }
-        public User CreateUser(User user)
+        public User CreateUser(UserInsert user)
         {
             User User = UserDAL.CreateUser(user);
 

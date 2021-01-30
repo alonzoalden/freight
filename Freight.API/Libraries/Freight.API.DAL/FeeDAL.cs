@@ -31,7 +31,7 @@ namespace Freight.API.DAL
             using (SqlConnection connection = new SqlConnection(DefaultConnection))
             {
                 DynamicParameters p = new DynamicParameters();
-                p.Add("Feeid", id);
+                p.Add("feeid", id);
                 Fee result = connection.Query<Fee>("spGetFee", p, commandType: CommandType.StoredProcedure).Single();
 
                 return result;
@@ -48,31 +48,31 @@ namespace Freight.API.DAL
                 return results;
             }
         }
-        public Fee UpdateFee(Fee Fee)
+        public Fee UpdateFee(FeeUpdate fee)
         {
             using (SqlConnection connection = new SqlConnection(DefaultConnection))
             {
                 DynamicParameters p = new DynamicParameters();
-                p.Add("Feeid", Fee.FeeID);
-                p.Add("businessid", Fee.BusinessID);
-                p.Add("feetype", Fee.FeeType);
-                p.Add("description", Fee.Description);
-                p.Add("feeamount", Fee.FeeAmount);
+                p.Add("feeid", fee.FeeID);
+                p.Add("businessid", fee.BusinessID);
+                p.Add("feetype", fee.FeeType);
+                p.Add("description", fee.Description);
+                p.Add("feeamount", fee.FeeAmount);
 
                 Fee result = connection.Query<Fee>("spUpdateFee", p, commandType: CommandType.StoredProcedure).Single();
 
                 return result;
             }
         }
-        public Fee CreateFee(Fee Fee)
+        public Fee CreateFee(FeeInsert fee)
         {
             using (SqlConnection connection = new SqlConnection(DefaultConnection))
             {
                 DynamicParameters p = new DynamicParameters();
-                p.Add("businessid", Fee.BusinessID);
-                p.Add("feetype", Fee.FeeType);
-                p.Add("description", Fee.Description);
-                p.Add("feeamount", Fee.FeeAmount);
+                p.Add("businessid", fee.BusinessID);
+                p.Add("feetype", fee.FeeType);
+                p.Add("description", fee.Description);
+                p.Add("feeamount", fee.FeeAmount);
                 Fee result = connection.Query<Fee>("spCreateFee", p, commandType: CommandType.StoredProcedure).Single();
 
                 return result;
@@ -83,7 +83,7 @@ namespace Freight.API.DAL
             using (SqlConnection connection = new SqlConnection(DefaultConnection))
             {
                 DynamicParameters p = new DynamicParameters();
-                p.Add("Feeid", id);
+                p.Add("feeid", id);
                 connection.Query<Fee>("spDeleteFee", p, commandType: CommandType.StoredProcedure);
             }
         }

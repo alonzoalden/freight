@@ -86,7 +86,7 @@ namespace Freight.API.DAL
             }
         }
 
-        public Shipment UpdateShipment(Shipment shipment)
+        public Shipment UpdateShipment(ShipmentUpdate shipment)
         {
             using (SqlConnection connection = new SqlConnection(DefaultConnection))
             {
@@ -117,7 +117,7 @@ namespace Freight.API.DAL
                 return result;
             }
         }
-        public ShipmentLine UpdateShipmentLine(ShipmentLine shipmentline)
+        public ShipmentLine UpdateShipmentLine(ShipmentLineUpdate shipmentline)
         {
             using (SqlConnection connection = new SqlConnection(DefaultConnection))
             {
@@ -133,7 +133,7 @@ namespace Freight.API.DAL
                 return result;
             }
         }
-        public ShipmentPackage UpdateShipmentPackage(ShipmentPackage shipmentpackage)
+        public ShipmentPackage UpdateShipmentPackage(ShipmentPackageUpdate shipmentpackage)
         {
             using (SqlConnection connection = new SqlConnection(DefaultConnection))
             {
@@ -164,7 +164,7 @@ namespace Freight.API.DAL
                 return result;
             }
         }
-        public ShipmentFee UpdateShipmentFee(ShipmentFee shipmentfee)
+        public ShipmentFee UpdateShipmentFee(ShipmentFeeUpdate shipmentfee)
         {
             using (SqlConnection connection = new SqlConnection(DefaultConnection))
             {
@@ -179,7 +179,7 @@ namespace Freight.API.DAL
                 return result;
             }
         }
-        public ShipmentContact UpdateShipmentContact(ShipmentContact shipmentcontact)
+        public ShipmentContact UpdateShipmentContact(ShipmentContactUpdate shipmentcontact)
         {
             using (SqlConnection connection = new SqlConnection(DefaultConnection))
             {
@@ -194,7 +194,7 @@ namespace Freight.API.DAL
                 return result;
             }
         }
-        public Shipment CreateShipment(Shipment shipment)
+        public Shipment CreateShipment(ShipmentInsert shipment)
         {
             using (SqlConnection connection = new SqlConnection(DefaultConnection))
             {
@@ -225,7 +225,7 @@ namespace Freight.API.DAL
             }
         }
 
-        public ShipmentLine CreateShipmentLine(ShipmentLine shipmentline)
+        public ShipmentLine CreateShipmentLine(ShipmentLineInsert shipmentline)
         {
             using (SqlConnection connection = new SqlConnection(DefaultConnection))
             {
@@ -241,7 +241,7 @@ namespace Freight.API.DAL
             }
         }
 
-        public ShipmentPackage CreateShipmentPackage(ShipmentPackage shipmentpackage)
+        public ShipmentPackage CreateShipmentPackage(ShipmentPackageInsert shipmentpackage)
         {
             using (SqlConnection connection = new SqlConnection(DefaultConnection))
             {
@@ -272,7 +272,7 @@ namespace Freight.API.DAL
             }
         }
 
-        public ShipmentFee CreateShipmentFee(ShipmentFee shipmentfee)
+        public ShipmentFee CreateShipmentFee(ShipmentFeeInsert shipmentfee)
         {
             using (SqlConnection connection = new SqlConnection(DefaultConnection))
             {
@@ -287,7 +287,7 @@ namespace Freight.API.DAL
             }
         }
 
-        public ShipmentContact CreateShipmentContact(ShipmentContact shipmentcontact)
+        public ShipmentContact CreateShipmentContact(ShipmentContactInsert shipmentcontact)
         {
             using (SqlConnection connection = new SqlConnection(DefaultConnection))
             {
@@ -301,7 +301,7 @@ namespace Freight.API.DAL
                 return result;
             }
         }
-        public ShipmentDetail CreateShipmentDetail(ShipmentDetail shipmentdetail)
+        public ShipmentDetail CreateShipmentDetail(ShipmentDetailInsert shipmentdetail)
         {
             using (SqlConnection connection = new SqlConnection(DefaultConnection))
             {
@@ -334,7 +334,7 @@ namespace Freight.API.DAL
 
                 shipmentDetail.Shipment = shipment;
 
-                foreach (ShipmentLine _ShipmentLine in shipmentdetail.ShipmentLines)
+                foreach (ShipmentLineInsert _ShipmentLine in shipmentdetail.ShipmentLines)
                 {
                     DynamicParameters p2 = new DynamicParameters();
                     p2.Add("shipmentid", shipment.ShipmentID);
@@ -342,7 +342,7 @@ namespace Freight.API.DAL
                     shipmentDetail.ShipmentLines.Add(shipmentLine);
                 }
 
-                foreach (ShipmentPackage _ShipmentPackage in shipmentdetail.ShipmentPackages)
+                foreach (ShipmentPackageInsert _ShipmentPackage in shipmentdetail.ShipmentPackages)
                 {
                     DynamicParameters p2 = new DynamicParameters();
                     p2.Add("shipmentid", shipment.ShipmentID);
@@ -350,7 +350,7 @@ namespace Freight.API.DAL
                     shipmentDetail.ShipmentPackages.Add(shipmentPackge);
                 }
 
-                foreach (ShipmentFee _ShipmentFee in shipmentdetail.ShipmentFees)
+                foreach (ShipmentFeeInsert _ShipmentFee in shipmentdetail.ShipmentFees)
                 {
                     DynamicParameters p2 = new DynamicParameters();
                     p2.Add("shipmentid", shipment.ShipmentID);
@@ -358,7 +358,7 @@ namespace Freight.API.DAL
                     shipmentDetail.ShipmentFees.Add(shipmentFee);
                 }
 
-                foreach (ShipmentContact _ShipmentContact in shipmentdetail.ShipmentContacts)
+                foreach (ShipmentContactInsert _ShipmentContact in shipmentdetail.ShipmentContacts)
                 {
                     DynamicParameters p2 = new DynamicParameters();
                     p2.Add("shipmentid", shipment.ShipmentID);

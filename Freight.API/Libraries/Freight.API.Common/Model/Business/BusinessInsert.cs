@@ -4,15 +4,12 @@ using System.Text;
 
 namespace Freight.API.Common.Model.Business
 {
-    public class Business
+    public class BusinessInsert
     {
-        public int BusinessID { get; set; }
         public int UserID { get; set; }
         public string CompanyName { get; set; }
         public bool IsShipper { get; set; }
         public bool Is3PL { get; set; }
         public bool IsFFW { get; set; }
-        public DateTime? UpdatedOn { get; set; }
-        public DateTime CreatedOn{ get; set; }
     }
 }

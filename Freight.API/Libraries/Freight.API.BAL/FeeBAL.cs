@@ -27,13 +27,13 @@ namespace Freight.API.BAL
         {
             return FeeDAL.GetFeeByBusinessID(businessid);
         }
-        public Fee CreateFee(Fee Fee)
+        public Fee CreateFee(FeeInsert fee)
         {
-            return FeeDAL.CreateFee(Fee);
+            return FeeDAL.CreateFee(fee);
         }
-        public Fee UpdateFee(Fee Fee)
+        public Fee UpdateFee(FeeUpdate fee)
         {
-            return FeeDAL.UpdateFee(Fee);
+            return FeeDAL.UpdateFee(fee);
         }
         public void DeleteFee(int id)
         {

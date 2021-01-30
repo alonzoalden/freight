@@ -49,7 +49,7 @@ namespace Freight.API.Controllers
         }
 
         [HttpPut]
-        public IActionResult UpdateShipment(Shipment shipment)
+        public IActionResult UpdateShipment(ShipmentUpdate shipment)
         {
             try
             {
@@ -62,7 +62,7 @@ namespace Freight.API.Controllers
         }
         [HttpPut]
         [Route("line")]
-        public IActionResult UpdateShipmentLine(ShipmentLine shipmentline)
+        public IActionResult UpdateShipmentLine(ShipmentLineUpdate shipmentline)
         {
             try
             {
@@ -75,7 +75,7 @@ namespace Freight.API.Controllers
         }
         [HttpPut]
         [Route("package")]
-        public IActionResult UpdateShipmentPackage(ShipmentPackage shipmentpackage)
+        public IActionResult UpdateShipmentPackage(ShipmentPackageUpdate shipmentpackage)
         {
             try
             {
@@ -88,7 +88,7 @@ namespace Freight.API.Controllers
         }
         [HttpPut]
         [Route("fee")]
-        public IActionResult UpdateShipmentFee(ShipmentFee shipmentfee)
+        public IActionResult UpdateShipmentFee(ShipmentFeeUpdate shipmentfee)
         {
             try
             {
@@ -101,7 +101,7 @@ namespace Freight.API.Controllers
         }
         [HttpPut]
         [Route("contact")]
-        public IActionResult UpdateShipmentContact(ShipmentContact shipmentcontact)
+        public IActionResult UpdateShipmentContact(ShipmentContactUpdate shipmentcontact)
         {
             try
             {
@@ -114,7 +114,7 @@ namespace Freight.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateShipment(Shipment shipment)
+        public IActionResult CreateShipment(ShipmentInsert shipment)
         {
             try
             {
@@ -127,7 +127,7 @@ namespace Freight.API.Controllers
         }
         [HttpPost]
         [Route("line")]
-        public IActionResult CreateShipmentLine(ShipmentLine shipmentline)
+        public IActionResult CreateShipmentLine(ShipmentLineInsert shipmentline)
         {
             try
             {
@@ -140,7 +140,7 @@ namespace Freight.API.Controllers
         }
         [HttpPost]
         [Route("package")]
-        public IActionResult CreateShipmentPackage(ShipmentPackage shipmentpackage)
+        public IActionResult CreateShipmentPackage(ShipmentPackageInsert shipmentpackage)
         {
             try
             {
@@ -153,7 +153,7 @@ namespace Freight.API.Controllers
         }
         [HttpPost]
         [Route("fee")]
-        public IActionResult CreateShipmentFee(ShipmentFee shipmentfee)
+        public IActionResult CreateShipmentFee(ShipmentFeeInsert shipmentfee)
         {
             try
             {
@@ -166,7 +166,7 @@ namespace Freight.API.Controllers
         }
         [HttpPost]
         [Route("contact")]
-        public IActionResult CreateShipmentContact(ShipmentContact shipmentcontact)
+        public IActionResult CreateShipmentContact(ShipmentContactInsert shipmentcontact)
         {
             try
             {
@@ -180,7 +180,7 @@ namespace Freight.API.Controllers
 
         [HttpPost]
         [Route("shipmentdetail")]
-        public IActionResult CreateShipmentDetail(ShipmentDetail shipmentdetail)
+        public IActionResult CreateShipmentDetail(ShipmentDetailInsert shipmentdetail)
         {
             try
             {

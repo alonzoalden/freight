@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Freight.API.Common.Model.Business
 {
-    public class Business
+    public class BusinessUpdate
     {
         public int BusinessID { get; set; }
         public int UserID { get; set; }
@@ -12,7 +12,5 @@ namespace Freight.API.Common.Model.Business
         public bool IsShipper { get; set; }
         public bool Is3PL { get; set; }
         public bool IsFFW { get; set; }
-        public DateTime? UpdatedOn { get; set; }
-        public DateTime CreatedOn{ get; set; }
     }
 }
