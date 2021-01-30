@@ -12,6 +12,19 @@ import { User } from './_shared/model/user';
 })
 export class AppService {
   private apiURL = environment.webapiURL;
+  public dropDownTypes = {
+    units: [
+      'IN',
+      'CM'
+    ],
+    weights: [
+      'lb',
+      'kg'
+    ],
+    currency: [
+      'USD'
+    ]
+  }
   constructor(
     protected http: HttpClient,
     protected router: Router) { }

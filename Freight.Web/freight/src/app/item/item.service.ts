@@ -14,19 +14,7 @@ export class ItemService implements OnDestroy {
   filteredCourses: any[];
   currentCategory: string;
   searchTerm: BehaviorSubject<any>;
-  public dropDownTypes = {
-    units: [
-      'IN',
-      'CM'
-    ],
-    weights: [
-      'lb',
-      'kg'
-    ],
-    currency: [
-      'USD'
-    ]
-  }
+
   constructor(private http: HttpClient) {
     this.onItemSelected = new BehaviorSubject({});
     this.allItems = new BehaviorSubject([]);
@@ -42,8 +30,7 @@ export class ItemService implements OnDestroy {
 
 
   getAllItemList(): Observable<any> {
-    return this.http
-      .get(this.apiURL + "/item")
+    return this.http.get(this.apiURL + "/item")
       .pipe(
         tap((data: Item[]) => {
           this.allItems.next(data);
@@ -63,7 +50,11 @@ export class ItemService implements OnDestroy {
   }
 
   updateItem(body: Item): Observable<any> {
-    return this.http.put<any>(this.apiURL + '/item/', body)
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      //Authorization: 'Bearer ' + token
+    });
+    return this.http.put<any>(this.apiURL + '/item', body, { headers })
       .pipe(
         tap((data: Item) => {
           this.onItemSelected.next(data);
@@ -73,7 +64,7 @@ export class ItemService implements OnDestroy {
   }
 
   createItem(body: Item): Observable<any> {
-    return this.http.post<any>(this.apiURL + '/item/', body)
+    return this.http.post<any>(this.apiURL + '/item', body)
       .pipe(
         tap((data: Item) => {
           this.onItemSelected.next(data);

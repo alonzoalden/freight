@@ -6,12 +6,12 @@
     <!-- CONTENT -->
     <div class="content" #scrollContainer fusePerfectScrollbar>
       <!-- <router-outlet (activate)="onActivate($event, scrollContainer)"></router-outlet> -->
-      <item-list
-        [items]="itemEntities$ | async"
-        [selected]="selectedItem$ | async"
+      <shipment-list
+        [shipments]="shipmentEntities$ | async"
+        [selected]="selectedShipment$ | async"
         [isLoading]="isLoading$ | async"
         (select)="selectItem($event)"
-      ></item-list>
+      ></shipment-list>
     </div>
     <!-- / CONTENT -->
 

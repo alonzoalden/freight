@@ -1,28 +1,28 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import * as fromAppState from '../../_state';
-import { ItemState } from './item.reducer';
+import { ShipmentState } from './shipment.reducer';
 import { AppState } from '../../_state/app.reducer';
 
 export interface State extends fromAppState.State {
-  item: ItemState;
+  shipment: ShipmentState;
 }
 
-const getItemFeatureState = createFeatureSelector<ItemState>('item');
+const getShipmentFeatureState = createFeatureSelector<ShipmentState>('shipment');
 const getAppFeatureState = createFeatureSelector<AppState>('app');
 
-export const getAllItemList = createSelector(
-  getItemFeatureState,
-  state => state.allItems
+export const getAllShipmentList = createSelector(
+  getShipmentFeatureState,
+  state => state.allShipments
 );
-export const getSelectedItem = createSelector(
-  getItemFeatureState,
-  state => state.selectedItem
+export const getSelectedShipment = createSelector(
+  getShipmentFeatureState,
+  state => state.selectedShipment
 );
 export const getIsSaving = createSelector(
-  getItemFeatureState,
+  getShipmentFeatureState,
   state => state.isSaving
 );
 export const getIsLoading = createSelector(
-  getItemFeatureState,
+  getShipmentFeatureState,
   state => state.isLoading
 );

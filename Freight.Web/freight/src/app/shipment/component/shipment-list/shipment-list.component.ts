@@ -13,7 +13,7 @@ import { Observable, Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { fuseAnimations } from "@fuse/animations";
 import { FuseSidebarService } from "@fuse/components/sidebar/sidebar.service";
-import { ItemService } from "../../item.service";
+import { ShipmentService } from "../../shipment.service";
 import { MatTableDataSource } from "@angular/material/table";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
@@ -21,19 +21,20 @@ import { MatDialog } from "@angular/material/dialog";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { AppService } from "app/app.service";
 import { NotificationsService } from "angular2-notifications";
-import { EditItemDialogComponent } from "../../component/edit-item/edit-item-dialog.component";
+import { EditShipmentDialogComponent } from "../edit-shipment/edit-shipment-dialog.component";
 import { Item } from "app/_shared/model/item";
 import * as fromItem from '../../state';
 import { Store } from "@ngrx/store";
+import { Shipment } from "app/_shared/model/shipment";
 @Component({
-  selector: 'item-list',
-  templateUrl: './item-list.component.html',
-  styleUrls: ['./item-list.component.scss'],
+  selector: 'shipment-list',
+  templateUrl: './shipment-list.component.html',
+  styleUrls: ['./shipment-list.component.scss'],
   animations: [fuseAnimations],
 })
-export class ItemListComponent implements OnInit, OnDestroy {
-  @Input() items: Item[] = [];
-  @Input() selected: Item;
+export class ShipmentListComponent implements OnInit, OnDestroy {
+  @Input() shipments: Shipment[] = [];
+  @Input() selected: Shipment;
   @Input() isLoading: boolean;
   @Output() select = new EventEmitter<Item>();
   files: any;
@@ -54,7 +55,7 @@ export class ItemListComponent implements OnInit, OnDestroy {
   constructor(
     public appService: AppService,
     private _fuseSidebarService: FuseSidebarService,
-    private itemService: ItemService,
+    private shipmentService: ShipmentService,
     public _matDialog: MatDialog,
     private store: Store<fromItem.State>,
     private notifyService: NotificationsService
@@ -66,7 +67,7 @@ export class ItemListComponent implements OnInit, OnDestroy {
   }
   ngOnChanges(changes): void {
     if (changes.items && changes.items.currentValue?.length) {
-      this.dataSource = new MatTableDataSource<any>(this.items);
+      this.dataSource = new MatTableDataSource<any>(this.shipments);
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
       this.focusMainInput();
@@ -118,30 +119,23 @@ export class ItemListComponent implements OnInit, OnDestroy {
       if (this.dataSource.paginator) {
         this.dataSource.paginator.firstPage();
       }
-      this.itemService.onItemSelected.next({});
+      this.shipmentService.onShipmentSelected.next({});
     }
   }
-  openEditItemDialog(data = {}): void {
-    this.dialogRef = this._matDialog.open(EditItemDialogComponent, {
-      panelClass: 'edit-fields-dialog',
-      width: '100%',
-      data: data
+  openEditShipmentDialog(data = {}) {
+    this.dialogRef = this._matDialog.open(EditShipmentDialogComponent, {
+        data: { data },
+        width: '100%',
+        height: '100%',
+        disableClose: true
     });
     this.dialogRef.afterClosed()
-      .subscribe(response => {
-        if (!response) {
-          return;
-        }
-        //console.log(response);
-        //this.dataSource.data.push(response);
-        // const data = [...this.dataSource.data];
-        // data.push(response);
-        // this.dataSource.data = data;
-
-        //this.items.push(response);
-
-        //this.onSelect(response);
-      });
+        .subscribe(result => {
+            if (!result) {
+                return;
+            }
+            // this.completePackRequest('managerCompletePack');
+        });
   }
   focusMainInput() {
     if (this.inputEnabled) {

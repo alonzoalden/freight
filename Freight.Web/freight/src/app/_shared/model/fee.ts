@@ -1,10 +1,11 @@
 export class Fee {
   constructor(
-    public BusinessID: string,
-    public FeeType: string,
-    public Description: string,
-    public FeeAmount: string,
-    public UpdatedOn: string,
-    public CreatedOn: string,
+    public businessID: number,
+    public feeID: number,
+    public feeType: string,
+    public description: string,
+    public feeAmount: string,
+    public updatedOn: string,
+    public createdOn: string,
   ) { }
 }

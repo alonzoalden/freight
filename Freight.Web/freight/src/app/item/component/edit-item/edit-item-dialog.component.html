@@ -14,34 +14,34 @@
         
         <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
           <mat-label> Item Number </mat-label>
-          <input matInput placeholder="Item Number" name="itemNumber" formControlName="ItemNumber" required>
+          <input matInput placeholder="Item Number" name="itemNumber" formControlName="itemNumber" required>
         </mat-form-field>
         <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
           <mat-label> Item Name </mat-label>
-          <input matInput placeholder="Item Name" name="itemName" formControlName="ItemName"required>
+          <input matInput placeholder="Item Name" name="itemName" formControlName="itemName"required>
         </mat-form-field>
         
         <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
           <mat-label> HTS Code </mat-label>
-          <input matInput placeholder="HTS Code" name="htsCode" formControlName="HTSCode" required>
+          <input matInput placeholder="HTS Code" name="htsCode" formControlName="htsCode" required>
         </mat-form-field>
         <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
           <mat-label> FNSKU </mat-label>
-          <input matInput placeholder="FNSKU" name="fnsku" formControlName="FNSKU" required>
+          <input matInput placeholder="FNSKU" name="FNSKU" formControlName="fnsku" required>
         </mat-form-field>
         <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
           <mat-label> ASIN </mat-label>
-          <input matInput placeholder="ASIN" name="ASIN" formControlName="ASIN" required>
+          <input matInput placeholder="ASIN" name="ASIN" formControlName="asin" required>
         </mat-form-field>
         <div fxLayout="row" fxLayoutAlign="start center" class="w-100-p">
           <mat-form-field fxFlex="67%" appearance="outline" floatLabel="always" class="mr-16">
             <mat-label> Weight </mat-label>
-            <input matInput placeholder="Weight" name="weight" formControlName="Weight" required>
+            <input matInput placeholder="Weight" name="weight" type="number" formControlName="weight" required>
           </mat-form-field>
           <mat-form-field fxFlex="33%" appearance="outline" floatLabel="always">
             <mat-label>Weight Units</mat-label>
-            <mat-select placeholder="Weight Units" name="weightUnit" formControlName="WeightUnit" required>
-              <mat-option *ngFor="let item of warehouseService.dropDownTypes.weights" value="{{item}}">{{ item }}
+            <mat-select placeholder="Weight Units" name="weightUnit" formControlName="weightUnit" required>
+              <mat-option *ngFor="let item of appService.dropDownTypes.weights" value="{{item}}">{{ item }}
               </mat-option>
             </mat-select>
           </mat-form-field>
@@ -49,12 +49,12 @@
         <div fxLayout="row" fxLayoutAlign="start center" class="w-100-p">
           <mat-form-field fxFlex="67%" appearance="outline" floatLabel="always" class="mr-16">
             <mat-label> Unit Price </mat-label>
-            <input matInput placeholder="Unit Price" name="unitPrice" formControlName="UnitPrice" required>
+            <input matInput placeholder="Unit Price" name="unitPrice" type="number" formControlName="unitPrice" required>
           </mat-form-field>
           <mat-form-field fxFlex="33%" appearance="outline" floatLabel="always">
             <mat-label>Currency</mat-label>
-            <mat-select placeholder="Select Currency" name="currency" formControlName="Currency" required>
-              <mat-option *ngFor="let item of warehouseService.dropDownTypes.currency" value="{{item}}">{{ item }}
+            <mat-select placeholder="Select Currency" name="currency" formControlName="currency" required>
+              <mat-option *ngFor="let item of appService.dropDownTypes.currency" value="{{item}}">{{ item }}
               </mat-option>
             </mat-select>
           </mat-form-field>

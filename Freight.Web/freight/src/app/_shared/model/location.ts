@@ -1,9 +1,9 @@
 export class Location {
   constructor(
-    public LocationID: string,
-    public BusinessID: string,
-    public LocationName: string,
-    public UpdatedOn: string,
-    public CreatedOn: string,
+    public locationID: string,
+    public businessID: string,
+    public locationName: string,
+    public updatedOn: string,
+    public createdOn: string,
   ) { }
 }
