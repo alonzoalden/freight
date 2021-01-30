@@ -48,7 +48,7 @@ namespace Freight.API.DAL
                 return results;
             }
         }
-        public Location UpdateLocation(Location location)
+        public Location UpdateLocation(LocationUpdate location)
         {
             using (SqlConnection connection = new SqlConnection(DefaultConnection))
             {
@@ -61,7 +61,7 @@ namespace Freight.API.DAL
                 return result;
             }
         }
-        public Location CreateLocation(Location location)
+        public Location CreateLocation(LocationInsert location)
         {
             using (SqlConnection connection = new SqlConnection(DefaultConnection))
             {

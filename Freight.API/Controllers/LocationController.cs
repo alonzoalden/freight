@@ -57,7 +57,7 @@ namespace Freight.API.Controllers
             }
         }
         [HttpPut]
-        public IActionResult UpdateLocation(Location Location)
+        public IActionResult UpdateLocation(LocationUpdate Location)
         {
             try
             {
@@ -70,7 +70,7 @@ namespace Freight.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateLocation(Location Location)
+        public IActionResult CreateLocation(LocationInsert Location)
         {
             try
             {

@@ -39,7 +39,7 @@ namespace Freight.API.DAL
             }
         }
 
-        public User CreateUser(User user)
+        public User CreateUser(UserInsert user)
         {
             using (SqlConnection connection = new SqlConnection(DefaultConnection))
             {
@@ -53,7 +53,7 @@ namespace Freight.API.DAL
             }
         }
         
-        public User UpdateUser(User user)
+        public User UpdateUser(UserUpdate user)
         {
             using (SqlConnection connection = new SqlConnection(DefaultConnection))
             {

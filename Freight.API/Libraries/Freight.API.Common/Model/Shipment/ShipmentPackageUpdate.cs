@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Freight.API.Common.Model.Shipment
 {
-    public class ShipmentPackage
+    public class ShipmentPackageUpdate
     {
         public int ShipmentPackageID { get; set; }
         public int BusinessID { get; set; }
@@ -26,8 +26,5 @@ namespace Freight.API.Common.Model.Shipment
         public bool IsRated { get; set; }
         public bool IsLabeled { get; set; }
         public bool IsManual { get; set; }
-        public DateTime? UpdatedOn { get; set; }
-        public DateTime CreatedOn { get; set; }
-
     }
 }

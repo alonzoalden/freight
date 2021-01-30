@@ -39,49 +39,49 @@ namespace Freight.API.BAL
             return ShipmentDAL.GetShipment(id);
         }
 
-        public Shipment UpdateShipment(Shipment shipment)
+        public Shipment UpdateShipment(ShipmentUpdate shipment)
         {
             return ShipmentDAL.UpdateShipment(shipment);
         }
-        public ShipmentLine UpdateShipmentLine(ShipmentLine shipmentline)
+        public ShipmentLine UpdateShipmentLine(ShipmentLineUpdate shipmentline)
         {
             return ShipmentDAL.UpdateShipmentLine(shipmentline);
         }
-        public ShipmentPackage UpdateShipmentPackage(ShipmentPackage shipmentpackage)
+        public ShipmentPackage UpdateShipmentPackage(ShipmentPackageUpdate shipmentpackage)
         {
             return ShipmentDAL.UpdateShipmentPackage(shipmentpackage);
         }
-        public ShipmentFee UpdateShipmentFee(ShipmentFee shipmentfee)
+        public ShipmentFee UpdateShipmentFee(ShipmentFeeUpdate shipmentfee)
         {
             return ShipmentDAL.UpdateShipmentFee(shipmentfee);
         }
-        public ShipmentContact UpdateShipmentContact(ShipmentContact shipmentcontact)
+        public ShipmentContact UpdateShipmentContact(ShipmentContactUpdate shipmentcontact)
         {
             return ShipmentDAL.UpdateShipmentContact(shipmentcontact);
         }
 
-        public Shipment CreateShipment(Shipment shipment)
+        public Shipment CreateShipment(ShipmentInsert shipment)
         {
             return ShipmentDAL.CreateShipment(shipment);
         }
-        public ShipmentLine CreateShipmentLine(ShipmentLine shipmentline)
+        public ShipmentLine CreateShipmentLine(ShipmentLineInsert shipmentline)
         {
             return ShipmentDAL.CreateShipmentLine(shipmentline);
         }
-        public ShipmentPackage CreateShipmentPackage(ShipmentPackage shipmentpackage)
+        public ShipmentPackage CreateShipmentPackage(ShipmentPackageInsert shipmentpackage)
         {
             return ShipmentDAL.CreateShipmentPackage(shipmentpackage);
         }
-        public ShipmentFee CreateShipmentFee(ShipmentFee shipmentfee)
+        public ShipmentFee CreateShipmentFee(ShipmentFeeInsert shipmentfee)
         {
             return ShipmentDAL.CreateShipmentFee(shipmentfee);
         }
-        public ShipmentContact CreateShipmentContact(ShipmentContact shipmentcontact)
+        public ShipmentContact CreateShipmentContact(ShipmentContactInsert shipmentcontact)
         {
             return ShipmentDAL.CreateShipmentContact(shipmentcontact);
         }
 
-        public ShipmentDetail CreateShipmentDetail(ShipmentDetail shipmentdetail)
+        public ShipmentDetail CreateShipmentDetail(ShipmentDetailInsert shipmentdetail)
         {
             return ShipmentDAL.CreateShipmentDetail(shipmentdetail);
         }

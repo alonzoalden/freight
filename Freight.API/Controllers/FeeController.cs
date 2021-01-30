@@ -57,7 +57,7 @@ namespace Freight.API.Controllers
             }
         }
         [HttpPut]
-        public IActionResult UpdateFee(Fee Fee)
+        public IActionResult UpdateFee(FeeUpdate Fee)
         {
             try
             {
@@ -70,7 +70,7 @@ namespace Freight.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateFee(Fee Fee)
+        public IActionResult CreateFee(FeeInsert Fee)
         {
             try
             {

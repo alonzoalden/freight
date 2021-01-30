@@ -28,11 +28,11 @@ namespace Freight.API.BAL
         {
             return ItemDAL.GetItemByBusinessID(businessid);
         }
-        public Item CreateItem(Item item)
+        public Item CreateItem(ItemInsert item)
         {
             return ItemDAL.CreateItem(item);
         }
-        public Item UpdateItem(Item item)
+        public Item UpdateItem(ItemUpdate item)
         {
             return ItemDAL.UpdateItem(item);
         }

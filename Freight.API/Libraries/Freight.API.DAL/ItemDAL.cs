@@ -50,7 +50,7 @@ namespace Freight.API.DAL
                 return results;
             }
         }
-        public Item UpdateItem(Item item)
+        public Item UpdateItem(ItemUpdate item)
         {
             using (SqlConnection connection = new SqlConnection(DefaultConnection))
             {
@@ -72,7 +72,7 @@ namespace Freight.API.DAL
                 return result;
             }
         }
-        public Item CreateItem(Item item)
+        public Item CreateItem(ItemInsert item)
         {
             using (SqlConnection connection = new SqlConnection(DefaultConnection))
             {
