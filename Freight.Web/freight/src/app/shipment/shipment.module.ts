@@ -35,6 +35,10 @@ import { ShipmentEffects } from './state/shipment.effect';
 import { ShipmentShellComponent } from './container/shipment-shell.component';
 import { ShipmentListComponent } from './component/shipment-list/shipment-list.component';
 import { EditShipmentDialogComponent } from './component/edit-shipment/edit-shipment-dialog.component';
+import { ChatPanelShipmentsComponent } from './component/chat-panel/chat-panel.component';
+
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { StepsPreviewComponent } from './steps-preview/steps-preview.component';
 
 const routes: Routes = [];
 
@@ -42,8 +46,9 @@ const routes: Routes = [];
   declarations: [
     ShipmentShellComponent,
     ShipmentListComponent,
-    //ShipmentDetailsSidebarComponent,
+    StepsPreviewComponent,
     EditShipmentDialogComponent,
+    ChatPanelShipmentsComponent
   ],
   imports: [
     RouterModule.forChild(routes),
@@ -69,6 +74,7 @@ const routes: Routes = [];
     MatChipsModule,
     MatSnackBarModule,
     MatRadioModule,
+    MatDatepickerModule,
     FuseSharedModule,
     FuseSidebarModule,
     ShipmentRoutingModule,

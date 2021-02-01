@@ -23,6 +23,12 @@ export class AppService {
     ],
     currency: [
       'USD'
+    ],
+    status: [
+      'Sent',
+      'Received',
+      'Shipped',
+      'Pending'
     ]
   }
   constructor(

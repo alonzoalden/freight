@@ -183,3 +183,19 @@ mat-cell:first-of-type, mat-header-cell:first-of-type, mat-footer-cell:first-of-
   height: 100%;
   max-height: fit-content !important;
 }
+.white .mat-select-value {
+  color: #111 !important;
+}
+.white .content {
+  background-color: #fff;
+  color: #000 !important;
+  height: 100%;
+  overflow: auto;
+}
+.bottom-actions {
+  display: flex;
+  flex-direction: column;
+  .top {
+    flex: 1;
+  }
+}

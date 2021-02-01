@@ -41,6 +41,8 @@ import { LayoutModule } from './layout/layout.module';
 import { ItemModule } from './item/item.module';
 import { ShipmentModule } from './shipment/shipment.module';
 import { SimpleNotificationsModule } from 'angular2-notifications';
+import { FakeDbService } from 'app/_shared/fake-db/fake-db.service';
+import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
 
 export function configureAuth(oidcConfigService: OidcConfigService): () => any {
   return () =>
@@ -99,8 +101,13 @@ export function configureAuth(oidcConfigService: OidcConfigService): () => any {
     LayoutModule,
     ItemModule,
     ShipmentModule,
+    InMemoryWebApiModule.forRoot(FakeDbService, {
+      delay: 0,
+      passThruUnknownUrl: true
+    }),
   ],
   providers: [
+    FakeDbService
     // OidcConfigService,
     //   {
     //     provide: APP_INITIALIZER,
