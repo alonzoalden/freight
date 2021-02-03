@@ -82,6 +82,8 @@ $typography: mat-typography-config(
 @import "src/app/shipment/component/chat-panel/chat-panel.theme.scss";
 @import "src/app/login/login.theme";
 @import "src/app/item/item.theme";
+@import "src/app/location/location.theme";
+
 
 // @import "src/app/main/item-manager/warehouse.theme";
 // Define a mixin for easier access
@@ -94,6 +96,7 @@ $typography: mat-typography-config(
     
     // // Pages
     @include login-theme($theme);
+    @include location-theme($theme);
 }
 
 // -----------------------------------------------------------------------------------------------------

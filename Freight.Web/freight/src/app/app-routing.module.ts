@@ -45,6 +45,16 @@ const routes: Routes = [
         loadChildren: () =>
           import('./shipment/shipment.module').then(m => m.ShipmentModule)
       },
+      {
+        path: 'location',
+        loadChildren: () =>
+          import('./location/location.module').then(m => m.LocationModule)
+      },
+      {
+        path: 'location/:filter',
+        loadChildren: () =>
+          import('./location/location.module').then(m => m.LocationModule)
+      },
     ]
   },
   { path: '**', component: PageNotFoundComponent }

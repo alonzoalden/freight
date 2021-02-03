@@ -8,12 +8,12 @@
     </mat-toolbar-row>
   </mat-toolbar>
   <div mat-dialog-content style="margin: 0; padding: 0; width: 100%; overflow: hidden;">
-    <form name="itemForm" [formGroup]="shipmentForm" class="compose-form" fxLayout="column" fxFlex>
+    <form name="itemForm" [formGroup]="shipmentForm" class="compose-form w-100-p" fxLayout="column" fxFlex>
       <mat-tab-group style="overflow: auto; position: relative; height: 100%;" fxFlex
         (selectedTabChange)="onSelectedTabChange()" [selectedIndex]="selectedTabIndex" #tabGroup class="accent white">
         <mat-tab [disabled]="isLoading" label="General">
           <ng-template mat-tab-label>
-            <span style="margin-right: 7px;">General Info</span>
+            <span class="mr-8">General Info</span>
             <mat-icon style="color: red;">error_outline</mat-icon>
           </ng-template>
           <div class="content p-24" [@animate]="{value:'*',params:{x:'100%'}}">
@@ -39,7 +39,7 @@
         </mat-tab>
         <mat-tab [disabled]="isLoading" label="Shipment">
           <ng-template mat-tab-label>
-            <span style="margin-right: 7px;">Shipment Info</span>
+            <span class="mr-8">Shipment Info</span>
             <mat-icon style="color: red;">error_outline</mat-icon>
           </ng-template>
           <div class="content p-24" [@animate]="{value:'*',params:{x:'100%'}}">
@@ -105,7 +105,7 @@
         </mat-tab>
         <mat-tab [disabled]="isLoading" label="Items">
           <ng-template mat-tab-label>
-            <span style="margin-right: 7px;">Items</span>
+            <span class="mr-8">Items</span>
           </ng-template>
           <div class="content p-24 bottom-actions" [@animate]="{value:'*',params:{x:'100%'}}">
             <div class="body-container m-0 top">
@@ -128,7 +128,7 @@
 
         <mat-tab [disabled]="isLoading" label="Packages">
           <ng-template mat-tab-label>
-            <span style="margin-right: 7px;">Packages</span>
+            <span class="mr-8">Packages</span>
           </ng-template>
           <div class="content p-24" [@animate]="{value:'*',params:{x:'100%'}}">
 
@@ -141,7 +141,7 @@
         </mat-tab>
         <mat-tab [disabled]="isLoading" label="Fees">
           <ng-template mat-tab-label>
-            <span style="margin-right: 7px;">Fees</span>
+            <span class="mr-8">Fees</span>
           </ng-template>
           <div class="content p-24" [@animate]="{value:'*',params:{x:'100%'}}">
 
@@ -154,7 +154,7 @@
         </mat-tab>
         <mat-tab [disabled]="isLoading" label="Documents">
           <ng-template mat-tab-label>
-            <span style="margin-right: 7px;">Documents</span>
+            <span class="mr-8">Documents</span>
           </ng-template>
           <div class="content p-24" [@animate]="{value:'*',params:{x:'100%'}}">
 
@@ -439,7 +439,7 @@
         </mat-tab>
         <mat-tab [disabled]="isLoading" label="Contacts">
           <ng-template mat-tab-label>
-            <span style="margin-right: 7px;">Contacts</span>
+            <span class="mr-8">Contacts</span>
           </ng-template>
           <div class="content p-24" [@animate]="{value:'*',params:{x:'100%'}}">
 
@@ -450,6 +450,15 @@
             </div>
           </div>
         </mat-tab>
+        <mat-tab *ngIf="media.isActive('lt-md')" [disabled]="isLoading" label="Messages" class="accent">
+          <ng-template mat-tab-label>
+              <span class="mr-8">Messages</span>
+              <span style="font-weight: 400;">(4)</span>
+          </ng-template>
+          <div style="height: 100%; position: relative;">
+              <chat-panel-shipments style="height: 100%; position: relative; background-color: #fff !important; color: rgba(0, 0, 0, .78) !important"></chat-panel-shipments>
+          </div>
+      </mat-tab>
       </mat-tab-group>
     </form>
 

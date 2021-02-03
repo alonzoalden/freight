@@ -13,7 +13,7 @@ import { Observable, Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { fuseAnimations } from "@fuse/animations";
 import { FuseSidebarService } from "@fuse/components/sidebar/sidebar.service";
-import { ItemService } from "../../item.service";
+import { LocationService } from "../../location.service";
 import { MatTableDataSource } from "@angular/material/table";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
@@ -21,24 +21,24 @@ import { MatDialog } from "@angular/material/dialog";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { AppService } from "app/app.service";
 import { NotificationsService } from "angular2-notifications";
-import { EditItemDialogComponent } from "../../component/edit-item/edit-item-dialog.component";
-import { Item } from "app/_shared/model/item";
-import * as fromItem from '../../state';
+import { EditLocationDialogComponent } from "../edit-location/edit-location-dialog.component";
+import { Location } from "app/_shared/model/location";
+import * as fromLocation from '../../state';
 import { Store } from "@ngrx/store";
 @Component({
-  selector: 'item-list',
-  templateUrl: './item-list.component.html',
-  styleUrls: ['./item-list.component.scss'],
+  selector: 'location-list',
+  templateUrl: './location-list.component.html',
+  styleUrls: ['./location-list.component.scss'],
   animations: [fuseAnimations],
 })
-export class ItemListComponent implements OnInit, OnDestroy {
-  @Input() items: Item[] = [];
-  @Input() selected: Item;
+export class LocationListComponent implements OnInit, OnDestroy {
+  @Input() locations: Location[] = [];
+  @Input() selected: Location;
   @Input() isLoading: boolean;
-  @Output() select = new EventEmitter<Item>();
+  @Output() select = new EventEmitter<Location>();
   files: any;
   dataSource: any;
-  displayedColumns = ['itemNumber', 'itemName', 'htsCode', 'fnsku', 'unitPrice', 'actions'];
+  displayedColumns = ['locationName', 'actions'];
   isLeadRole: boolean;
   filteredCourses: any[];
   currentCategory: string;
@@ -54,9 +54,9 @@ export class ItemListComponent implements OnInit, OnDestroy {
   constructor(
     public appService: AppService,
     private _fuseSidebarService: FuseSidebarService,
-    private itemService: ItemService,
+    private locationService: LocationService,
     public _matDialog: MatDialog,
-    private store: Store<fromItem.State>,
+    private store: Store<fromLocation.State>,
     private notifyService: NotificationsService
   ) {
     this._unsubscribeAll = new Subject();
@@ -65,8 +65,8 @@ export class ItemListComponent implements OnInit, OnDestroy {
     this.inputEnabled = true;
   }
   ngOnChanges(changes): void {
-    if (changes.items && changes.items.currentValue?.length) {
-      this.dataSource = new MatTableDataSource<any>(this.items);
+    if (changes.locations && changes.locations.currentValue?.length) {
+      this.dataSource = new MatTableDataSource<any>(this.locations);
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
       this.focusMainInput();
@@ -77,13 +77,13 @@ export class ItemListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    //this.itemService.onItemSelected.next({});
+    //this.locationService.onLocationSelected.next({});
     this._unsubscribeAll.next();
     this._unsubscribeAll.complete();
   }
 
-  onSelect(item: Item): void {
-    this.select.emit(item);
+  onSelect(location: Location): void {
+    this.select.emit(location);
   }
 
   toggleSidebar(name): void {
@@ -118,11 +118,11 @@ export class ItemListComponent implements OnInit, OnDestroy {
       if (this.dataSource.paginator) {
         this.dataSource.paginator.firstPage();
       }
-      this.itemService.onItemSelected.next({});
+      this.locationService.onLocationSelected.next({});
     }
   }
-  openEditItemDialog(data = {}): void {
-    this.dialogRef = this._matDialog.open(EditItemDialogComponent, {
+  openEditLocationDialog(data = {}): void {
+    this.dialogRef = this._matDialog.open(EditLocationDialogComponent, {
       panelClass: 'edit-fields-dialog',
       width: '100%',
       data: data

@@ -1,0 +1,29 @@
+<div class="dialog-content-wrapper">
+  <mat-toolbar class="mat-accent m-0">
+    <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+      <span class="title dialog-title">{{selectedLocation.locationID ? 'Edit' : 'Create' }} Location</span>
+      <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-toolbar-row>
+  </mat-toolbar>
+  <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>
+    <form name="locationForm" [formGroup]="locationForm" class="compose-form" fxLayout="column" fxFlex>
+
+      <div fxLayout="column" fxLayoutAlign="start center">
+        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+          <mat-label> Location Name </mat-label>
+          <input #mainInput matInput placeholder="Location Name" name="locationName" formControlName="locationName" required>
+        </mat-form-field>
+      </div>
+    </form>
+  </div>
+  <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="space-between center">
+    <button  mat-raised-button color="accent" (click)="save()" class="dialog-button" [disabled]="locationForm.invalid" aria-label="SAVE">
+      <div fxLayoutAlign="center">
+        <span *ngIf="!isSaving">SAVE</span>
+        <mat-spinner diameter="20" *ngIf="isSaving"></mat-spinner>
+      </div>
+    </button>
+  </div>
+</div>

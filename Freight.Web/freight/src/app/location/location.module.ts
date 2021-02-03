@@ -17,38 +17,28 @@ import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { ShipmentService } from './shipment.service';
-//import { ItemListComponent } from './component/item-list/item-list.component';
-//import { ItemDetailsSidebarComponent } from './component/sidebars/item-details/item-details.component';
+import { LocationListComponent } from './component/location-list/location-list.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-//import { ItemShellComponent } from './container/item-shell.component';
-//import { EditItemDialogComponent } from './component/edit-item/edit-item-dialog.component';
-import { ShipmentRoutingModule } from './shipment-routing.module';
+import { LocationShellComponent } from './container/location-shell.component';
+import { EditLocationDialogComponent } from './component/edit-location/edit-location-dialog.component';
+import { LocationRoutingModule } from './location-routing.module';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
-import { shipmentReducer } from './state/shipment.reducer';
-import { ShipmentEffects } from './state/shipment.effect';
-import { ShipmentShellComponent } from './container/shipment-shell.component';
-import { ShipmentListComponent } from './component/shipment-list/shipment-list.component';
-import { EditShipmentDialogComponent } from './component/edit-shipment/edit-shipment-dialog.component';
-import { ChatPanelShipmentsComponent } from './component/chat-panel/chat-panel.component';
-
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { StepsPreviewComponent } from './component/steps-preview/steps-preview.component';
+import { locationReducer } from './state/location.reducer';
+import { LocationEffects } from './state/location.effect';
+import { LocationService } from './location.service';
 
 const routes: Routes = [];
 
 @NgModule({
   declarations: [
-    ShipmentShellComponent,
-    ShipmentListComponent,
-    StepsPreviewComponent,
-    EditShipmentDialogComponent,
-    ChatPanelShipmentsComponent
+    LocationShellComponent,
+    LocationListComponent,
+    EditLocationDialogComponent
   ],
   imports: [
     RouterModule.forChild(routes),
@@ -74,20 +64,19 @@ const routes: Routes = [];
     MatChipsModule,
     MatSnackBarModule,
     MatRadioModule,
-    MatDatepickerModule,
     FuseSharedModule,
     FuseSidebarModule,
-    ShipmentRoutingModule,
-    StoreModule.forFeature('shipment', shipmentReducer),
-    EffectsModule.forFeature([ShipmentEffects])
+    LocationRoutingModule,
+    StoreModule.forFeature('location', locationReducer),
+    EffectsModule.forFeature([LocationEffects])
   ],
   providers: [
-    ShipmentService,
+    LocationService,
     MatSnackBar
   ],
   entryComponents: [
-    EditShipmentDialogComponent,
+    EditLocationDialogComponent,
   ]
 })
-export class ShipmentModule {
+export class LocationModule {
 }

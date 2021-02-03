@@ -1,0 +1,20 @@
+<div class="page-layout simple right-sidebar inner-scroll">
+
+  <!-- CENTER -->
+  <div class="center" fxFlex>
+
+    <!-- CONTENT -->
+    <div class="content" #scrollContainer fusePerfectScrollbar>
+      <!-- <router-outlet (activate)="onActivate($event, scrollContainer)"></router-outlet> -->
+      <location-list
+        [locations]="locationEntities$ | async"
+        [selected]="selectedLocation$ | async"
+        [isLoading]="isLoading$ | async"
+        (select)="selectLocation($event)"
+      ></location-list>
+    </div>
+    <!-- / CONTENT -->
+  </div>
+  <!-- / CENTER -->
+
+</div>

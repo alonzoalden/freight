@@ -19,7 +19,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 //import { Member } from 'app/shared/class/member';
 import { AppService } from 'app/app.service';
 import { trigger, state, style, transition, animate } from '@angular/animations';
-import { ShipmentService } from '../shipment.service';
+import { ShipmentService } from '../../shipment.service';
 
 @Component({
     selector: 'steps-preview',

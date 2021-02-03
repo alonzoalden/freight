@@ -19,6 +19,8 @@ import { FuseSplashScreenService } from '@fuse/services/splash-screen.service';
 import { AppService } from './app.service';
 import { navigation } from 'app/_general/navigation/navigation';
 import { FuseProgressBarService } from '@fuse/components/progress-bar/progress-bar.service';
+import { MatDialog } from '@angular/material/dialog';
+import { CreateCompanyDialogComponent } from './_general/create-company/create-company-dialog.component';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -29,6 +31,7 @@ export class AppComponent implements OnInit {
   navigation: any;
   businessEntities$: Observable<BusinessEntity[]>;
   selectedBusinessEntityId$: Observable<number>;
+  dialogRef: any;
   private _unsubscribeAll: Subject<any>;
   constructor(
     @Inject(DOCUMENT) private document: any,
@@ -43,13 +46,17 @@ export class AppComponent implements OnInit {
     private appService: AppService,
     private router: Router,
     private store: Store<fromAppState.State>,
-    public oidcSecurityService: OidcSecurityService) { }
+    public oidcSecurityService: OidcSecurityService,
+    public _matDialog: MatDialog) { }
 
   ngOnInit(): void {
     this.initialize();
     this.businessEntities$ = this.store.select(fromAppState.getBusinessEntities);
     this.selectedBusinessEntityId$ = this.store.select(fromAppState.getCurrentBusinessEntityId);
     this.oidcSecurityService.checkAuth().subscribe((auth) => console.log('is authenticated', auth));
+
+    // If user is not assigned to company:
+    // this.openCreateCompanyDialog();
   }
 
   changeBusiness(e): void {
@@ -145,6 +152,28 @@ export class AppComponent implements OnInit {
         this.document.body.classList.add(this.fuseConfig.colorTheme);
     });
  }
+ openCreateCompanyDialog(data = {}): void {
+  this.dialogRef = this._matDialog.open(CreateCompanyDialogComponent, {
+    panelClass: 'edit-fields-dialog',
+    disableClose: true,
+    width: '100%'
+  });
+  this.dialogRef.afterClosed()
+    .subscribe(response => {
+      if (!response) {
+        return;
+      }
+      //console.log(response);
+      //this.dataSource.data.push(response);
+      // const data = [...this.dataSource.data];
+      // data.push(response);
+      // this.dataSource.data = data;
+
+      //this.items.push(response);
+
+      //this.onSelect(response);
+    });
+}
 }
 
 
