@@ -4,7 +4,7 @@
   <div class="sub-header accent" fxLayout="column" fxLayoutAlign="center start">
     <div class="breadcrumb text-truncate h1 p24" [@animate]="{value:'*',params:{x:'50px'}}">
       <div fxLayout="row" fxLayoutAlign="start center">
-        <h1 fxLayout="row" fxLayoutAlign="start center"> <button mat-icon-button [routerLink]="['../../']">
+        <h1 fxLayout="row" fxLayoutAlign="start center"> <button mat-icon-button [routerLink]="['../']">
             <mat-icon>business</mat-icon>
           </button>
           <mat-icon>chevron_right</mat-icon> Item Management
@@ -18,7 +18,7 @@
           <mat-icon class="secondary-text">search</mat-icon>
           <input #mainInput [disabled]="isLoading" (keyup)="applyFilter(searchTerm)" [(ngModel)]="searchTerm"
             [placeholder]="isLoading ? 'Please wait...' : 'Search Item'">
-          <button mat-icon-button (click)="searchTerm = ''; applyFilter(searchTerm)">
+          <button mat-icon-button (click)="onClearSearch()">
             <mat-icon>clear</mat-icon>
           </button>
         </div>

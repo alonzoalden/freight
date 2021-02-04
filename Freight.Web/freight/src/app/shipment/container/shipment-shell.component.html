@@ -1,0 +1,27 @@
+<div class="page-layout simple right-sidebar inner-scroll">
+
+  <!-- CENTER -->
+  <div class="center" fxFlex>
+
+    <!-- CONTENT -->
+    <div class="content" #scrollContainer fusePerfectScrollbar>
+      <!-- <router-outlet (activate)="onActivate($event, scrollContainer)"></router-outlet> -->
+      <shipment-list
+        [shipments]="shipmentEntities$ | async"
+        [selected]="selectedShipment$ | async"
+        [isLoading]="isLoading$ | async"
+        (select)="selectItem($event)"
+      ></shipment-list>
+    </div>
+    <!-- / CONTENT -->
+
+  </div>
+  <!-- / CENTER -->
+
+  <!-- SIDEBAR -->
+  <!-- <fuse-sidebar lockedOpen="gt-sm" class="sidebar details-sidebar" name="item-details-sidebar" position="right">
+    <item-details-sidebar></item-details-sidebar>
+  </fuse-sidebar> -->
+  <!-- / SIDEBAR -->
+
+</div>

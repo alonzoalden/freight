@@ -9,6 +9,12 @@ import { environment } from 'environments/environment';
 import { ItemService } from 'app/item/item.service';
 import { NotificationsService } from 'angular2-notifications';
 import { Item } from 'app/_shared/model/item';
+import { Store } from '@ngrx/store';
+import * as fromItem from '../../state';
+import { ItemApiActions, ItemPageActions } from '../../state/actions';
+import { ItemEffects } from '../../state/item.effect';
+import { Actions, ofType } from '@ngrx/effects';
+import { AppService } from 'app/app.service';
 
 @Component({
   selector: 'edit-item-dialog',
@@ -26,11 +32,14 @@ export class EditItemDialogComponent implements OnInit, OnDestroy {
   objectKeys = Object.keys;
 
   constructor(
+    private store: Store<fromItem.State>,
     private _formBuilder: FormBuilder,
     public matDialogRef: MatDialogRef<EditItemDialogComponent>,
     private warehouseItemManagerService: ItemService,
-    public warehouseService: ItemService,
+    public appService: AppService,
     private notifyService: NotificationsService,
+    private itemEffects: ItemEffects,
+    private readonly actions$: Actions,
     @Inject(MAT_DIALOG_DATA) private inputData: any,
   ) {
     this._unsubscribeAll = new Subject();
@@ -39,12 +48,19 @@ export class EditItemDialogComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.selectedItem = this.inputData;
     this.itemForm = this.createItemForm();
-    // this.warehouseItemManagerService.onItemSelected
-    //   .pipe(takeUntil(this._unsubscribeAll))
-    //   .subscribe(selectedItem => {
-    //     this.selectedItem = selectedItem;
-    //     this.itemForm = this.createItemForm();
-    //   });
+    this.store.select(fromItem.getIsSaving)
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe(loading => {
+        this.isSaving = loading
+      });
+
+    this.actions$
+      .pipe(
+        takeUntil(this._unsubscribeAll),
+        ofType(ItemApiActions.updateItemSuccess))
+      .subscribe((data) => {
+        this.matDialogRef.close(data);
+      });
   }
   ngOnDestroy(): void {
     // Unsubscribe from all subscriptions
@@ -54,18 +70,20 @@ export class EditItemDialogComponent implements OnInit, OnDestroy {
 
   createItemForm(): FormGroup {
     return this._formBuilder.group({
-      ItemID: [this.selectedItem.itemID],
-      ItemNumber: [this.selectedItem.itemNumber],
-      ItemName: [this.selectedItem.itemName],
-      HTSCode: [this.selectedItem.htsCode],
-      FNSKU: [this.selectedItem.fnsku],
-      ASIN: [this.selectedItem.asin],
-      Weight: [this.selectedItem.weight],
-      WeightUnit: [this.selectedItem.weightUnit],
-      UnitPrice: [this.selectedItem.unitPrice],
-      Currency: [this.selectedItem.currency],
-      UpdatedOn: [this.selectedItem.updatedOn],
-      CreatedOn: [this.selectedItem.createdOn],
+      itemID: [Number(this.selectedItem.itemID) || 0],
+      businessID: [Number(this.selectedItem.businessID || 1)],
+      shipperID: [Number(this.selectedItem.shipperID || 2)],
+      itemNumber: [this.selectedItem.itemNumber],
+      itemName: [this.selectedItem.itemName],
+      htsCode: [this.selectedItem.htsCode],
+      fnsku: [this.selectedItem.fnsku],
+      asin: [this.selectedItem.asin],
+      weight: [Number(this.selectedItem.weight || 0)],
+      weightUnit: [this.selectedItem.weightUnit],
+      unitPrice: [Number(this.selectedItem.unitPrice || 0)],
+      currency: [this.selectedItem.currency],
+      updatedOn: [this.selectedItem.updatedOn],
+      createdOn: [this.selectedItem.createdOn],
     });
   }
   save(): void {
@@ -81,9 +99,9 @@ export class EditItemDialogComponent implements OnInit, OnDestroy {
     this.warehouseItemManagerService.createItem(this.itemForm.value)
       .subscribe(
         (data: Item) => {
-          this.warehouseItemManagerService.onItemSelected.next(data);
-          this.matDialogRef.close(this.selectedItem);
-          this.notifyService.success('Success', `${data.itemNumber} has been created.`, { timeOut:'4000', clickToClose: true });
+          // this.warehouseItemManagerService.onItemSelected.next(data);
+          this.matDialogRef.close(data);
+          this.notifyService.success('Success', `${data.itemNumber} has been created.`, { timeOut: 3500, clickToClose: true });
         },
         error => {
           this.notifyService.error('Error', `${error}`, { clickToClose: true });
@@ -92,19 +110,20 @@ export class EditItemDialogComponent implements OnInit, OnDestroy {
       );
   }
   edit(): void {
-    this.isSaving = true;
-    this.warehouseItemManagerService.updateItem(this.itemForm.value)
-      .subscribe(
-        (data: Item) => {
-          this.warehouseItemManagerService.onItemSelected.next(data);
-          this.matDialogRef.close(this.selectedItem);
-          this.notifyService.success('Success', `${data.itemNumber} has been updated.`, { timeOut:'4000', clickToClose: true });
-        },
-        error => {
-          this.notifyService.error('Error', `${error}`, { clickToClose: true });
-          this.isSaving = false;
-        }
-      );
+    this.store.dispatch(ItemPageActions.updateItem({ item: this.itemForm.value }));
+
+    // this.warehouseItemManagerService.updateItem(this.itemForm.value)
+    //   .subscribe(
+    //     (data: Item) => {
+    //       // this.warehouseItemManagerService.onItemSelected.next(data);
+    //       this.matDialogRef.close(data);
+    //       this.notifyService.success('Success', `${data.itemNumber} has been updated.`, { timeOut:3500, clickToClose: true });
+    //     },
+    //     error => {
+    //       this.notifyService.error('Error', `${error}`, { clickToClose: true });
+    //       this.isSaving = false;
+    //     }
+    //   );
   }
-  
+
 }

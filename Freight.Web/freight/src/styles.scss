@@ -172,4 +172,30 @@ mat-cell:first-of-type, mat-header-cell:first-of-type, mat-footer-cell:first-of-
 }
 .dialog-button {
   height: 39px;
+  width: 70px;
+}
+.dialog-content-wrapper {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.mat-dialog-content {
+  height: 100%;
+  max-height: fit-content !important;
+}
+.white .mat-select-value {
+  color: #111 !important;
+}
+.white .content {
+  background-color: #fff;
+  color: #000 !important;
+  height: 100%;
+  overflow: auto;
+}
+.bottom-actions {
+  display: flex;
+  flex-direction: column;
+  .top {
+    flex: 1;
+  }
 }

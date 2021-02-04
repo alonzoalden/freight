@@ -14,8 +14,15 @@ export const getAllItemList = createSelector(
   getItemFeatureState,
   state => state.allItems
 );
-
 export const getSelectedItem = createSelector(
   getItemFeatureState,
   state => state.selectedItem
+);
+export const getIsSaving = createSelector(
+  getItemFeatureState,
+  state => state.isSaving
+);
+export const getIsLoading = createSelector(
+  getItemFeatureState,
+  state => state.isLoading
 );

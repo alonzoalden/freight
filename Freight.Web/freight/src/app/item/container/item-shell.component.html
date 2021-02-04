@@ -9,6 +9,7 @@
       <item-list
         [items]="itemEntities$ | async"
         [selected]="selectedItem$ | async"
+        [isLoading]="isLoading$ | async"
         (select)="selectItem($event)"
       ></item-list>
     </div>

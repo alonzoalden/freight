@@ -14,31 +14,31 @@ export const navigation: FuseNavigation[] = [
         translate: 'Manage Shipments',
         type: 'collapsable',
         icon: '',
-        url: '/shipments',
+        url: '/shipment',
         children: [
           {
             id: 'allshipments',
             title: 'All Shipments',
             type: 'item',
-            url: '/shipments',
+            url: '/shipment/all',
           },
           {
             id: 'openshipments',
             title: 'Open Shipments',
             type: 'item',
-            url: '/shipments/open',
+            url: '/shipment/open',
           },
           {
             id: 'closedshipments',
             title: 'Closed Shipments',
             type: 'item',
-            url: '/shipments/closed',
+            url: '/shipment/closed',
           },
           {
             id: 'cancelledshipments',
             title: 'Cancelled Shipments',
             type: 'item',
-            url: '/shipments/closed',
+            url: '/shipment/cancelled',
           }
         ]
       },

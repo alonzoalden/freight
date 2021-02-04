@@ -39,7 +39,14 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { RouterModule } from '@angular/router';
 import { LayoutModule } from './layout/layout.module';
 import { ItemModule } from './item/item.module';
+import { ShipmentModule } from './shipment/shipment.module';
+import { LocationModule } from './location/location.module';
 import { SimpleNotificationsModule } from 'angular2-notifications';
+import { FakeDbService } from 'app/_shared/fake-db/fake-db.service';
+import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
+import { CreateCompanyDialogComponent } from 'app/_general/create-company/create-company-dialog.component';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatProgressSpinnerModule, MatSpinner } from '@angular/material/progress-spinner';
 
 export function configureAuth(oidcConfigService: OidcConfigService): () => any {
   return () =>
@@ -65,7 +72,8 @@ export function configureAuth(oidcConfigService: OidcConfigService): () => any {
     LoginComponent,
     SignupComponent,
     PageNotFoundComponent,
-    PasswordAssistanceComponent
+    PasswordAssistanceComponent,
+    CreateCompanyDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -94,11 +102,20 @@ export function configureAuth(oidcConfigService: OidcConfigService): () => any {
     MatDatepickerModule,
     MatExpansionModule,
     MatMomentDateModule,
+    MatToolbarModule,
+    MatProgressSpinnerModule,
+    SimpleNotificationsModule.forRoot(),
     LayoutModule,
     ItemModule,
-    SimpleNotificationsModule.forRoot(),
+    ShipmentModule,
+    LocationModule,
+    InMemoryWebApiModule.forRoot(FakeDbService, {
+      delay: 0,
+      passThruUnknownUrl: true
+    }),
   ],
   providers: [
+    FakeDbService
     // OidcConfigService,
     //   {
     //     provide: APP_INITIALIZER,

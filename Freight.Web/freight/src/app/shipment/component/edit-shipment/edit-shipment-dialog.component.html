@@ -1,0 +1,479 @@
+<div class="dialog-content-wrapper">
+  <mat-toolbar class="mat-accent m-0">
+    <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+      <span class="title dialog-title">{{selectedShipment.shipmentID ? 'Edit' : 'Create' }} Shipment</span>
+      <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-toolbar-row>
+  </mat-toolbar>
+  <div mat-dialog-content style="margin: 0; padding: 0; width: 100%; overflow: hidden;">
+    <form name="itemForm" [formGroup]="shipmentForm" class="compose-form w-100-p" fxLayout="column" fxFlex>
+      <mat-tab-group style="overflow: auto; position: relative; height: 100%;" fxFlex
+        (selectedTabChange)="onSelectedTabChange()" [selectedIndex]="selectedTabIndex" #tabGroup class="accent white">
+        <mat-tab [disabled]="isLoading" label="General">
+          <ng-template mat-tab-label>
+            <span class="mr-8">General Info</span>
+            <mat-icon style="color: red;">error_outline</mat-icon>
+          </ng-template>
+          <div class="content p-24" [@animate]="{value:'*',params:{x:'100%'}}">
+            <div class="body-container m-0">
+              <div fxLayout="column" fxLayoutAlign="start center">
+                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                  <mat-label> Customer </mat-label>
+                  <input matInput placeholder="Customer" name="customer" formControlName="customer" required>
+                </mat-form-field>
+                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                  <mat-label> Origin 3PL </mat-label>
+                  <input matInput placeholder="Origin 3PL / Shipper" type="number" name="origin3PL"
+                    formControlName="origin3PL" required>
+                </mat-form-field>
+                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                  <mat-label> Destination 3PL </mat-label>
+                  <input matInput placeholder="Destination 3PL" type="number" name="destination3PL"
+                    formControlName="destination3PL" required>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+        </mat-tab>
+        <mat-tab [disabled]="isLoading" label="Shipment">
+          <ng-template mat-tab-label>
+            <span class="mr-8">Shipment Info</span>
+            <mat-icon style="color: red;">error_outline</mat-icon>
+          </ng-template>
+          <div class="content p-24" [@animate]="{value:'*',params:{x:'100%'}}">
+            <div class="body-container m-0">
+              <div fxLayout="column" fxLayoutAlign="start start">
+                <mat-form-field appearance="outline" floatLabel="always" style="width: 33%;">
+                  <mat-label>Status</mat-label>
+                  <mat-select placeholder="Choose Status" name="status" formControlName="status">
+                    <mat-option *ngFor="let item of appService.dropDownTypes.status" value="{{item}}">{{ item }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                  <mat-label> HBL </mat-label>
+                  <input matInput placeholder="HBL" name="hblNumber" formControlName="hblNumber" required>
+                </mat-form-field>
+                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                  <mat-label> MBL </mat-label>
+                  <input matInput placeholder="MBL" name="mblNumber" formControlName="mblNumber" required>
+                </mat-form-field>
+                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                  <mat-label> Container Number </mat-label>
+                  <input matInput placeholder="Container Number" name="containerNumber"
+                    formControlName="containerNumber">
+                </mat-form-field>
+                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                  <mat-label>ETD</mat-label>
+                  <input formControlName="etd" matInput [matDatepicker]="ETD">
+                  <mat-datepicker-toggle matSuffix [for]="ETD"></mat-datepicker-toggle>
+                  <mat-datepicker #ETD></mat-datepicker>
+                </mat-form-field>
+                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                  <mat-label>ETA</mat-label>
+                  <input formControlName="eta" matInput [matDatepicker]="ETA">
+                  <mat-datepicker-toggle matSuffix [for]="ETA"></mat-datepicker-toggle>
+                  <mat-datepicker #ETA></mat-datepicker>
+                </mat-form-field>
+                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                  <mat-label>TXL</mat-label>
+                  <input #inputDate formControlName="txl" matInput [matDatepicker]="TXL">
+                  <mat-datepicker-toggle matSuffix [for]="TXL"></mat-datepicker-toggle>
+                  <mat-datepicker #TXL></mat-datepicker>
+                </mat-form-field>
+                <mat-form-field appearance="outline" floatLabel="always" style="width: 33%;">
+                  <mat-label>Delivery Location</mat-label>
+                  <mat-select placeholder="Delivery Location" name="deliveryLocationID"
+                    formControlName="deliveryLocationID">
+                    <mat-option *ngFor="let item of appService.dropDownTypes.status" value="{{item}}">{{ item }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="outline" floatLabel="always" style="width: 66%;">
+                  <mat-label>Shipper Reference Number</mat-label>
+                  <input matInput placeholder="Shipper Reference Number" name="shipperReference"
+                    formControlName="shipperReference">
+                </mat-form-field>
+                <mat-checkbox formControlName="isfFiled">
+                  ISF Filed
+                </mat-checkbox>
+              </div>
+            </div>
+          </div>
+        </mat-tab>
+        <mat-tab [disabled]="isLoading" label="Items">
+          <ng-template mat-tab-label>
+            <span class="mr-8">Items</span>
+          </ng-template>
+          <div class="content p-24 bottom-actions" [@animate]="{value:'*',params:{x:'100%'}}">
+            <div class="body-container m-0 top">
+              <div fxLayout="column" fxLayoutAlign="start center">
+                mat table
+              </div>
+            </div>
+            <div class="body-container m-0">
+              <div fxLayout="row" fxLayoutAlign="start start">
+                <button mat-raised-button color="accent" class="mr-8">
+                  Print Packing Slips
+                </button>
+                <button mat-raised-button color="accent">
+                  Print Commercial Invoice
+                </button>
+              </div>
+            </div>
+          </div>
+        </mat-tab>
+
+        <mat-tab [disabled]="isLoading" label="Packages">
+          <ng-template mat-tab-label>
+            <span class="mr-8">Packages</span>
+          </ng-template>
+          <div class="content p-24" [@animate]="{value:'*',params:{x:'100%'}}">
+
+            <div class="body-container m-0">
+              <div fxLayout="column" fxLayoutAlign="start center">
+                mat table
+              </div>
+            </div>
+          </div>
+        </mat-tab>
+        <mat-tab [disabled]="isLoading" label="Fees">
+          <ng-template mat-tab-label>
+            <span class="mr-8">Fees</span>
+          </ng-template>
+          <div class="content p-24" [@animate]="{value:'*',params:{x:'100%'}}">
+
+            <div class="body-container m-0">
+              <div fxLayout="column" fxLayoutAlign="start center">
+                mat table
+              </div>
+            </div>
+          </div>
+        </mat-tab>
+        <mat-tab [disabled]="isLoading" label="Documents">
+          <ng-template mat-tab-label>
+            <span class="mr-8">Documents</span>
+          </ng-template>
+          <div class="content p-24" [@animate]="{value:'*',params:{x:'100%'}}">
+
+            <div fxLayout="column" fxLayoutAlign="start start"
+              style="margin-bottom: 64px; border-bottom: 1px solid #e0e0e0;">
+              <div fxLayout="row" fxLayoutAlign="space-between center"
+                style="flex: 1; width: 100%; position: relative; padding: 0px 32px 16px 0px;"
+                [ngStyle.lt-lg]="{'margin-bottom': '20px; padding: 0 !important;'}">
+                <div class="title" style="font-size: 18px; font-weight: 600;">
+                  Detail Manifest
+                </div>
+                <div style="max-width: 300px; flex: 1">
+                  <steps-preview></steps-preview>
+                </div>
+              </div>
+              <div fxLayout="row" fxLayout.lt-lg="column-reverse" style="width: 100%; padding: 24px 0px 32px 0">
+                <div fxLayout="column" style="margin-right: 24px;" [ngStyle.lt-lg]="{'margin-top': '12px;'}">
+                  <div fxHide.lt-lg>
+                    <button (click)="fileInput1.click()" style="margin-top: 5px; width: 100px; height: 40px;"
+                      mat-raised-button color="primary">
+                      <div fxLayoutAlign="center">
+                        <span>Upload PDF</span>
+                      </div>
+                    </button>
+                    <button *ngIf="fileDetailManifest64" (click)="viewPDF('fileDetailManifest64Original')"
+                      style="margin-top: 5px; margin-left: 7px; width: 100px; height: 40px;" mat-raised-button
+                      color="accent" [@animate]="{value:'*',params:{delay:'250ms',scale:'0.2'}}">
+                      <div fxLayoutAlign="center">
+                        <span>View PDF</span>
+                      </div>
+                    </button>
+                    <!-- Download button only if contains FilePath -->
+                    <!-- <button *ngIf="fileDetailManifest64" (click)="downloadPDF('fileDetailManifest64Original')"  style="margin-top: 5px;  width: 100px; height: 40px;" mat-raised-button color="accent" [@animate]="{value:'*',params:{delay:'250ms',scale:'0.2'}}">
+                              <div fxLayoutAlign="center">
+                                  <span>Download</span>
+                              </div>
+                          </button> -->
+                  </div>
+                  <div fxHide.gt-md>
+                    <button (click)="fileInput1.click()" style="margin-top: 5px; width: 100px; height: 40px;"
+                      mat-raised-button color="primary">
+                      <div fxLayoutAlign="center">
+                        <span>Upload PDF</span>
+                      </div>
+                    </button>
+                    <!-- Download button only if contains FilePath -->
+                    <!-- <button *ngIf="fileDetailManifest64" (click)="downloadPDF('fileDetailManifest64Original')"  style="margin-top: 5px; margin-left: 7px;  width: 100px; height: 40px;" mat-raised-button color="accent" [@animate]="{value:'*',params:{delay:'250ms',scale:'0.2'}}">
+                              <div fxLayoutAlign="center">
+                                  <span>Download</span>
+                              </div>
+                          </button> -->
+                  </div>
+                  <input type="file" id="fileInput1" style="display: none;" accept="image/*" id="cameraInput"
+                    name="cameraInput" (change)="onFileSelected($event, 'fileDetailManifest');"
+                    (click)="fileInput1.value = null" accept=".pdf" #fileInput1>
+                  <div style="flex: 1; margin-top: 20px;">
+                    <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                      <mat-label>Expected Date</mat-label>
+                      <input placeholder="Enter expected date" #inputDate formControlName="Date" matInput
+                        [matDatepicker]="Date">
+                      <mat-datepicker-toggle matSuffix [for]="Date"></mat-datepicker-toggle>
+                      <mat-datepicker #Date></mat-datepicker>
+                    </mat-form-field>
+                  </div>
+                  <div fxLayout="column" fxLayoutAlign="flex-end flex-start">
+                    <!-- <button mat-mini-fab color="primary"> <mat-icon>check</mat-icon> </button>
+                          <div style="letter-spacing: 0.5px; opacity: 0.8;">APPROVE</div> -->
+                    <button (click)="fileInput1.click()" style="margin-top: 5px; width: 100px; height: 40px;"
+                      mat-raised-button color="primary">
+                      <div fxLayoutAlign="center">
+                        <span>Approve</span>
+                      </div>
+                    </button>
+                  </div>
+                </div>
+                <div #containerWidth style="width: 100%; position: relative;">
+                  <div fxFlex *ngIf="!fileDetailManifest64" fxLayoutAlign="center center"
+                    style="padding: 4px; height: 300px; max-height: 300px; width: 300px; max-width: 300px; background-color: #ddd">
+                    <mat-icon style="color: #fff; width: 32px; height: 32px; font-size: 32px;">help</mat-icon>
+                  </div>
+                  <div fxFlex *ngIf="fileDetailManifest64" fxLayoutAlign="center center"
+                    style="position: relative; padding: 4px; height: 300px; max-height: 300px; width: 300px; max-width: 300px; overflow: auto;">
+                    <embed style="height: 100%;" height="100%" width="{{containerWidth.offsetWidth}}"
+                      [src]="fileDetailManifest64" type="application/pdf">
+                  </div>
+                  <div *ngIf="fileDetailManifest64" class="remove"
+                    style="z-index: 9999999 !important; position: absolute; top: -7px; right: -7px; background: none;">
+                    <button matTooltip="Remove File" (click)="onRemovePdf('fileDetailManifest64')"
+                      class="mat-elevation-z2" mat-icon-button style="background-color: #fff;">
+                      <mat-icon>close</mat-icon>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div fxLayout="column" fxLayoutAlign="start start"
+              style="margin-bottom: 64px; border-bottom: 1px solid #e0e0e0;">
+              <div fxLayout="row" fxLayoutAlign="space-between center"
+                style="flex: 1; width: 100%; position: relative; padding: 0px 32px 16px 0px;"
+                [ngStyle.lt-lg]="{'margin-bottom': '20px; padding: 0 !important;'}">
+                <div class="title" style="font-size: 18px; font-weight: 600;">
+                  BL Document
+                </div>
+                <div style="max-width: 300px; flex: 1">
+                  <steps-preview></steps-preview>
+                </div>
+              </div>
+              <div fxLayout="row" fxLayout.lt-lg="column-reverse" style="width: 100%; padding: 24px 0px 32px 0">
+                <div fxLayout="column" style="margin-right: 24px;" [ngStyle.lt-lg]="{'margin-top': '12px;'}">
+                  <div fxHide.lt-lg>
+                    <button (click)="fileInput1.click()"
+                      style="margin-top: 5px; margin-left: 7px; width: 100px; height: 40px;" mat-raised-button
+                      color="primary">
+                      <div fxLayoutAlign="center">
+                        <span>Upload PDF</span>
+                      </div>
+                    </button>
+                    <button *ngIf="fileBLDocument64" (click)="viewPDF('fileBLDocument64Original')"
+                      style="margin-top: 5px; width: 100px; height: 40px;" mat-raised-button color="accent"
+                      [@animate]="{value:'*',params:{delay:'250ms',scale:'0.2'}}">
+                      <div fxLayoutAlign="center">
+                        <span>View PDF</span>
+                      </div>
+                    </button>
+                    <!-- Download button only if contains FilePath -->
+                    <!-- <button *ngIf="fileBLDocument64" (click)="downloadPDF('fileBLDocument64Original')"  style="margin-top: 5px;  width: 100px; height: 40px;" mat-raised-button color="accent" [@animate]="{value:'*',params:{delay:'250ms',scale:'0.2'}}">
+                              <div fxLayoutAlign="center">
+                                  <span>Download</span>
+                              </div>
+                          </button> -->
+                  </div>
+                  <div fxHide.gt-md>
+                    <button (click)="fileInput1.click()" style="margin-top: 5px; width: 100px; height: 40px;"
+                      mat-raised-button color="primary">
+                      <div fxLayoutAlign="center">
+                        <span>Upload PDF</span>
+                      </div>
+                    </button>
+                    <!-- Download button only if contains FilePath -->
+                    <!-- <button *ngIf="fileBLDocument64" (click)="downloadPDF('fileBLDocument64Original')"  style="margin-top: 5px; margin-left: 7px;  width: 100px; height: 40px;" mat-raised-button color="accent" [@animate]="{value:'*',params:{delay:'250ms',scale:'0.2'}}">
+                              <div fxLayoutAlign="center">
+                                  <span>Download</span>
+                              </div>
+                          </button> -->
+                  </div>
+                  <input type="file" id="fileInput1" style="display: none;" accept="image/*" id="cameraInput"
+                    name="cameraInput" (change)="onFileSelected($event, 'fileBLDocument');"
+                    (click)="fileInput1.value = null" accept=".pdf" #fileInput1>
+                  <div style="flex: 1; margin-top: 20px;">
+                    <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                      <mat-label>Expected Date</mat-label>
+                      <input placeholder="Enter expected date" #inputDate formControlName="Date2" matInput
+                        [matDatepicker]="Date2">
+                      <mat-datepicker-toggle matSuffix [for]="Date2"></mat-datepicker-toggle>
+                      <mat-datepicker #Date2></mat-datepicker>
+                    </mat-form-field>
+                  </div>
+                  <div fxLayout="column" fxLayoutAlign="flex-end flex-start">
+                    <!-- <button mat-mini-fab color="primary"> <mat-icon>check</mat-icon> </button>
+                          <div style="letter-spacing: 0.5px; opacity: 0.8;">APPROVE</div> -->
+                    <button (click)="fileInput1.click()" style="margin-top: 5px; width: 100px; height: 40px;"
+                      mat-raised-button color="primary">
+                      <div fxLayoutAlign="center">
+                        <span>Approve</span>
+                      </div>
+                    </button>
+                  </div>
+                </div>
+                <div #containerWidth style="width: 100%; position: relative;">
+                  <div fxFlex *ngIf="!fileBLDocument64" fxLayoutAlign="center center"
+                    style="padding: 4px; height: 300px; max-height: 300px; width: 300px; max-width: 300px; background-color: #ddd">
+                    <mat-icon style="color: #fff; width: 32px; height: 32px; font-size: 32px;">help</mat-icon>
+                  </div>
+                  <div fxFlex *ngIf="fileBLDocument64" fxLayoutAlign="center center"
+                    style="position: relative; padding: 4px; height: 300px; max-height: 300px; width: 300px; max-width: 300px; overflow: auto;">
+                    <embed style="height: 100%;" height="100%" width="{{containerWidth.offsetWidth}}"
+                      [src]="fileBLDocument64" type="application/pdf">
+                  </div>
+                  <div *ngIf="fileBLDocument64" class="remove"
+                    style="z-index: 9999999 !important; position: absolute; top: -7px; right: -7px; background: none;">
+                    <button matTooltip="Remove File" (click)="onRemovePdf('fileBLDocument64')" class="mat-elevation-z2"
+                      mat-icon-button style="background-color: #fff;">
+                      <mat-icon>close</mat-icon>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div fxLayout="column" fxLayoutAlign="start start"
+              style="margin-bottom: 64px; border-bottom: 1px solid #e0e0e0;">
+              <div fxLayout="row" fxLayoutAlign="space-between center"
+                style="flex: 1; width: 100%; position: relative; padding: 0px 32px 16px 0px"
+                [ngStyle.lt-lg]="{'margin-bottom': '20px; padding: 0 !important;'}">
+                <div class="title" style="font-size: 18px; font-weight: 600;">
+                  Commercial Invoice / Packing List
+                </div>
+                <div style="max-width: 300px; flex: 1">
+                  <steps-preview></steps-preview>
+                </div>
+              </div>
+              <div fxLayout="row" fxLayout.lt-lg="column-reverse" style="width: 100%; padding: 24px 0px 32px 0">
+                <div fxLayout="column" style="margin-right: 24px;" [ngStyle.lt-lg]="{'margin-top': '12px;'}">
+                  <div fxHide.lt-lg>
+                    <button (click)="fileInput1.click()" style="margin-top: 5px; width: 100px; height: 40px;"
+                      mat-raised-button color="primary">
+                      <div fxLayoutAlign="center">
+                        <span>Upload PDF</span>
+                      </div>
+                    </button>
+                    <button *ngIf="filePackingList64" (click)="viewPDF('filePackingList64Original')"
+                      style="margin-top: 5px; width: 100px; height: 40px;" mat-raised-button color="accent"
+                      [@animate]="{value:'*',params:{delay:'250ms',scale:'0.2'}}">
+                      <div fxLayoutAlign="center">
+                        <span>View PDF</span>
+                      </div>
+                    </button>
+                    <!-- Download button only if contains FilePath -->
+                    <!-- <button *ngIf="fileBLDocument64" (click)="downloadPDF('filePackingList64Original')"  style="margin-top: 5px; margin-left: 7px; width: 100px; height: 40px;" mat-raised-button color="accent" [@animate]="{value:'*',params:{delay:'250ms',scale:'0.2'}}">
+                              <div fxLayoutAlign="center">
+                                  <span>Download</span>
+                              </div>
+                          </button> -->
+                  </div>
+                  <div fxHide.gt-md>
+                    <button (click)="fileInput1.click()" style="margin-top: 5px; width: 100px; height: 40px;"
+                      mat-raised-button color="primary">
+                      <div fxLayoutAlign="center">
+                        <span>Upload PDF</span>
+                      </div>
+                    </button>
+                    <!-- Download button only if contains FilePath -->
+                    <!-- <button *ngIf="fileBLDocument64" (click)="downloadPDF('filePackingList64Original')"  style="margin-top: 5px; margin-left: 7px; width: 100px; height: 40px;" mat-raised-button color="accent" [@animate]="{value:'*',params:{delay:'250ms',scale:'0.2'}}">
+                              <div fxLayoutAlign="center">
+                                  <span>Download</span>
+                              </div>
+                          </button> -->
+                  </div>
+                  <input type="file" id="fileInput1" style="display: none;" accept="image/*" id="cameraInput"
+                    name="cameraInput" (change)="onFileSelected($event, 'filePackingList');"
+                    (click)="fileInput1.value = null" accept=".pdf" #fileInput1>
+                  <div style="flex: 1; margin-top: 20px;">
+                    <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                      <mat-label>Expected Date</mat-label>
+                      <input placeholder="Enter expected date" #inputDate formControlName="Date3" matInput
+                        [matDatepicker]="Date3">
+                      <mat-datepicker-toggle matSuffix [for]="Date3"></mat-datepicker-toggle>
+                      <mat-datepicker #Date3></mat-datepicker>
+                    </mat-form-field>
+                  </div>
+                  <div fxLayout="column" fxLayoutAlign="flex-end flex-start">
+                    <!-- <button mat-mini-fab color="primary"> <mat-icon>check</mat-icon> </button>
+                          <div style="letter-spacing: 0.5px; opacity: 0.8;">APPROVE</div> -->
+                    <button (click)="fileInput1.click()" style="margin-top: 5px; width: 100px; height: 40px;"
+                      mat-raised-button color="primary">
+                      <div fxLayoutAlign="center">
+                        <span>Approve</span>
+                      </div>
+                    </button>
+                  </div>
+                </div>
+                <div #containerWidth style="width: 100%; position: relative;">
+                  <div fxFlex *ngIf="!filePackingList64" fxLayoutAlign="center center"
+                    style="padding: 4px; height: 300px; max-height: 300px; width: 300px; max-width: 300px; background-color: #ddd">
+                    <mat-icon style="color: #fff; width: 32px; height: 32px; font-size: 32px;">help</mat-icon>
+                  </div>
+                  <div fxFlex *ngIf="filePackingList64" fxLayoutAlign="center center"
+                    style="position: relative; padding: 4px; height: 300px; max-height: 300px; width: 300px; max-width: 300px; overflow: auto;">
+                    <embed style="height: 100%;" height="100%" width="{{containerWidth.offsetWidth}}"
+                      [src]="filePackingList64" type="application/pdf">
+                  </div>
+                  <div *ngIf="filePackingList64" class="remove"
+                    style="z-index: 9999999 !important; position: absolute; top: -7px; right: -7px; background: none;">
+                    <button matTooltip="Remove File" (click)="onRemovePdf('filePackingList64')" class="mat-elevation-z2"
+                      mat-icon-button style="background-color: #fff;">
+                      <mat-icon>close</mat-icon>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </mat-tab>
+        <mat-tab [disabled]="isLoading" label="Contacts">
+          <ng-template mat-tab-label>
+            <span class="mr-8">Contacts</span>
+          </ng-template>
+          <div class="content p-24" [@animate]="{value:'*',params:{x:'100%'}}">
+
+            <div class="body-container m-0">
+              <div fxLayout="column" fxLayoutAlign="start center">
+                mat table
+              </div>
+            </div>
+          </div>
+        </mat-tab>
+        <mat-tab *ngIf="media.isActive('lt-md')" [disabled]="isLoading" label="Messages" class="accent">
+          <ng-template mat-tab-label>
+              <span class="mr-8">Messages</span>
+              <span style="font-weight: 400;">(4)</span>
+          </ng-template>
+          <div style="height: 100%; position: relative;">
+              <chat-panel-shipments style="height: 100%; position: relative; background-color: #fff !important; color: rgba(0, 0, 0, .78) !important"></chat-panel-shipments>
+          </div>
+      </mat-tab>
+      </mat-tab-group>
+    </form>
+
+    <div fxHide fxShow.gt-sm style="height: 100%; position: relative;">
+      <chat-panel-shipments style="height: 100%; position: relative;"></chat-panel-shipments>
+    </div>
+
+  </div>
+  <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="space-between center">
+    <button mat-raised-button color="accent" (click)="save()" class="dialog-button" [disabled]="shipmentForm.invalid"
+      aria-label="SAVE">
+      <div fxLayoutAlign="center">
+        <span *ngIf="!isSaving">SAVE</span>
+        <mat-spinner diameter="20" *ngIf="isSaving"></mat-spinner>
+      </div>
+    </button>
+  </div>
+</div>

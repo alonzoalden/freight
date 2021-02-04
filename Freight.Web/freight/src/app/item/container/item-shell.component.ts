@@ -17,6 +17,7 @@ import { Item } from 'app/_shared/model/item';
 export class ItemShellComponent implements OnDestroy {
   itemEntities$: Observable<Item[]>;
   selectedItem$: Observable<Item>;
+  isLoading$: Observable<boolean>;
 
   private _unsubscribeAll: Subject<any>;
 
@@ -30,6 +31,7 @@ export class ItemShellComponent implements OnDestroy {
   ngOnInit(): void {
     this.itemEntities$ = this.store.select(fromItem.getAllItemList);
     this.selectedItem$ = this.store.select(fromItem.getSelectedItem);
+    this.isLoading$ = this.store.select(fromItem.getIsLoading);
     this.store.dispatch(ItemPageActions.loadItemList());
   }
   selectItem(item: Item): void {

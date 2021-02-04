@@ -34,11 +34,11 @@ import { Store } from "@ngrx/store";
 export class ItemListComponent implements OnInit, OnDestroy {
   @Input() items: Item[] = [];
   @Input() selected: Item;
+  @Input() isLoading: boolean;
   @Output() select = new EventEmitter<Item>();
   files: any;
   dataSource: any;
   displayedColumns = ['itemNumber', 'itemName', 'htsCode', 'fnsku', 'unitPrice', 'actions'];
-  isLoading: boolean = true;
   isLeadRole: boolean;
   filteredCourses: any[];
   currentCategory: string;
@@ -48,7 +48,7 @@ export class ItemListComponent implements OnInit, OnDestroy {
   inputEnabled: boolean;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
-  @ViewChild("mainInput") mainInput: ElementRef;
+  @ViewChild('mainInput') mainInput: ElementRef;
   private _unsubscribeAll: Subject<any>;
 
   constructor(
@@ -64,12 +64,11 @@ export class ItemListComponent implements OnInit, OnDestroy {
     this.searchEnabled = false;
     this.inputEnabled = true;
   }
-  ngOnChanges(): void {
-    if (this.items && this.items.length) {
+  ngOnChanges(changes): void {
+    if (changes.items && changes.items.currentValue?.length) {
       this.dataSource = new MatTableDataSource<any>(this.items);
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
-      this.isLoading = false;
       this.focusMainInput();
     }
   }
@@ -78,14 +77,13 @@ export class ItemListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    // Unsubscribe from all subscriptions
-    this.itemService.onItemSelected.next({});
+    //this.itemService.onItemSelected.next({});
     this._unsubscribeAll.next();
     this._unsubscribeAll.complete();
   }
 
-  onSelect(row: Item): void {
-    this.select.emit(row);
+  onSelect(item: Item): void {
+    this.select.emit(item);
   }
 
   toggleSidebar(name): void {
@@ -115,11 +113,13 @@ export class ItemListComponent implements OnInit, OnDestroy {
   }
 
   applyFilter(filterValue: string) {
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
+    if (this.dataSource) {
+      this.dataSource.filter = filterValue.trim().toLowerCase();
+      if (this.dataSource.paginator) {
+        this.dataSource.paginator.firstPage();
+      }
+      this.itemService.onItemSelected.next({});
     }
-    this.itemService.onItemSelected.next({});
   }
   openEditItemDialog(data = {}): void {
     this.dialogRef = this._matDialog.open(EditItemDialogComponent, {
@@ -132,12 +132,17 @@ export class ItemListComponent implements OnInit, OnDestroy {
         if (!response) {
           return;
         }
-        this.dataSource.data.push(response);
       });
   }
   focusMainInput() {
     if (this.inputEnabled) {
       setTimeout(() => this.mainInput.nativeElement.focus(), 10);
     }
+  }
+  onClearSearch(): void {
+    this.searchTerm = '';
+    this.applyFilter(this.searchTerm);
+    this.focusMainInput();
+    
   }
 }
