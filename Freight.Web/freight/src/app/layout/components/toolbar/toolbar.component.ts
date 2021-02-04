@@ -13,6 +13,7 @@ import { AppService } from '../../../app.service';
 // import { Member } from 'app/shared/class/member';
 import { NotificationsService } from 'angular2-notifications';
 import { Router } from '@angular/router';
+import { OidcSecurityService } from 'angular-auth-oidc-client';
 
 @Component({
     selector: 'toolbar',
@@ -40,8 +41,8 @@ export class ToolbarComponent implements OnInit, OnDestroy {
         //private _translateService: TranslateService,
         // private oauthService: OAuthService,
         public appService: AppService,
-        private router: Router
-
+        private router: Router,
+        public oidcSecurityService: OidcSecurityService
     ) {
         // Set the defaults
         this.userStatusOptions = [
@@ -135,8 +136,9 @@ export class ToolbarComponent implements OnInit, OnDestroy {
         // this._translateService.use(lang.id);
     }
     logout() {
+        this.oidcSecurityService.logoff();
         //this.oauthService.logOut();
-        this.router.navigate(['/']);
+        //this.router.navigate(['/']);
     }
     onUpdateLocation(key) {
         // const updatedUserInfo = { ...this.appService.userInfo.value };

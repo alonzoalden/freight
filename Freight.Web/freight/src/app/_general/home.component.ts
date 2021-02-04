@@ -11,6 +11,7 @@ import { Store } from '@ngrx/store';
 import * as fromAppState from '../_state';
 import { AppPageActions } from '../_state/actions';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
+
 @Component({
     templateUrl: './home.component.html',
     styleUrls: ['./home.component.scss'],
@@ -41,9 +42,9 @@ export class HomeComponent implements OnInit {
         this.componentActive = false;
     }
     login(): void {
-    this.oidcSecurityService.authorize();
-    this.store.dispatch(AppPageActions.loadBusinesses());
-    this.router.navigate(['']);
+        this.oidcSecurityService.authorize();
+        this.store.dispatch(AppPageActions.loadBusinesses());
+        this.router.navigate(['']);
     }
     
     logout(): void {

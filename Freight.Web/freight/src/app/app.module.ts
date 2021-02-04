@@ -51,7 +51,8 @@ import { MatProgressSpinnerModule, MatSpinner } from '@angular/material/progress
 export function configureAuth(oidcConfigService: OidcConfigService): () => any {
   return () =>
     oidcConfigService.withConfig({
-      stsServer: 'https://login.fbasimplify.com',
+      //stsServer: 'https://login.fbasimplify.com',
+      stsServer: 'https://localhost:5001',
       redirectUrl: window.location.origin,
       postLogoutRedirectUri: window.location.origin,
       //clientId: 'angularfreightappclient',
@@ -115,14 +116,13 @@ export function configureAuth(oidcConfigService: OidcConfigService): () => any {
     }),
   ],
   providers: [
-    FakeDbService
-    // OidcConfigService,
-    //   {
-    //     provide: APP_INITIALIZER,
-    //     useFactory: configureAuth,
-    //     deps: [OidcConfigService],
-    //     multi: true,
-    //   }
+    OidcConfigService,
+      {
+        provide: APP_INITIALIZER,
+        useFactory: configureAuth,
+        deps: [OidcConfigService],
+        multi: true,
+      }
   ],
   bootstrap: [AppComponent]
 })
