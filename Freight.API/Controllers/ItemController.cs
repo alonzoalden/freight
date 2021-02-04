@@ -1,9 +1,12 @@
 ﻿using Freight.API.BAL;
 using Freight.API.Common.Model.Item;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System;
+using System.Linq;
+using System.Security.Claims;
 
 namespace Freight.API.Controllers
 {
@@ -24,6 +27,7 @@ namespace Freight.API.Controllers
         {
             try
             {
+                string test = GetClaimUserID();
                 return new JsonResult(ItemBAL.GetItems());
             }
             catch (Exception ex)
@@ -98,6 +102,15 @@ namespace Freight.API.Controllers
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "Failed to delete Item");
             }
+        }
+        protected string GetClaimUserID()
+        {
+            return User.Claims.First(x => x.Type == "fbasimplifyuserid").Value;
+
+            //ClaimsIdentity objClaimsIdentity = HttpContext.User.Identity as ClaimsIdentity;
+            //Claim objClaim = objClaimsIdentity.Claims.FirstOrDefault(x => x.Type == "fbasimplifyuserid");
+
+            //return string.IsNullOrEmpty(objClaim.Value) ? string.Empty : objClaim.Value;
         }
     }
 }

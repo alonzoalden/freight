@@ -26,11 +26,5 @@ namespace Freight.API.Controllers
         {
             return new JsonResult(from c in User.Claims select new { c.Type, c.Value });
         }
-
-        [HttpGet, Route("test")]
-        public IActionResult Test()
-        {
-            return Ok(_bal.getValue());
-        }
     }
 }

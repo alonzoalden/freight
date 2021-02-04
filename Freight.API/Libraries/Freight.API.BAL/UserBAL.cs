@@ -3,6 +3,8 @@ using Freight.API.Common.Configuration;
 using Freight.API.Common.Model.User;
 using Freight.API.DAL;
 using System.Collections.Generic;
+using System.Security.Claims;
+using System.Web;
 
 namespace Freight.API.BAL
 {
@@ -14,12 +16,10 @@ namespace Freight.API.BAL
         {
             UserDAL = new DAL.UserDAL(connection, setting);
         }
-
         public List<User> GetUsers()
         {
             return UserDAL.GetUsers();
         }
-
         public User GetUser(int id)
         {
             return UserDAL.GetUser(id);
@@ -31,20 +31,11 @@ namespace Freight.API.BAL
         public User CreateUser(UserInsert user)
         {
             User User = UserDAL.CreateUser(user);
-
-            //CreateIdentiyServerUSer()
-
             return User;
         }        
-
         public void DeleteUser(int id)
         {
             UserDAL.DeleteUser(id);
-        }
-
-        protected void CreateIdentityServerUser()
-        {
-
         }
     }
 }
