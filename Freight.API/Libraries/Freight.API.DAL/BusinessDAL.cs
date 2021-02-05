@@ -33,10 +33,21 @@ namespace Freight.API.DAL
             using (SqlConnection connection = new SqlConnection(DefaultConnection))
             {
                 DynamicParameters p = new DynamicParameters();
-                p.Add("Businessid", id);
+                p.Add("businessid", id);
                 Business result = connection.Query<Business>("spGetBusiness", p, commandType: CommandType.StoredProcedure).Single();
 
                 return result;
+            }
+        }
+        public List<Business> GetBusinessByUserID(int userid)
+        {
+            using (SqlConnection connection = new SqlConnection(DefaultConnection))
+            {
+                DynamicParameters p = new DynamicParameters();
+                p.Add("userid", userid);
+                List<Business> results = connection.Query<Business>("spGetBusinessByUserID", p, commandType: CommandType.StoredProcedure).ToList();
+
+                return results;
             }
         }
         public Business UpdateBusiness(BusinessUpdate Business)
