@@ -55,7 +55,8 @@ import { AuthGuard } from 'app/_general/auth/auth.guard';
 export function configureAuth(oidcConfigService: OidcConfigService): () => any {
   return () =>
     oidcConfigService.withConfig({
-      stsServer: 'https://login.fbasimplify.com',
+      //stsServer: 'https://login.fbasimplify.com',
+      stsServer: 'https://localhost:5001',
       redirectUrl: window.location.origin,
       postLogoutRedirectUri: window.location.origin,
       //clientId: 'angularfreightappclient',

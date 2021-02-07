@@ -4,6 +4,7 @@ import { Observable, BehaviorSubject, throwError, Subject } from "rxjs";
 import { environment } from "../../environments/environment";
 import { catchError, tap, takeUntil } from "rxjs/operators";
 import { Item } from "app/_shared/model/item";
+import { OidcSecurityService } from "angular-auth-oidc-client";
 @Injectable()
 export class ItemService implements OnDestroy {
   private apiURL = environment.webapiURL;
@@ -14,8 +15,20 @@ export class ItemService implements OnDestroy {
   filteredCourses: any[];
   currentCategory: string;
   searchTerm: BehaviorSubject<any>;
-
-  constructor(private http: HttpClient) {
+  public dropDownTypes = {
+    units: [
+      'IN',
+      'CM'
+    ],
+    weights: [
+      'lb',
+      'kg'
+    ],
+    currency: [
+      'USD'
+    ]
+  }
+  constructor(private http: HttpClient,public oidcSecurityService: OidcSecurityService) {
     this.onItemSelected = new BehaviorSubject({});
     this.allItems = new BehaviorSubject([]);
     this.isEdit = new BehaviorSubject({});
@@ -30,7 +43,8 @@ export class ItemService implements OnDestroy {
 
 
   getAllItemList(): Observable<any> {
-    return this.http.get(this.apiURL + "/item")
+    return this.http
+      .get(this.apiURL + "/item")
       .pipe(
         tap((data: Item[]) => {
           this.allItems.next(data);
@@ -40,7 +54,25 @@ export class ItemService implements OnDestroy {
   }
 
   getItem(id: string): Observable<any> {
-    return this.http.get<any>(this.apiURL + '/item/' + id)
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + this.oidcSecurityService.getToken()
+    });
+    //return this.http.get<any>('https://localhost:44357/identity', { headers })
+
+
+    return this.http.get<any>(this.apiURL + '/item/' + id, { headers } )
+      .pipe(
+        tap((data: Item) => {
+          this.onItemSelected.next(data);
+        }),
+        catchError(this.handleError)
+      );
+  }
+
+  getCurrentUserTest(): Observable<any> {
+    return this.http.get<any>(this.apiURL + '/user/current' )
       .pipe(
         tap((data: Item) => {
           this.onItemSelected.next(data);

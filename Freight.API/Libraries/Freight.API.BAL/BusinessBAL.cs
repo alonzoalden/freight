@@ -22,6 +22,10 @@ namespace Freight.API.BAL
         {
             return BusinessDAL.GetBusiness(id);
         }
+        public List<Business> GetBusinessByUserID(int userid)
+        {
+            return BusinessDAL.GetBusinessByUserID(userid);
+        }
         public Business CreateBusiness(BusinessInsert business)
         {
             return BusinessDAL.CreateBusiness(business);

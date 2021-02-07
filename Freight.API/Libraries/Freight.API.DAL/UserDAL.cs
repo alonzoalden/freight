@@ -47,6 +47,7 @@ namespace Freight.API.DAL
                 p.Add("email", user.Email);
                 p.Add("firstname", user.FirstName);
                 p.Add("lastname", user.LastName);
+                p.Add("businessid", user.BusinessID);
                 User result = connection.Query<User>("spCreateUser", p, commandType: CommandType.StoredProcedure).Single();
 
                 return result;
@@ -62,6 +63,7 @@ namespace Freight.API.DAL
                 p.Add("email", user.Email);
                 p.Add("firstname", user.FirstName);
                 p.Add("lastname", user.LastName);
+                p.Add("businessid", user.BusinessID);
                 User result = connection.Query<User>("spUpdateUser", p, commandType: CommandType.StoredProcedure).Single();
 
                 return result;

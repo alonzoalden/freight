@@ -10,13 +10,6 @@ namespace Freight.API.Controllers
     [Authorize]
     public class IdentityController : ControllerBase
     {
-        private TestBAL _bal;
-
-        public IdentityController(IOptions<Common.Configuration.Connection> connection, IOptions<Common.Configuration.Setting> settings)
-        {
-            _bal = new BAL.TestBAL(connection.Value, settings.Value);
-        }
-
         /// <summary>
         /// Get all Claims for that User
         /// </summary>
@@ -25,12 +18,6 @@ namespace Freight.API.Controllers
         public IActionResult Get()
         {
             return new JsonResult(from c in User.Claims select new { c.Type, c.Value });
-        }
-
-        [HttpGet, Route("test")]
-        public IActionResult Test()
-        {
-            return Ok(_bal.getValue());
         }
     }
 }

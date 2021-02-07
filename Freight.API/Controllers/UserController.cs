@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System;
+using System.Linq;
+using System.Security.Claims;
+using System.Web;
 
 namespace Freight.API.Controllers
 {
@@ -17,10 +20,9 @@ namespace Freight.API.Controllers
         public UserController(IOptions<Common.Configuration.Connection> connection, IOptions<Common.Configuration.Setting> settings)
         {
             UserBAL = new BAL.UserBAL(connection.Value, settings.Value);
-        }
-
+        }        
         [HttpGet]
-        public IActionResult GetUsers()
+       public IActionResult GetUsers()
         {
             try
             {
@@ -31,7 +33,6 @@ namespace Freight.API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Failed to get Users");
             }
         }
-
         [HttpGet]
         [Route("{id}")]
         public IActionResult GetUser(int id)
@@ -45,7 +46,19 @@ namespace Freight.API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Failed to get User");
             }
         }
-
+        [HttpGet]
+        [Route("current")]
+        public IActionResult GetCurrentUser()
+        {
+            try
+            {
+                return new JsonResult(UserBAL.GetUser(Convert.ToInt32(GetClaimUserID())));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Failed to get Current User");
+            }
+        }
         [HttpPut]
         public IActionResult UpdateUser(UserUpdate user)
         {
@@ -85,6 +98,11 @@ namespace Freight.API.Controllers
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "Failed to delete User");
             }
+        }
+
+        protected string GetClaimUserID()
+        {
+            return User.Claims.First(x => x.Type == "fbasimplifyuserid").Value;
         }
     }
 }

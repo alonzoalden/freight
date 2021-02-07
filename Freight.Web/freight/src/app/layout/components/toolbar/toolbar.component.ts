@@ -16,6 +16,7 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import * as fromAppState from 'app/_state';
 import { AppPageActions } from 'app/_state/actions';
+import { OidcSecurityService } from 'angular-auth-oidc-client';
 
 @Component({
     selector: 'toolbar',
@@ -46,6 +47,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
         private router: Router,
         private store: Store<fromAppState.State>,
 
+        public oidcSecurityService: OidcSecurityService
     ) {
         // Set the defaults
         this.userStatusOptions = [
@@ -141,8 +143,9 @@ export class ToolbarComponent implements OnInit, OnDestroy {
         // this._translateService.use(lang.id);
     }
     logout() {
+        this.oidcSecurityService.logoff();
         //this.oauthService.logOut();
-        this.router.navigate(['/']);
+        //this.router.navigate(['/']);
     }
     onUpdateLocation(key) {
         // const updatedUserInfo = { ...this.appService.userInfo.value };
