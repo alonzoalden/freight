@@ -1,0 +1,37 @@
+<div class="dialog-content-wrapper">
+  <mat-toolbar class="mat-accent m-0">
+    <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+      <span class="title dialog-title">{{selectedCustomer.customerID ? 'Edit' : 'Create' }} Customer</span>
+      <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-toolbar-row>
+  </mat-toolbar>
+  <div mat-dialog-content class="p-24 m-0">
+    <form name="customerForm" [formGroup]="customerForm" class="compose-form" fxLayout="column" fxFlex>
+      <div fxLayout="column" fxLayoutAlign="start start">
+        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+          <mat-label> E-mail </mat-label>
+          <input #mainInput matInput placeholder="Email" name="email" formControlName="email" required>
+        </mat-form-field>
+        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+          <mat-label> Ap E-mail </mat-label>
+          <input #mainInput matInput placeholder="Ap E-mail" name="apEmail" formControlName="apEmail" required>
+        </mat-form-field>
+        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+          <mat-label> Company Name </mat-label>
+          <input #mainInput matInput placeholder="Company Name" name="companyName" formControlName="companyName" required>
+        </mat-form-field>
+      </div>
+    </form>
+  </div>
+  <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="space-between center">
+    <button mat-raised-button color="accent" (click)="save()" class="dialog-button" [disabled]="customerForm.invalid"
+      aria-label="SAVE">
+      <div fxLayoutAlign="center">
+        <span *ngIf="!isSaving">INVITE</span>
+        <mat-spinner diameter="20" *ngIf="isSaving"></mat-spinner>
+      </div>
+    </button>
+  </div>
+</div>

@@ -73,6 +73,13 @@ export class ItemService implements OnDestroy {
       );
   }
 
+  deleteItem(id: any): Observable<any> {
+    return this.http.delete<any>(this.apiURL + '/item/' + id)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
   handleError = (err: HttpErrorResponse) => {
     let errorMessage: string;
     if (err.error instanceof Error) {

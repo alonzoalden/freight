@@ -11,6 +11,7 @@
         [selected]="selectedLocation$ | async"
         [isLoading]="isLoading$ | async"
         (select)="selectLocation($event)"
+        (deleteLocation)="deleteLocation($event)"
       ></location-list>
     </div>
     <!-- / CONTENT -->

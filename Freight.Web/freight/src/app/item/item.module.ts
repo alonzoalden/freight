@@ -45,7 +45,6 @@ const routes: Routes = [];
   imports: [
     RouterModule.forChild(routes),
     MatProgressSpinnerModule,
-    MatButtonModule,
     MatIconModule,
     MatRippleModule,
     MatSlideToggleModule,

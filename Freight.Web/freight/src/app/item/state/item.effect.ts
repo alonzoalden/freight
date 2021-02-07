@@ -48,4 +48,24 @@ export class ItemEffects {
         )
       );
   });
+
+  deleteItem$ = createEffect(() => {
+    return this.actions$
+      .pipe(
+        ofType(ItemPageActions.deleteItem),
+        concatMap(action => this.itemService.deleteItem(action.itemid)
+          .pipe(
+            map((item) => {
+              
+              this.notifyService.success('Success', `${item.itemNumber} has been removed.`, { timeOut:3500, clickToClose: true });
+              return ItemApiActions.deleteItemSuccess({ itemid: action.itemid });
+            }),
+            catchError(error => {
+              this.notifyService.error('Error', `${error}`, { clickToClose: true });
+              return of(ItemApiActions.deleteItemFailure({ error }))
+            })
+          )
+        )
+      );
+  });
 }

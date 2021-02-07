@@ -72,4 +72,23 @@ export const itemReducer = createReducer<ItemState>(
       isSaving: false,
     };
   }),
+  on(ItemPageActions.deleteItem, (state, action): ItemState => {
+    return {
+      ...state,
+      isSaving: true
+    };
+  }),
+  on(ItemApiActions.deleteItemSuccess, (state, action): ItemState => {
+    return {
+      ...state,
+      isSaving: false,
+      allItems: state.allItems.filter(item => item.itemID !== action.itemid)
+    };
+  }),
+  on(ItemApiActions.deleteItemFailure, (state, action): ItemState => {
+    return {
+      ...state,
+      isSaving: false,
+    };
+  }),
 );

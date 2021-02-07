@@ -10,7 +10,8 @@ import { BusinessEntity } from 'app/_shared/model/business-entity';
 
 @Component({
   selector     : 'dashboard-shell',
-  templateUrl: './dashboard-shell.component.html'
+  templateUrl: './dashboard-shell.component.html',
+  styleUrls: ['./dashboard.component.scss'],
 })
 
 export class DashboardShellComponent implements OnInit {

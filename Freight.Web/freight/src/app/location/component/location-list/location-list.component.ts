@@ -36,6 +36,7 @@ export class LocationListComponent implements OnInit, OnDestroy {
   @Input() selected: Location;
   @Input() isLoading: boolean;
   @Output() select = new EventEmitter<Location>();
+  @Output() deleteLocation = new EventEmitter<any>();
   files: any;
   dataSource: any;
   displayedColumns = ['locationName', 'actions'];
@@ -77,13 +78,15 @@ export class LocationListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    //this.locationService.onLocationSelected.next({});
     this._unsubscribeAll.next();
     this._unsubscribeAll.complete();
   }
 
   onSelect(location: Location): void {
     this.select.emit(location);
+  }
+  onDelete(id: any): void {
+    this.deleteLocation.emit(id);
   }
 
   toggleSidebar(name): void {

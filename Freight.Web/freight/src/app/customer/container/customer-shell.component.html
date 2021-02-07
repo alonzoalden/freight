@@ -1,0 +1,21 @@
+<div class="page-layout simple right-sidebar inner-scroll">
+
+  <!-- CENTER -->
+  <div class="center" fxFlex>
+
+    <!-- CONTENT -->
+    <div class="content" #scrollContainer fusePerfectScrollbar>
+      <!-- <router-outlet (activate)="onActivate($event, scrollContainer)"></router-outlet> -->
+      <customer-list
+        [customers]="customerEntities$ | async"
+        [selected]="selectedCustomer$ | async"
+        [isLoading]="isLoading$ | async"
+        (select)="selectCustomer($event)"
+        (deleteCustomer)="deleteCustomer($event)"
+      ></customer-list>
+    </div>
+    <!-- / CONTENT -->
+  </div>
+  <!-- / CENTER -->
+
+</div>

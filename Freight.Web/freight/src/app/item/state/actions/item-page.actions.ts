@@ -20,3 +20,7 @@ export const setCurrentItem = createAction(
   '[App Page] Set Current Item',
   props<{ currentItem: Item }>()
 );
+export const deleteItem = createAction(
+  '[App Page] Delete Item',
+  props<{ itemid: any }>()
+);

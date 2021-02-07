@@ -20,3 +20,7 @@ export const setCurrentLocation = createAction(
   '[App Page] Set Current Location',
   props<{ currentLocation: Location }>()
 );
+export const deleteLocation = createAction(
+  '[App Page] Delete Location',
+  props<{ locationid: any }>()
+);

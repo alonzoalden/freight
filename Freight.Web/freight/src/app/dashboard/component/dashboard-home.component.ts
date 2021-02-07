@@ -3,7 +3,8 @@ import { BusinessEntity } from '../../_shared/model/business-entity';
 
 @Component({
   selector: 'dashboard-home',
-  templateUrl: './dashboard-home.component.html'
+  templateUrl: './dashboard-home.component.html',
+  styleUrls: ['../container/dashboard.component.scss'],
 })
 
 export class DashboardHomeComponent {

@@ -36,6 +36,7 @@ export class ItemListComponent implements OnInit, OnDestroy {
   @Input() selected: Item;
   @Input() isLoading: boolean;
   @Output() select = new EventEmitter<Item>();
+  @Output() deleteItem = new EventEmitter<any>();
   files: any;
   dataSource: any;
   displayedColumns = ['itemNumber', 'itemName', 'htsCode', 'fnsku', 'unitPrice', 'actions'];
@@ -84,6 +85,9 @@ export class ItemListComponent implements OnInit, OnDestroy {
 
   onSelect(item: Item): void {
     this.select.emit(item);
+  }
+  onDelete(itemid: any): void {
+    this.deleteItem.emit(itemid);
   }
 
   toggleSidebar(name): void {
@@ -143,6 +147,5 @@ export class ItemListComponent implements OnInit, OnDestroy {
     this.searchTerm = '';
     this.applyFilter(this.searchTerm);
     this.focusMainInput();
-    
   }
 }

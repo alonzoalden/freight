@@ -1,8 +1,19 @@
-<div>ID: {{ id }}</div>
-
-<div>Headers</div>
-<div *ngIf="accesses$ | async as accesses">
-  <div *ngFor="let header of accesses.headers; index as i">
-    {{ header }}
+<div class="dashboard-layout">
+  <div class="fuse-card auto-width" fxLayout="column">
+    <div class="card-header">
+      <h3><mat-icon class="mr-8">local_shipping</mat-icon>Shipments</h3>
+    </div>
+  </div>
+  <div></div>
+  <div></div>
+  <div>
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+  <div>
+    <div></div>
+    <div></div>
+    <div></div>
   </div>
 </div>

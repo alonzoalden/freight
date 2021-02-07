@@ -37,7 +37,7 @@ export class SignupComponent implements OnInit {
 
   login(): void {
     this.oidcSecurityService.authorize();
-    this.store.dispatch(AppPageActions.loadBusinesses());
+    //this.store.dispatch(AppPageActions.loadBusinesses());
     this.router.navigate(['']);
   }
 

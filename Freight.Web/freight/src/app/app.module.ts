@@ -39,14 +39,18 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { RouterModule } from '@angular/router';
 import { LayoutModule } from './layout/layout.module';
 import { ItemModule } from './item/item.module';
+import { UserModule } from './user/user.module';
 import { ShipmentModule } from './shipment/shipment.module';
 import { LocationModule } from './location/location.module';
+import { CustomerModule } from './customer/customer.module';
+import { FeeModule } from './fee/fee.module';
 import { SimpleNotificationsModule } from 'angular2-notifications';
 import { FakeDbService } from 'app/_shared/fake-db/fake-db.service';
 import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { CreateCompanyDialogComponent } from 'app/_general/create-company/create-company-dialog.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatProgressSpinnerModule, MatSpinner } from '@angular/material/progress-spinner';
+import { AuthGuard } from 'app/_general/auth/auth.guard';
 
 export function configureAuth(oidcConfigService: OidcConfigService): () => any {
   return () =>
@@ -109,20 +113,24 @@ export function configureAuth(oidcConfigService: OidcConfigService): () => any {
     ItemModule,
     ShipmentModule,
     LocationModule,
+    FeeModule,
+    UserModule,
+    CustomerModule,
     InMemoryWebApiModule.forRoot(FakeDbService, {
       delay: 0,
       passThruUnknownUrl: true
     }),
   ],
   providers: [
-    FakeDbService
-    // OidcConfigService,
-    //   {
-    //     provide: APP_INITIALIZER,
-    //     useFactory: configureAuth,
-    //     deps: [OidcConfigService],
-    //     multi: true,
-    //   }
+    AuthGuard,
+    FakeDbService,
+    OidcConfigService,
+      {
+        provide: APP_INITIALIZER,
+        useFactory: configureAuth,
+        deps: [OidcConfigService],
+        multi: true,
+      }
   ],
   bootstrap: [AppComponent]
 })

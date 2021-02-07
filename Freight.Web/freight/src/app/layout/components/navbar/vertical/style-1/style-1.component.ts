@@ -7,15 +7,17 @@ import { FuseConfigService } from '@fuse/services/config.service';
 import { FuseNavigationService } from '@fuse/components/navigation/navigation.service';
 import { FusePerfectScrollbarDirective } from '@fuse/directives/fuse-perfect-scrollbar/fuse-perfect-scrollbar.directive';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
+import { Store } from '@ngrx/store';
+import * as fromAppState from 'app/_state';
+import { AppPageActions } from 'app/_state/actions';
 
 @Component({
-    selector     : 'navbar-vertical-style-1',
-    templateUrl  : './style-1.component.html',
-    styleUrls    : ['./style-1.component.scss'],
+    selector: 'navbar-vertical-style-1',
+    templateUrl: './style-1.component.html',
+    styleUrls: ['./style-1.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
-export class NavbarVerticalStyle1Component implements OnInit, OnDestroy
-{
+export class NavbarVerticalStyle1Component implements OnInit, OnDestroy {
     fuseConfig: any;
     navigation: any;
 
@@ -35,9 +37,9 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy
         private _fuseConfigService: FuseConfigService,
         private _fuseNavigationService: FuseNavigationService,
         private _fuseSidebarService: FuseSidebarService,
-        private _router: Router
-    )
-    {
+        private _router: Router,
+        private store: Store<fromAppState.State>,
+    ) {
         // Set the private defaults
         this._unsubscribeAll = new Subject();
     }
@@ -47,11 +49,9 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy
     // -----------------------------------------------------------------------------------------------------
 
     // Directive
-    @ViewChild(FusePerfectScrollbarDirective, {static: true})
-    set directive(theDirective: FusePerfectScrollbarDirective)
-    {
-        if ( !theDirective )
-        {
+    @ViewChild(FusePerfectScrollbarDirective, { static: true })
+    set directive(theDirective: FusePerfectScrollbarDirective) {
+        if (!theDirective) {
             return;
         }
 
@@ -74,10 +74,10 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy
                 take(1)
             )
             .subscribe(() => {
-                    setTimeout(() => {
-                        this._fusePerfectScrollbar.scrollToElement('navbar .nav-link.active', -120);
-                    });
-                }
+                setTimeout(() => {
+                    this._fusePerfectScrollbar.scrollToElement('navbar .nav-link.active', -120);
+                });
+            }
             );
     }
 
@@ -88,19 +88,20 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy
     /**
      * On init
      */
-    ngOnInit(): void
-    {
+    ngOnInit(): void {
+        //this.businessEntities$ = this.store.select(fromAppState.getBusinessEntities);
+
+
         this._router.events
             .pipe(
                 filter((event) => event instanceof NavigationEnd),
                 takeUntil(this._unsubscribeAll)
             )
             .subscribe(() => {
-                    if ( this._fuseSidebarService.getSidebar('navbar') )
-                    {
-                        this._fuseSidebarService.getSidebar('navbar').close();
-                    }
+                if (this._fuseSidebarService.getSidebar('navbar')) {
+                    this._fuseSidebarService.getSidebar('navbar').close();
                 }
+            }
             );
 
         // Subscribe to the config changes
@@ -124,8 +125,7 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy
     /**
      * On destroy
      */
-    ngOnDestroy(): void
-    {
+    ngOnDestroy(): void {
         // Unsubscribe from all subscriptions
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
@@ -138,16 +138,14 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy
     /**
      * Toggle sidebar opened status
      */
-    toggleSidebarOpened(): void
-    {
+    toggleSidebarOpened(): void {
         this._fuseSidebarService.getSidebar('navbar').toggleOpen();
     }
 
     /**
      * Toggle sidebar folded status
      */
-    toggleSidebarFolded(): void
-    {
+    toggleSidebarFolded(): void {
         this._fuseSidebarService.getSidebar('navbar').toggleFold();
     }
 }

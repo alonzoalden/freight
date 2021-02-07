@@ -36,3 +36,12 @@ export const createItemFailure = createAction(
   '[Item API] Create Item Fail',
   props<{ error: string }>()
 );
+
+export const deleteItemSuccess = createAction(
+  '[Item API] Delete Item Success',
+  props<{ itemid: any }>()
+);
+export const deleteItemFailure = createAction(
+  '[Item API] Delete Item Fail',
+  props<{ error: string }>()
+);

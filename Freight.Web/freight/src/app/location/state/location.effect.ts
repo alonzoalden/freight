@@ -66,4 +66,22 @@ export class LocationEffects {
         )
       );
   });
+  deleteLocation$ = createEffect(() => {
+    return this.actions$
+      .pipe(
+        ofType(LocationPageActions.deleteLocation),
+        concatMap(action => this.locationService.deleteLocation(action.locationid)
+          .pipe(
+            map((fee) => {
+              this.notifyService.success('Success', `Fee ${action.locationid} has been deleted.`, { timeOut:3500, clickToClose: true });
+              return LocationApiActions.deleteLocationSuccess({ locationid: action.locationid });
+            }),
+            catchError(error => {
+              this.notifyService.error('Error', `${error}`, { clickToClose: true });
+              return of(LocationApiActions.deleteLocationFailure({ error }))
+            })
+          )
+        )
+      );
+  });
 }

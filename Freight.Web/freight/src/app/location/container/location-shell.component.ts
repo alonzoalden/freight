@@ -38,6 +38,9 @@ export class LocationShellComponent implements OnDestroy {
   selectLocation(location: Location): void {
     this.store.dispatch(LocationPageActions.setCurrentLocation({ currentLocation: location }));
   }
+  deleteLocation(locationid: any): void {
+    this.store.dispatch(LocationPageActions.deleteLocation({ locationid }));
+  }
   ngOnDestroy(): void {
     this._unsubscribeAll.next();
     this._unsubscribeAll.complete();

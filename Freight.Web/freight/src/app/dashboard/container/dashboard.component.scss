@@ -1,0 +1,74 @@
+@import "src/assets/@fuse/scss/fuse";
+
+#dashboard-container,
+#dashboard-container > div,
+dashboard-home {
+    width: 100%;
+    height: 100%;
+}
+
+#dashboard-container {
+    dashboard-home {
+        display: flex;
+    }
+}
+.dashboard-layout {
+    width: 100%;
+    padding: 72px;
+    overflow: auto;
+    .fuse-card {
+        min-width: initial;
+        max-width: initial;
+        width: initial;
+        margin-right: 32px;
+    }
+    .fuse-card:last-of-type {
+        margin-right: 0;
+    }
+    @include media-breakpoint('lt-md') {
+        .fuse-card {
+            margin-right: 0;
+            margin-bottom: 32px;
+        }
+    }
+    .card-header {
+        padding: 24px;
+        border-bottom: 1px solid #eaeaea;
+        mat-icon {
+            font-size: 32px;
+            height: 32px;
+            width: 32px;
+        }
+    }
+    .card-body > div {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 18px;
+        padding: 8px 18px;
+        border-bottom: 1px solid #eaeaea;
+        a {
+            font-size: 18px;
+        }
+    }
+    .card-body > div:last-of-type {
+        border: 0;
+    }
+    .circle {
+        height: 30px;
+        width: 30px;
+        min-width: 30px;
+        background-color: #d6d6d6;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #fff;
+    }
+    .icon-circle {
+        height: 50px;
+        width: 50px;
+        min-width: 50px;
+    }
+}

@@ -1,0 +1,194 @@
+@import "src/assets/@fuse/scss/fuse";
+
+:host {
+  flex: 1;
+  display: flex;
+  .list-container {
+    overflow: hidden;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    padding: 0;
+    .center-box-message {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+  .bottom-section {
+    padding: 12px 24px;
+    // @include media-breakpoint('lt-md') {
+    //   padding: 0 16px;
+    // }
+  }
+  
+  .sub-header {
+    position: relative;
+    height: 210px;
+    min-height: 210px;
+    max-height: 210px;
+    text-align: center;
+    overflow: hidden;
+    width: 100%;
+    mat-icon {
+      font-size: 24px;
+    }
+    @include media-breakpoint('xs') {
+      padding: 16px;
+    }
+    .breadcrumb {
+      z-index: 1;
+      padding: 0 70px;
+      flex-shrink: 0;
+    }
+    .hero-text {
+      z-index: 0 !important;
+      .hero-icon {
+        position: absolute;
+        top: -64px;
+        left: 0px;
+        opacity: 0.04;
+        font-size: 512px !important;
+        width: 512px !important;
+        height: 512px !important;
+      }
+      h1 {
+        font-size: 40px;
+        font-weight: 300;
+        letter-spacing: 0.01em;
+        text-align: center;
+        margin-top: 0;
+        margin-bottom: 16px;
+
+        @include media-breakpoint('xs') {
+          font-size: 24px;
+        }
+      }
+
+      h3 {
+        max-width: 480px;
+        text-align: center;
+        font-weight: 300;
+        letter-spacing: 0.03em;
+        margin: 0;
+
+        @include media-breakpoint('xs') {
+          font-size: 14px;
+        }
+      }
+    }
+    .toolbar {
+      z-index: 2;
+    }
+    
+    .action-container {
+      display: flex;
+      flex-direction: column;
+      padding: 0 70px;
+      width: 100%;
+      @include media-breakpoint('gt-md') {
+        flex-direction: row;
+      }
+     
+      // .new-item-section {
+      //   display: flex;
+      //   align-items: center;
+      //   justify-content: flex-start;
+      //   width: 300px;
+      //   margin-left: 0px;
+      //   margin-top: 16px;
+        
+      //   @include media-breakpoint('gt-md') {
+      //     margin-left: 44px;
+      //     margin-top: 0px;
+      //     justify-content: center;
+      //   }
+      // }
+      .search-wrapper {
+        z-index: 12 !important;
+        border-radius: 28px;
+        overflow: auto;
+        -webkit-overflow-scrolling: touch;
+        display: flex;
+        flex: 6;
+        @include mat-elevation(1);
+
+        .sidebar-toggle {
+          margin: 0 0 0 6px;
+          width: 56px;
+          height: 56px;
+          border-radius: 0;
+          border-right: 1px solid;
+        }
+
+        .search {
+          width: 100% !important;
+          height: 56px;
+          line-height: 56px;
+          padding: 0 18px;
+          mat-icon {
+            color: #444 !important;
+          }
+          input {
+            flex: 1;
+            height: 56px;
+            min-height: 56px;
+            max-height: 56px;
+            padding: 0 16px;
+            border: none;
+            outline: none;
+          }
+        }
+      }
+    }
+    @media screen and (max-width: 769px) {
+      .breadcrumb,
+      .action-container {
+          padding: 0 10px;
+      }
+    }
+  }
+  .item-list {
+      flex: 1;
+      overflow: auto;
+      -webkit-overflow-scrolling: touch;
+  }
+  .loader {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+  }
+  .mat-table {
+      background: transparent;
+      box-shadow: none;
+
+      .mat-row {
+          position: relative;
+          cursor: pointer;
+          min-height: 64px;
+      }
+  }
+  .mat-table__wrapper .mat-table {
+      min-width: auto !important;
+      width: 100% !important;
+  }
+  .mat-header-row {
+      width: 100%;
+  }
+  .mat-row {
+      width: 100%;
+  }
+  
+  .item-list .mat-column-actions {
+    max-width: 200px !important;
+    justify-content: center !important;
+    
+  }
+  .item-list .mat-column-detail-button {
+      flex: 0 0 14% !important;
+      justify-content: center !important;
+      min-width: 60px !important;
+  }
+}

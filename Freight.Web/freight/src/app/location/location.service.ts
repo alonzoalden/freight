@@ -72,6 +72,12 @@ export class LocationService implements OnDestroy {
         catchError(this.handleError)
       );
   }
+  deleteLocation(locationid: any): Observable<any> {
+    return this.http.delete<any>(this.apiURL + '/location/' + locationid)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
 
   handleError = (err: HttpErrorResponse) => {
     let errorMessage: string;

@@ -1,18 +1,94 @@
-<table class="table">
-  <thead>
-    <tr class="table-success">
-      <th scope="col">ID</th>
-      <th scope="col" class="text-center">Name</th>
-      <th scope="col" class="text-center">SELECT</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let business of businesses">
-      <th scope="row">{{business.id}}</th>
-      <td class="text-center">{{business.name}}</td>
-      <td scope="col" class="text-center">
-        <button (click)="businessSelected(business)">SELECT</button>
-      </td>
-    </tr>
-  </tbody>
-</table>
+<div class="dashboard-layout">
+  <div class="mb-32" fxLayout="row"  fxLayout.lt-md="column" fxLayoutAlign="space-between stretch">
+    <div fxFlex class="fuse-card" fxLayout="column" >
+      <div class="card-header">
+        <h1 fxLayoutAlign="start center"><div class="circle icon-circle primary mr-8"><mat-icon>local_shipping</mat-icon></div>Shipments</h1>
+      </div>
+      <div class="card-body" fxLayout="column">
+        <div>Open Shipments <div class="circle accent">1</div></div>
+        <div>Closed Shipments <div class="circle accent">1</div></div>
+        <div>Cancelled Shipments <div class="circle accent">1</div></div>
+      </div>
+    </div>
+    <div fxFlex class="fuse-card" fxLayout="column" >
+      <div class="card-header">
+        <h1 fxLayoutAlign="start center"><div class="circle icon-circle primary mr-8"><mat-icon>people</mat-icon></div>Customers</h1>
+      </div>
+      <div class="card-body" fxLayout="column">
+        <div>Open Shipments <div class="circle accent">1</div></div>
+        <div></div>
+      </div>
+    </div>
+    <div fxFlex class="fuse-card" fxLayout="column" >
+      <div class="card-header">
+        <h1 fxLayoutAlign="start center"><div class="circle icon-circle primary mr-8"><mat-icon>receipt_long</mat-icon></div>Invoices</h1>
+      </div>
+      <div class="card-body" fxLayout="column">
+        <div>Open Invoices <div class="circle accent">1</div></div>
+        <div>Closed Invoices <div class="circle accent">1</div></div>
+        <div>Cancelled Invoices <div class="circle accent">1</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mb-32" fxLayout="row"  fxLayout.lt-md="column" fxLayoutAlign="space-between stretch">
+    <div fxFlex class="fuse-card" fxLayout="column" >
+      <div class="card-header">
+        <h1 fxLayoutAlign="start center"><div class="circle icon-circle primary mr-8"><mat-icon>dns</mat-icon></div>Items</h1>
+      </div>
+      <div class="card-body" fxLayout="column">
+        <div>Total Items <div class="circle accent">1</div></div>
+        <div></div>
+      </div>
+    </div>
+    <div fxFlex class="fuse-card" fxLayout="column" >
+      <div class="card-header">
+        <h1 fxLayoutAlign="start center"><div class="circle icon-circle primary mr-8"><mat-icon>person</mat-icon></div>Users</h1>
+      </div>
+      <div class="card-body" fxLayout="column">
+        <div>Total Users <div class="circle accent">1</div></div>
+        <div></div>
+      </div>
+    </div>
+    <div fxFlex class="fuse-card" fxLayout="column" >
+      <div class="card-header">
+        <h1 fxLayoutAlign="start center"><div class="circle icon-circle primary mr-8"><mat-icon>build</mat-icon></div>Settings</h1>
+      </div>
+      <div class="card-body" fxLayout="column">
+        <div><a [routerLink]="['/user']">Account Info</a></div>
+        <div><a [routerLink]="['/user']">User Profile</a></div>
+        <div><a [routerLink]="['/user']">Notification Preferences</a></div>
+      </div>
+    </div>
+  </div>
+
+  <div fxLayout="row" fxLayout.lt-md="column" fxLayoutAlign="space-between stretch">
+    <div fxFlex class="fuse-card" fxLayout="column" >
+      <div class="card-header">
+        <h1 fxLayoutAlign="start center"><div class="circle icon-circle primary mr-8"><mat-icon>location_on</mat-icon></div>Locations</h1>
+      </div>
+      <div class="card-body" fxLayout="column">
+        <div><a [routerLink]="['/locations']">Manage Locations</a></div>
+        <div></div>
+      </div>
+    </div>
+    <div fxFlex class="fuse-card" fxLayout="column" >
+      <div class="card-header">
+        <h1 fxLayoutAlign="start center"><div class="circle icon-circle primary mr-8"><mat-icon>supervisor_account</mat-icon></div>Shipping Accounts</h1>
+      </div>
+      <div class="card-body" fxLayout="column">
+        <div><a [routerLink]="['/shipping']">Manage Shipping Accounts</a></div>
+        <div></div>
+      </div>
+    </div>
+    <div fxFlex class="fuse-card" fxLayout="column" >
+      <div class="card-header">
+        <h1 fxLayoutAlign="start center"><div class="circle icon-circle primary mr-8"><mat-icon>monetization_on</mat-icon></div>Fees</h1>
+      </div>
+      <div class="card-body" fxLayout="column">
+        <div><a [routerLink]="['/fee']">Manage Fees</a></div>
+        <div></div>
+      </div>
+    </div>
+  </div>
+</div>

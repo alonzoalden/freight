@@ -37,6 +37,9 @@ export class ItemShellComponent implements OnDestroy {
   selectItem(item: Item): void {
     this.store.dispatch(ItemPageActions.setCurrentItem({ currentItem: item }));
   }
+  deleteItem(itemid: Item): void {
+    this.store.dispatch(ItemPageActions.deleteItem({ itemid }));
+  }
   ngOnDestroy(): void {
     this._unsubscribeAll.next();
     this._unsubscribeAll.complete();

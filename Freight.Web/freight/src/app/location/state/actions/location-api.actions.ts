@@ -36,3 +36,11 @@ export const createLocationFailure = createAction(
   '[Location API] Create Location Fail',
   props<{ error: string }>()
 );
+export const deleteLocationSuccess = createAction(
+  '[Location API] Delete Location Success',
+  props<{ locationid: any }>()
+);
+export const deleteLocationFailure = createAction(
+  '[Location API] Delete Location Fail',
+  props<{ error: string }>()
+);

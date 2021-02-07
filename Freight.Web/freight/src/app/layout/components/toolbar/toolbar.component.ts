@@ -13,6 +13,9 @@ import { AppService } from '../../../app.service';
 // import { Member } from 'app/shared/class/member';
 import { NotificationsService } from 'angular2-notifications';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import * as fromAppState from 'app/_state';
+import { AppPageActions } from 'app/_state/actions';
 
 @Component({
     selector: 'toolbar',
@@ -40,7 +43,8 @@ export class ToolbarComponent implements OnInit, OnDestroy {
         //private _translateService: TranslateService,
         // private oauthService: OAuthService,
         public appService: AppService,
-        private router: Router
+        private router: Router,
+        private store: Store<fromAppState.State>,
 
     ) {
         // Set the defaults
@@ -92,6 +96,8 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
+        //this.businessEntities$ = this.store.select(fromAppState.getBusinessEntities);
+        
         // Subscribe to the config changes
         this._fuseConfigService.config
             .pipe(takeUntil(this._unsubscribeAll))

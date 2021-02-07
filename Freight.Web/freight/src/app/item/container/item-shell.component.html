@@ -11,6 +11,7 @@
         [selected]="selectedItem$ | async"
         [isLoading]="isLoading$ | async"
         (select)="selectItem($event)"
+        (deleteItem)="deleteItem($event)"
       ></item-list>
     </div>
     <!-- / CONTENT -->
