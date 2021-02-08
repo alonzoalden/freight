@@ -45,7 +45,19 @@ namespace Freight.API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Failed to get Business");
             }
         }
-
+        [HttpGet]
+        [Route("user/{userid}")]
+        public IActionResult GetBusinessByUserID(int userid)
+        {
+            try
+            {
+                return new JsonResult(BusinessBAL.GetBusinessByUserID(userid));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Failed to get Business");
+            }
+        }
         [HttpPut]
         public IActionResult UpdateBusiness(BusinessUpdate Business)
         {
@@ -84,6 +96,59 @@ namespace Freight.API.Controllers
             catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "Failed to delete Business");
+            }
+        }
+
+        //Business User
+        [HttpGet]
+        [Route("/businessuser/{id}")]
+        public IActionResult GetBusinessUser(int id)
+        {
+            try
+            {
+                return new JsonResult(BusinessBAL.GetBusinessUser(id));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Failed to get BusinessUser");
+            }
+        }
+        [HttpGet]
+        [Route("user/{userid}")]
+        public IActionResult GetBusinessUserByUserID(int userid)
+        {
+            try
+            {
+                return new JsonResult(BusinessBAL.GetBusinessUserByUserID(userid));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Failed to get BusinessUser");
+            }
+        }
+        [HttpPut]
+        public IActionResult UpdateBusinessUser(BusinessUserUpdate BusinessUser)
+        {
+            try
+            {
+                return new JsonResult(BusinessBAL.UpdateBusinessUser(BusinessUser));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Failed to update BusinessUser");
+            }
+        }
+
+        [HttpPost]
+        public IActionResult CreateBusinessUser(BusinessUserInsert BusinessUser)
+        {
+            try
+            {
+                return new JsonResult(BusinessBAL.CreateBusinessUser(BusinessUser));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Failed to create BusinessUser");
             }
         }
     }

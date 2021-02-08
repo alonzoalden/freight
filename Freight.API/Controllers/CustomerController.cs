@@ -45,7 +45,19 @@ namespace Freight.API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Failed to get Customer");
             }
         }
-
+        [HttpGet]
+        [Route("business/{businessid}")]
+        public IActionResult GetCustomerByBusiness(int businessid)
+        {
+            try
+            {
+                return new JsonResult(CustomerBAL.GetCustomer(businessid));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Failed to get Customer");
+            }
+        }
         [HttpPut]
         public IActionResult UpdateCustomer(CustomerUpdate Customer)
         {
