@@ -21,6 +21,7 @@ import { navigation } from 'app/_general/navigation/navigation';
 import { FuseProgressBarService } from '@fuse/components/progress-bar/progress-bar.service';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateCompanyDialogComponent } from './_general/create-company/create-company-dialog.component';
+import { UserService } from './user/user.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -44,6 +45,7 @@ export class AppComponent implements OnInit {
     //private _translateService: TranslateService,
     private _platform: Platform,
     private appService: AppService,
+    private userService: UserService,
     private router: Router,
     private store: Store<fromAppState.State>,
     public oidcSecurityService: OidcSecurityService,
@@ -53,7 +55,28 @@ export class AppComponent implements OnInit {
     this.initialize();
     this.businessEntities$ = this.store.select(fromAppState.getBusinessEntities);
     this.selectedBusinessEntityId$ = this.store.select(fromAppState.getCurrentBusinessEntityId);
-    this.oidcSecurityService.checkAuth().subscribe((auth) => console.log('is authenticated', auth));
+    this.oidcSecurityService.checkAuth()
+      .subscribe((auth) => {
+        if (!auth) {
+          this.router.navigate(['/home']);
+        }
+
+        this.userService.getCurrentUser()
+          .subscribe(
+            (user) => {
+              console.log(user);
+              if (!user.BusinessID) {
+                // If user is not assigned to company:
+                this.router.navigate(['/business']);
+                //this.openCreateCompanyDialog();
+              }
+            },
+            (err) => {
+              console.log(err);
+            },
+            );
+
+      });
 
     // If user is not assigned to company:
     // this.openCreateCompanyDialog();
@@ -71,8 +94,8 @@ export class AppComponent implements OnInit {
 
     // Set the main navigation as our current navigation
     this._fuseNavigationService.setCurrentNavigation('main');
-    
-    
+
+
     // Add languages
     //this._translateService.addLangs(['en', 'tr']);
 
@@ -120,60 +143,51 @@ export class AppComponent implements OnInit {
 
     // Add is-mobile class to the body if the platform is mobile
     if (this._platform.ANDROID || this._platform.IOS) {
-        this.document.body.classList.add('is-mobile');
+      this.document.body.classList.add('is-mobile');
     }
 
     // Set the private defaults
     this._unsubscribeAll = new Subject();
     // Subscribe to config changes
     this._fuseConfigService.config
-    .pipe(takeUntil(this._unsubscribeAll))
-    .subscribe((config) => {
- 
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe((config) => {
+
         this.fuseConfig = config;
- 
+
         // Boxed
         if (this.fuseConfig.layout.width === 'boxed') {
-            this.document.body.classList.add('boxed');
+          this.document.body.classList.add('boxed');
         }
         else {
-            this.document.body.classList.remove('boxed');
+          this.document.body.classList.remove('boxed');
         }
- 
+
         // Color theme - Use normal for loop for IE11 compatibility
         for (let i = 0; i < this.document.body.classList.length; i++) {
-            const className = this.document.body.classList[i];
- 
-            if (className.startsWith('theme-')) {
-                this.document.body.classList.remove(className);
-            }
+          const className = this.document.body.classList[i];
+
+          if (className.startsWith('theme-')) {
+            this.document.body.classList.remove(className);
+          }
         }
- 
+
         this.document.body.classList.add(this.fuseConfig.colorTheme);
+      });
+  }
+  openCreateCompanyDialog(data = {}): void {
+    this.dialogRef = this._matDialog.open(CreateCompanyDialogComponent, {
+      panelClass: 'edit-fields-dialog',
+      disableClose: true,
+      width: '100%'
     });
- }
- openCreateCompanyDialog(data = {}): void {
-  this.dialogRef = this._matDialog.open(CreateCompanyDialogComponent, {
-    panelClass: 'edit-fields-dialog',
-    disableClose: true,
-    width: '100%'
-  });
-  this.dialogRef.afterClosed()
-    .subscribe(response => {
-      if (!response) {
-        return;
-      }
-      //console.log(response);
-      //this.dataSource.data.push(response);
-      // const data = [...this.dataSource.data];
-      // data.push(response);
-      // this.dataSource.data = data;
-
-      //this.items.push(response);
-
-      //this.onSelect(response);
-    });
-}
+    this.dialogRef.afterClosed()
+      .subscribe(response => {
+        if (!response) {
+          return;
+        }
+      });
+  }
 }
 
 

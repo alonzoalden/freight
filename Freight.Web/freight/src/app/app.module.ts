@@ -43,6 +43,7 @@ import { UserModule } from './user/user.module';
 import { ShipmentModule } from './shipment/shipment.module';
 import { LocationModule } from './location/location.module';
 import { CustomerModule } from './customer/customer.module';
+import { BusinessModule } from './business/business.module';
 import { FeeModule } from './fee/fee.module';
 import { SimpleNotificationsModule } from 'angular2-notifications';
 import { FakeDbService } from 'app/_shared/fake-db/fake-db.service';
@@ -55,8 +56,8 @@ import { AuthGuard } from 'app/_general/auth/auth.guard';
 export function configureAuth(oidcConfigService: OidcConfigService): () => any {
   return () =>
     oidcConfigService.withConfig({
-      //stsServer: 'https://login.fbasimplify.com',
-      stsServer: 'https://localhost:5001',
+      stsServer: 'https://login.fbasimplify.com',
+      //stsServer: 'https://localhost:5001',
       redirectUrl: window.location.origin,
       postLogoutRedirectUri: window.location.origin,
       //clientId: 'angularfreightappclient',
@@ -117,6 +118,7 @@ export function configureAuth(oidcConfigService: OidcConfigService): () => any {
     FeeModule,
     UserModule,
     CustomerModule,
+    BusinessModule,
     InMemoryWebApiModule.forRoot(FakeDbService, {
       delay: 0,
       passThruUnknownUrl: true

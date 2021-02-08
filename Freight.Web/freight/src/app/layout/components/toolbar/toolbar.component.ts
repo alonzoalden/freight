@@ -17,6 +17,7 @@ import { Store } from '@ngrx/store';
 import * as fromAppState from 'app/_state';
 import { AppPageActions } from 'app/_state/actions';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
+import { UserService } from 'app/user/user.service';
 
 @Component({
     selector: 'toolbar',
@@ -46,6 +47,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
         public appService: AppService,
         private router: Router,
         private store: Store<fromAppState.State>,
+        private userService: UserService,
 
         public oidcSecurityService: OidcSecurityService
     ) {

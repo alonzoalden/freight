@@ -100,6 +100,18 @@ const routes: Routes = [
         loadChildren: () =>
           import('./customer/customer.module').then(m => m.CustomerModule)
       },
+      {
+        path: 'business',
+        canLoad: [AuthGuard],
+        loadChildren: () =>
+          import('./business/business.module').then(m => m.BusinessModule)
+      },
+      {
+        path: 'business/:filter',
+        canLoad: [AuthGuard],
+        loadChildren: () =>
+          import('./business/business.module').then(m => m.BusinessModule)
+      },
     ]
   },
   { path: '**', component: PageNotFoundComponent }

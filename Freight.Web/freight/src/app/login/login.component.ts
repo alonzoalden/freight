@@ -10,6 +10,7 @@ import { Observable } from 'rxjs';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseConfigService } from '@fuse/services/config.service';
+import { FuseSplashScreenService } from '@fuse/services/splash-screen.service';
 
 @Component({
   selector: 'login',
@@ -23,7 +24,13 @@ export class LoginComponent implements OnInit {
   test$: Observable<string>;
   loginForm: FormGroup;
 
-  constructor(private store: Store<fromAppState.State>, private router: Router, public oidcSecurityService: OidcSecurityService, private _fuseConfigService: FuseConfigService, private formBuilder: FormBuilder) { }
+  constructor(
+    private store: Store<fromAppState.State>,
+    private router: Router,
+    public oidcSecurityService: OidcSecurityService,
+    private _fuseConfigService: FuseConfigService,
+    private formBuilder: FormBuilder,
+    private _fuseSplashScreenService: FuseSplashScreenService,) { }
 
   ngOnInit(): void {
     this._fuseConfigService.config = this._fuseConfigService.hideLayoutConfig();
@@ -34,9 +41,11 @@ export class LoginComponent implements OnInit {
   }
 
   login(): void {
+    this._fuseSplashScreenService.show();
     this.oidcSecurityService.authorize();
-    this.store.dispatch(AppPageActions.loadBusinesses());
-    this.router.navigate(['']);
+    //this.store.dispatch(AppPageActions.loadBusinesses());
+    this.router.navigate(['/dashboard']);
+    
   }
 
   logout(): void {

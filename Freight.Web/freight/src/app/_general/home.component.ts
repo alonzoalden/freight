@@ -42,9 +42,10 @@ export class HomeComponent implements OnInit {
     this.componentActive = false;
   }
   login(): void {
+    this._fuseSplashScreenService.show();
     this.oidcSecurityService.authorize();
-    this.store.dispatch(AppPageActions.loadBusinesses());
-    this.router.navigate(['']);
+    //this.store.dispatch(AppPageActions.loadBusinesses());
+    this.router.navigate(['/dashboard']);
   }
   
   logout(): void {

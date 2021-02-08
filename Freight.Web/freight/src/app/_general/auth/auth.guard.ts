@@ -7,15 +7,12 @@ import { OidcSecurityService } from 'angular-auth-oidc-client';
 export class AuthGuard implements CanLoad {
 
     constructor(
-        //private oauthService: OAuthService,
         public oidcSecurityService: OidcSecurityService,
         private router: Router,
     ) { }
 
     canLoad() {
-        // console.log(this.oauthService.hasValidIdToken());
         if (this.oidcSecurityService.getToken()) {
-            // console.log("passed guard");
             return true;
         } else {
             this.router.navigate(['/home']);

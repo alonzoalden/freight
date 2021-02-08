@@ -131,6 +131,9 @@ export class EditShipmentDialogComponent implements OnInit, OnDestroy {
       updatedOn: [this.selectedShipment.updatedOn],
       createdBy: [this.selectedShipment.createdBy],
       createdOn: [this.selectedShipment.createdOn],
+      Date: ['' ],
+      Date2: ['' ],
+      Date3: ['' ],
     });
   }
   save(): void {
