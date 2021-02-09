@@ -126,6 +126,19 @@ namespace Freight.API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Failed to get BusinessUser");
             }
         }
+        [HttpGet]
+        [Route("businessuser/business/{businessid}")]
+        public IActionResult GetBusinessUserByBusinessID(int businessid)
+        {
+            try
+            {
+                return new JsonResult(BusinessBAL.GetBusinessUserByBusinessID(businessid));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Failed to get BusinessUser");
+            }
+        }
         [HttpPut]
         [Route("businessuser")]
         public IActionResult UpdateBusinessUser(BusinessUserUpdate businessuser)

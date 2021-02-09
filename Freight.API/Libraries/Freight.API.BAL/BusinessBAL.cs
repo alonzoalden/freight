@@ -48,6 +48,10 @@ namespace Freight.API.BAL
         {
             return BusinessDAL.GetBusinessUserByUserID(userid);
         }
+        public List<BusinessUser> GetBusinessUserByBusinessID(int businessID)
+        {
+            return BusinessDAL.GetBusinessUserByBusinessID(businessID);
+        }
         public BusinessUser CreateBusinessUser(BusinessUserInsert businessuser)
         {
             return BusinessDAL.CreateBusinessUser(businessuser);

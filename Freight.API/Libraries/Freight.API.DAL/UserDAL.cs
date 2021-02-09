@@ -26,7 +26,6 @@ namespace Freight.API.DAL
                 return results;
             }
         }
-
         public User GetUser(int id)
         {
             using (SqlConnection connection = new SqlConnection(DefaultConnection))
@@ -38,7 +37,17 @@ namespace Freight.API.DAL
                 return result;
             }
         }
+        public User GetUserByEmail(string email)
+        {
+            using (SqlConnection connection = new SqlConnection(DefaultConnection))
+            {
+                DynamicParameters p = new DynamicParameters();
+                p.Add("email", email);
+                User result = connection.Query<User>("spGetUserByEmail", p, commandType: CommandType.StoredProcedure).Single();
 
+                return result;
+            }
+        }
         public User CreateUser(UserInsert user)
         {
             using (SqlConnection connection = new SqlConnection(DefaultConnection))

@@ -6,6 +6,7 @@ using Microsoft.Extensions.Options;
 using System;
 using System.Linq;
 using System.Security.Claims;
+using System.Text;
 using System.Web;
 
 namespace Freight.API.Controllers
@@ -40,6 +41,20 @@ namespace Freight.API.Controllers
             try
             {
                 return new JsonResult(UserBAL.GetUser(id));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Failed to get User");
+            }
+        }
+        [HttpGet]
+        [Route("email/{email}")]
+        public IActionResult GetUserByEmail(string email)
+        {
+            try
+            {
+                email = Encoding.UTF8.GetString(Convert.FromBase64String(email));
+                return new JsonResult(UserBAL.GetUserByEmail(email));
             }
             catch (Exception ex)
             {

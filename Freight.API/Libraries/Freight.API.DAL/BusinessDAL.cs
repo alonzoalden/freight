@@ -114,6 +114,17 @@ namespace Freight.API.DAL
                 return results;
             }
         }
+        public List<BusinessUser> GetBusinessUserByBusinessID(int businessid)
+        {
+            using (SqlConnection connection = new SqlConnection(DefaultConnection))
+            {
+                DynamicParameters p = new DynamicParameters();
+                p.Add("businessid", businessid);
+                List<BusinessUser> results = connection.Query<BusinessUser>("spGetBusinessUserByBusinessID", p, commandType: CommandType.StoredProcedure).ToList();
+
+                return results;
+            }
+        }
         public BusinessUser UpdateBusinessUser(BusinessUserUpdate BusinessUser)
         {
             using (SqlConnection connection = new SqlConnection(DefaultConnection))
