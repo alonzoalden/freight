@@ -24,6 +24,10 @@ namespace Freight.API.BAL
         {
             return UserDAL.GetUser(id);
         }
+        public User GetUserByEmail(string email)
+        {
+            return UserDAL.GetUserByEmail(email);
+        }
         public User UpdateUser(UserUpdate user)
         {
             return UserDAL.UpdateUser(user);

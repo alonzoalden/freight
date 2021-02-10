@@ -43,8 +43,13 @@ export class ItemService implements OnDestroy {
 
 
   getAllItemList(): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + this.oidcSecurityService.getToken()
+    });
+
     return this.http
-      .get(this.apiURL + "/item")
+      .get(this.apiURL + "/item", { headers })
       .pipe(
         tap((data: Item[]) => {
           this.allItems.next(data);

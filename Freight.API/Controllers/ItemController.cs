@@ -27,7 +27,7 @@ namespace Freight.API.Controllers
         {
             try
             {
-                string test = GetClaimUserID();
+                //string test = GetClaimUserID();
                 return new JsonResult(ItemBAL.GetItems());
             }
             catch (Exception ex)

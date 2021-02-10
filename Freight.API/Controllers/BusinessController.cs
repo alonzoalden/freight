@@ -45,13 +45,25 @@ namespace Freight.API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Failed to get Business");
             }
         }
-
-        [HttpPut]
-        public IActionResult UpdateBusiness(BusinessUpdate Business)
+        [HttpGet]
+        [Route("user/{userid}")]
+        public IActionResult GetBusinessByUserID(int userid)
         {
             try
             {
-                return new JsonResult(BusinessBAL.UpdateBusiness(Business));
+                return new JsonResult(BusinessBAL.GetBusinessByUserID(userid));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Failed to get Business");
+            }
+        }
+        [HttpPut]
+        public IActionResult UpdateBusiness(BusinessUpdate business)
+        {
+            try
+            {
+                return new JsonResult(BusinessBAL.UpdateBusiness(business));
             }
             catch (Exception ex)
             {
@@ -60,11 +72,11 @@ namespace Freight.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateBusiness(BusinessInsert Business)
+        public IActionResult CreateBusiness(BusinessInsert business)
         {
             try
             {
-                return new JsonResult(BusinessBAL.CreateBusiness(Business));
+                return new JsonResult(BusinessBAL.CreateBusiness(business));
             }
             catch (Exception ex)
             {
@@ -84,6 +96,74 @@ namespace Freight.API.Controllers
             catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "Failed to delete Business");
+            }
+        }
+
+        //Business User
+        [HttpGet]
+        [Route("businessuser/{businessuserid}")]
+        public IActionResult GetBusinessUser(int businessuserid)
+        {
+            try
+            {
+                return new JsonResult(BusinessBAL.GetBusinessUser(businessuserid));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Failed to get BusinessUser");
+            }
+        }
+        [HttpGet]
+        [Route("businessuser/user/{userid}")]
+        public IActionResult GetBusinessUserByUserID(int userid)
+        {
+            try
+            {
+                return new JsonResult(BusinessBAL.GetBusinessUserByUserID(userid));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Failed to get BusinessUser");
+            }
+        }
+        [HttpGet]
+        [Route("businessuser/business/{businessid}")]
+        public IActionResult GetBusinessUserByBusinessID(int businessid)
+        {
+            try
+            {
+                return new JsonResult(BusinessBAL.GetBusinessUserByBusinessID(businessid));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Failed to get BusinessUser");
+            }
+        }
+        [HttpPut]
+        [Route("businessuser")]
+        public IActionResult UpdateBusinessUser(BusinessUserUpdate businessuser)
+        {
+            try
+            {
+                return new JsonResult(BusinessBAL.UpdateBusinessUser(businessuser));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Failed to update BusinessUser");
+            }
+        }
+
+        [HttpPost]
+        [Route("businessuser")]
+        public IActionResult CreateBusinessUser(BusinessUserInsert businessuser)
+        {
+            try
+            {
+                return new JsonResult(BusinessBAL.CreateBusinessUser(businessuser));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Failed to create BusinessUser");
             }
         }
     }

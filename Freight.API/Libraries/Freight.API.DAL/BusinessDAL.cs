@@ -49,7 +49,7 @@ namespace Freight.API.DAL
 
                 return results;
             }
-        }
+        }        
         public Business UpdateBusiness(BusinessUpdate Business)
         {
             using (SqlConnection connection = new SqlConnection(DefaultConnection))
@@ -88,6 +88,69 @@ namespace Freight.API.DAL
                 DynamicParameters p = new DynamicParameters();
                 p.Add("businessid", id);
                 connection.Query<Business>("spDeleteBusiness", p, commandType: CommandType.StoredProcedure);
+            }
+        }
+
+        //Business User
+        public BusinessUser GetBusinessUser(int businessuserid)
+        {
+            using (SqlConnection connection = new SqlConnection(DefaultConnection))
+            {
+                DynamicParameters p = new DynamicParameters();
+                p.Add("businessuserid", businessuserid);
+                BusinessUser result = connection.Query<BusinessUser>("spGetBusinessUser", p, commandType: CommandType.StoredProcedure).Single();
+
+                return result;
+            }
+        }
+        public List<BusinessUser> GetBusinessUserByUserID(int userid)
+        {
+            using (SqlConnection connection = new SqlConnection(DefaultConnection))
+            {
+                DynamicParameters p = new DynamicParameters();
+                p.Add("userid", userid);
+                List<BusinessUser> results = connection.Query<BusinessUser>("spGetBusinessUserByUserID", p, commandType: CommandType.StoredProcedure).ToList();
+
+                return results;
+            }
+        }
+        public List<BusinessUser> GetBusinessUserByBusinessID(int businessid)
+        {
+            using (SqlConnection connection = new SqlConnection(DefaultConnection))
+            {
+                DynamicParameters p = new DynamicParameters();
+                p.Add("businessid", businessid);
+                List<BusinessUser> results = connection.Query<BusinessUser>("spGetBusinessUserByBusinessID", p, commandType: CommandType.StoredProcedure).ToList();
+
+                return results;
+            }
+        }
+        public BusinessUser UpdateBusinessUser(BusinessUserUpdate BusinessUser)
+        {
+            using (SqlConnection connection = new SqlConnection(DefaultConnection))
+            {
+                DynamicParameters p = new DynamicParameters();
+                p.Add("businessuserid", BusinessUser.BusinessUserID);
+                p.Add("isadmin", BusinessUser.IsAdmin);
+                p.Add("isowner", BusinessUser.IsOwner);
+                p.Add("isactive", BusinessUser.IsActive);
+                BusinessUser result = connection.Query<BusinessUser>("spUpdateBusinessUser", p, commandType: CommandType.StoredProcedure).Single();
+
+                return result;
+            }
+        }
+        public BusinessUser CreateBusinessUser(BusinessUserInsert BusinessUser)
+        {
+            using (SqlConnection connection = new SqlConnection(DefaultConnection))
+            {
+                DynamicParameters p = new DynamicParameters();
+                p.Add("@businessid", BusinessUser.BusinessID);
+                p.Add("@userid", BusinessUser.UserID);
+                p.Add("@isadmin", BusinessUser.IsAdmin);
+                p.Add("@isowner", BusinessUser.IsOwner);
+                BusinessUser result = connection.Query<BusinessUser>("spCreateBusinessUser", p, commandType: CommandType.StoredProcedure).Single();
+
+                return result;
             }
         }
     }
