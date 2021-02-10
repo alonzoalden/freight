@@ -25,6 +25,7 @@ import { EditItemDialogComponent } from "../../component/edit-item/edit-item-dia
 import { Item } from "app/_shared/model/item";
 import * as fromItem from '../../state';
 import { Store } from "@ngrx/store";
+import { ConfirmationDialogComponent } from "app/_shared/confirmation-dialog/confirmation-dialog.component";
 @Component({
   selector: 'item-list',
   templateUrl: './item-list.component.html',
@@ -87,7 +88,16 @@ export class ItemListComponent implements OnInit, OnDestroy {
     this.select.emit(item);
   }
   onDelete(itemid: any): void {
-    this.deleteItem.emit(itemid);
+    this.dialogRef = this._matDialog.open(ConfirmationDialogComponent, {
+      data: { message: `Are you sure you want to delete ${this.selected.itemName}?` },
+    });
+    this.dialogRef.afterClosed()
+      .subscribe((response) => {
+        if (response) {
+          this.deleteItem.emit(itemid);
+        }
+      });
+    
   }
 
   toggleSidebar(name): void {

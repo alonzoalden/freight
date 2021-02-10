@@ -57,7 +57,7 @@ export class EditItemDialogComponent implements OnInit, OnDestroy {
     this.actions$
       .pipe(
         takeUntil(this._unsubscribeAll),
-        ofType(ItemApiActions.updateItemSuccess))
+        ofType(ItemApiActions.updateItemSuccess, ItemApiActions.createItemSuccess))
       .subscribe((data) => {
         this.matDialogRef.close(data);
       });
@@ -95,19 +95,7 @@ export class EditItemDialogComponent implements OnInit, OnDestroy {
   }
 
   create(): void {
-    this.isSaving = true;
-    this.warehouseItemManagerService.createItem(this.itemForm.value)
-      .subscribe(
-        (data: Item) => {
-          // this.warehouseItemManagerService.onItemSelected.next(data);
-          this.matDialogRef.close(data);
-          this.notifyService.success('Success', `${data.itemNumber} has been created.`, { timeOut: 3500, clickToClose: true });
-        },
-        error => {
-          this.notifyService.error('Error', `${error}`, { clickToClose: true });
-          this.isSaving = false;
-        }
-      );
+    this.store.dispatch(ItemPageActions.createItem({ item: this.itemForm.value }));
   }
   edit(): void {
     this.store.dispatch(ItemPageActions.updateItem({ item: this.itemForm.value }));

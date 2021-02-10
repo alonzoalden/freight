@@ -48,7 +48,7 @@ export class VerticalLayout1Component implements OnInit, OnDestroy
         this._fuseConfigService.config
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((config) => {
-                this.fuseConfig = config;
+                setTimeout(() => this.fuseConfig = config, 0);
             });
     }
 

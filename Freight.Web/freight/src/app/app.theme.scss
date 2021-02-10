@@ -80,6 +80,7 @@ $typography: mat-typography-config(
 // Import app and page component themes here to enable theming for them
 @import "src/app/layout/components/toolbar/toolbar.theme";
 @import "src/app/shipment/component/chat-panel/chat-panel.theme.scss";
+@import "src/app/shipment/shipment.theme.scss";
 @import "src/app/login/login.theme";
 @import "src/app/item/item.theme";
 @import "src/app/location/location.theme";
@@ -93,8 +94,7 @@ $typography: mat-typography-config(
     @include chat-panel-theme($theme);
     @include toolbar-theme($theme);
     @include item-theme($theme);
-    
-    // // Pages
+    @include shipment-theme($theme);
     @include login-theme($theme);
     @include location-theme($theme);
 }

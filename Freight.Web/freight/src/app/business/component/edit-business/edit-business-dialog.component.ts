@@ -80,8 +80,8 @@ export class EditBusinessDialogComponent implements OnInit, OnDestroy {
 
   createBusinessForm(): FormGroup {
     return this._formBuilder.group({
-      businessID: [Number(this.selectedBusiness.businessID) || 0],
-      userID: [Number(this.selectedBusiness.businessID || 1)],
+      businessID: [Number(this.selectedBusiness.businessID)],
+      userID: [Number(this.selectedBusiness.userID)],
       companyName: [this.selectedBusiness.companyName],
       isShipper: [this.selectedBusiness.isShipper],
       is3PL: [this.selectedBusiness.is3PL],

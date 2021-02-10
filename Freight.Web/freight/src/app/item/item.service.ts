@@ -52,6 +52,16 @@ export class ItemService implements OnDestroy {
         catchError(this.handleError)
       );
   }
+  getItemList(businessid): Observable<any> {
+    return this.http
+      .get(this.apiURL + `/item/business/${businessid}`)
+      .pipe(
+        tap((data: Item[]) => {
+          this.allItems.next(data);
+        }),
+        catchError(this.handleError)
+      );
+  }
 
   getItem(id: string): Observable<any> {
 

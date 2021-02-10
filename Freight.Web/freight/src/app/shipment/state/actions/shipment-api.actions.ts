@@ -36,3 +36,12 @@ export const createShipmentFailure = createAction(
   '[Shipment API] Create Shipment Fail',
   props<{ error: string }>()
 );
+
+export const deleteShipmentPackageSuccess = createAction(
+  '[Shipment API] Delete Shipment Package Success',
+  props<{ shipmentPackageID: any }>()
+);
+export const deleteShipmentPackageFailure = createAction(
+  '[Shipment API] Delete Shipment Package Fail',
+  props<{ error: string }>()
+);

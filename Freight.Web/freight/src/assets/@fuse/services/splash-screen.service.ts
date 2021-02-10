@@ -54,12 +54,11 @@ export class FuseSplashScreenService {
                     take(1)
                 )
                 .subscribe((event: RouterEvent) => {
-                    // !event.url.includes('#id_token=') && 
-                    if (!this.oidcSecurityService.getToken()) {
-                        setTimeout(() => {
-                            this.hide();
-                        }, 400);
-                    }
+                    this.hide();
+                    // setTimeout(() => {
+                    //     this.hide();
+                    // });
+                    
                 });
         }
     }
@@ -105,4 +104,5 @@ export class FuseSplashScreenService {
             this.player.play();
         }, 400);
     }
+    
 }

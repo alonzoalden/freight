@@ -1,7 +1,7 @@
 import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { filter } from 'rxjs/operators';
 
 import { AuthModule, LogLevel, OidcConfigService, PublicEventsService, EventTypes } from 'angular-auth-oidc-client';
@@ -18,7 +18,6 @@ import { EffectsModule } from '@ngrx/effects';
 
 import * as fromApp from './_state/app.reducer';
 import { AppEffects } from './_state/app.effect';
-
 import { HomeComponent } from './_general/home.component';
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
@@ -45,6 +44,8 @@ import { LocationModule } from './location/location.module';
 import { CustomerModule } from './customer/customer.module';
 import { BusinessModule } from './business/business.module';
 import { FeeModule } from './fee/fee.module';
+import { ConfirmationDialogComponent } from 'app/_shared/confirmation-dialog/confirmation-dialog.component';
+import { ConfirmationDialogService } from 'app/_shared/confirmation-dialog/confirmation-dialog.service';
 import { SimpleNotificationsModule } from 'angular2-notifications';
 import { FakeDbService } from 'app/_shared/fake-db/fake-db.service';
 import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
@@ -52,6 +53,10 @@ import { CreateCompanyDialogComponent } from 'app/_general/create-company/create
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatProgressSpinnerModule, MatSpinner } from '@angular/material/progress-spinner';
 import { AuthGuard } from 'app/_general/auth/auth.guard';
+import { RequestInterceptor } from "app/_general/core/request.interceptor";
+import { ResponseInterceptor } from "app/_general/core/response.interceptor";
+
+
 
 export function configureAuth(oidcConfigService: OidcConfigService): () => any {
   return () =>
@@ -79,7 +84,8 @@ export function configureAuth(oidcConfigService: OidcConfigService): () => any {
     SignupComponent,
     PageNotFoundComponent,
     PasswordAssistanceComponent,
-    CreateCompanyDialogComponent
+    CreateCompanyDialogComponent,
+    ConfirmationDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -128,14 +134,28 @@ export function configureAuth(oidcConfigService: OidcConfigService): () => any {
     AuthGuard,
     FakeDbService,
     OidcConfigService,
-      {
-        provide: APP_INITIALIZER,
-        useFactory: configureAuth,
-        deps: [OidcConfigService],
-        multi: true,
-      }
+    ConfirmationDialogService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: configureAuth,
+      deps: [OidcConfigService],
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: RequestInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ResponseInterceptor,
+      multi: true,
+    },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [
+    ConfirmationDialogComponent
+  ]
 })
 
 export class AppModule {

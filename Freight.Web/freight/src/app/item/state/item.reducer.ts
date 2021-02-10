@@ -72,6 +72,29 @@ export const itemReducer = createReducer<ItemState>(
       isSaving: false,
     };
   }),
+  on(ItemPageActions.createItem, (state, action): ItemState => {
+    return {
+      ...state,
+      isSaving: true
+    };
+  }),
+  on(ItemApiActions.createItemSuccess, (state, action): ItemState => {
+    return {
+      ...state,
+      allItems: [action.item, ...state.allItems],
+      selectedItem: action.item,
+      isSaving: false,
+      error: ''
+    };
+  }),
+  on(ItemApiActions.createItemFailure, (state, action): ItemState => {
+    return {
+      ...state,
+      isSaving: false,
+      selectedItem: null,
+      error: ''
+    };
+  }),
   on(ItemPageActions.deleteItem, (state, action): ItemState => {
     return {
       ...state,

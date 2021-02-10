@@ -69,9 +69,9 @@
           <mat-icon>more_horiz</mat-icon>
         </button>
         <mat-menu #moreMenu="matMenu">
-          <button mat-menu-item (click)="openEditItemDialog(row)">
-            <mat-icon>build</mat-icon> Edit
-          </button>
+          <button mat-menu-item (click)="openEditItemDialog(row)"><mat-icon>build</mat-icon> Edit</button>
+          <hr>
+          <button mat-menu-item (click)="onDelete(row.itemID)"><mat-icon>delete</mat-icon> Delete</button>
         </mat-menu>
       </mat-cell>
     </ng-container>

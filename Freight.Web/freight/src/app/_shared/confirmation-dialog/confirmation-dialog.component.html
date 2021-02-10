@@ -1,0 +1,52 @@
+<div class="dialog-content-wrapper">
+    <mat-toolbar class="mat-accent m-0">
+        <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title" style="overflow: hidden;">{{ _data?.password ? 'Manager\'s Code Required' :
+                'Confirmation' }}</span>
+            <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+    <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>
+        <h2 *ngIf="_data.title" >{{_data.title}}</h2>
+        <h3 *ngIf="_data.subtitle" style="font-size: 16px; font-weight: 200;">{{_data.subtitle}}</h3>
+        <div style="font-size: 16px;">{{_data.message}}</div>
+    </div>
+    <div *ngIf="_data?.password" mat-dialog-content class="m-0" style="padding: 0 24px;" fusePerfectScrollbar>
+        <div style="font-size: 16px;">
+            <mat-form-field appearance="outline" class="w-100-p">
+                <mat-label>Manager's Code</mat-label>
+                <input #passwordInput matInput type="password" [(ngModel)]="password" required
+                    (keyup.enter)="confirm()">
+                <mat-icon matSuffix class="secondary-text">vpn_key</mat-icon>
+                <mat-error>
+                    Manager's Code is required
+                </mat-error>
+            </mat-form-field>
+        </div>
+    </div>
+
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="space-between center">
+
+        <div style="width: 100%; margin-right: 12px;">
+            <button mat-raised-button color="primary" (click)="confirm()"
+                [disabled]="isLoading || (_data.password ? !password : false)" class="save-button"
+                style="height: 70px; width: 100%; font-size: 19px;" aria-label="CLOSE">
+                <div fxLayoutAlign="center">
+                    <span class="btn-title" *ngIf="!isLoading">{{_data.confirmText ? _data.confirmText :
+                        'CONFIRM'}}</span>
+                    <mat-spinner diameter="20" *ngIf="isLoading"></mat-spinner>
+                </div>
+            </button>
+        </div>
+        <div style="width: 100%;">
+            <button mat-raised-button (click)="matDialogRef.close()" class="save-button"
+                style="height: 70px; width: 100%; font-size: 19px;" aria-label="CLOSE">
+                <div fxLayoutAlign="center">
+                    <span style="color: #111;">CANCEL</span>
+                </div>
+            </button>
+        </div>
+    </div>
+</div>

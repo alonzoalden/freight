@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { Shipment } from '../../../_shared/model/shipment';
+import { Shipment, ShipmentPackage } from '../../../_shared/model/shipment';
 // import { Item } from '../../component/edit-shipment/node_modules/app/_shared/model/item';
 
 export const loadShipmentList = createAction(
@@ -20,4 +20,12 @@ export const createShipment = createAction(
 export const setCurrentShipment = createAction(
   '[Shipment Page] Set Current Shipment',
   props<{ currentShipment: Shipment }>()
+);
+export const setCurrentShipmentPackageRow = createAction(
+  '[Shipment Page] Set Current Shipment',
+  props<{ currentShipmentPackageRow: ShipmentPackage }>()
+);
+export const deleteShipmentPackage = createAction(
+  '[Shipment Page] Delete Shipment Package',
+  props<{ shipmentPackageID: any }>()
 );

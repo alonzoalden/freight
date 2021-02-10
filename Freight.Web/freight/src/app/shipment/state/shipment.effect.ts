@@ -48,4 +48,24 @@ export class ShipmentEffects {
         )
       );
   });
+
+  deleteShipmentPackage$ = createEffect(() => {
+    return this.actions$
+      .pipe(
+        ofType(ShipmentPageActions.deleteShipmentPackage),
+        concatMap(action => this.shipmentService.deleteShipmentPackage(action.shipmentPackageID)
+          .pipe(
+            map((ShipmentPackage) => {
+              this.notifyService.success('Success', `Shipment Package has been removed.`, { timeOut:3500, clickToClose: true });
+              return ShipmentApiActions.deleteShipmentPackageSuccess({ shipmentPackageID: action.shipmentPackageID });
+            }),
+            catchError(error => {
+              console.log(error)
+              this.notifyService.error('Error', `${error}`, { clickToClose: true });
+              return of(ShipmentApiActions.deleteShipmentPackageFailure({ error }))
+            })
+          )
+        )
+      );
+  });
 }

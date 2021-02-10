@@ -18,6 +18,10 @@ export const getSelectedShipment = createSelector(
   getShipmentFeatureState,
   state => state.selectedShipment
 );
+export const getSelectedShipmentPackageRow = createSelector(
+  getShipmentFeatureState,
+  state => state.currentShipmentPackageRow
+);
 export const getIsSaving = createSelector(
   getShipmentFeatureState,
   state => state.isSaving

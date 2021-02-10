@@ -8,7 +8,7 @@ import { tap, catchError } from 'rxjs/operators';
 import { environment } from 'environments/environment';
 import { User } from './_shared/model/user';
 @Injectable({
-    providedIn: 'root',
+  providedIn: 'root',
 })
 export class AppService {
   private apiURL = environment.webapiURL;
@@ -31,6 +31,27 @@ export class AppService {
       'Pending'
     ]
   }
+  public shippingCarriers = [
+    {
+      id: 1,
+      name: 'UPS'
+    }
+  ];
+  public shippingServices = [
+    {
+      id: 1,
+      name: 'Ground'
+    }
+  ];
+  public shippingCarriersMap =
+    {
+      1: 'UPS'
+    }
+  public shippingServicesMap =
+    {
+      1: 'Ground'
+    }
+
   constructor(
     protected http: HttpClient,
     protected router: Router) { }
@@ -63,25 +84,25 @@ export class AppService {
 
   getBusinessAccesses(id: number): Observable<BusinessAccess> {
     const test = [{
-        id: 1,
-        headers: [1, 6]
-      },
-      {
-        id: 2,
-        headers: [1, 2, 6]
-      },
-      {
-        id: 3,
-        headers: [1, 2, 3, 6]
-      },
-      {
-        id: 4,
-        headers: [1, 2, 3, 4, 6]
-      },
-      {
-        id: 5,
-        headers: [1, 2, 3, 5, 6]
-      },
+      id: 1,
+      headers: [1, 6]
+    },
+    {
+      id: 2,
+      headers: [1, 2, 6]
+    },
+    {
+      id: 3,
+      headers: [1, 2, 3, 6]
+    },
+    {
+      id: 4,
+      headers: [1, 2, 3, 4, 6]
+    },
+    {
+      id: 5,
+      headers: [1, 2, 3, 5, 6]
+    },
     ];
     const result = new BusinessAccess(test.find(x => x.id === id).headers);
     console.log(result);
@@ -106,7 +127,7 @@ export class AppService {
     });
     return this.http.get<any>(`${this.apiURL}/user/${userid}`, { headers })
       .pipe(
-        tap((data: User) => {}),
+        tap((data: User) => { }),
         catchError(this.handleError)
       );
   }
@@ -117,7 +138,7 @@ export class AppService {
     });
     return this.http.put<any>(`${this.apiURL}/user`, { headers })
       .pipe(
-        tap((data: User) => {}),
+        tap((data: User) => { }),
         catchError(this.handleError)
       );
   }

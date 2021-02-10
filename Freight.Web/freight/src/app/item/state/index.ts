@@ -10,6 +10,11 @@ export interface State extends fromAppState.State {
 const getItemFeatureState = createFeatureSelector<ItemState>('item');
 const getAppFeatureState = createFeatureSelector<AppState>('app');
 
+export const getCurrentBusinessEntityId = createSelector(
+  getAppFeatureState,
+  state => state.currentBusinessEntityId
+);
+
 export const getAllItemList = createSelector(
   getItemFeatureState,
   state => state.allItems

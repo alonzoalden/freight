@@ -95,6 +95,16 @@ export class ShipmentService implements OnDestroy {
         catchError(this.handleError)
       );
   }
+  deleteShipmentPackage(id: string): Observable<any> {
+    return this.http.delete<any>(this.apiURL + '/shipment/package/' + id)
+      .pipe(
+        tap((data: Shipment) => {
+          this.onShipmentSelected.next(data);
+        }),
+        catchError(this.handleError)
+      );
+  }
+  
   handleError = (err: HttpErrorResponse) => {
     let errorMessage: string;
     if (err.error instanceof Error) {

@@ -1,0 +1,23 @@
+@import "src/assets/@fuse/scss/fuse";
+
+:host {
+    .mini-delete {
+        width: 46px;
+        height: 46px;
+        margin-left: 8px;
+    }
+    .header {
+        .name {
+            padding-left: 70px !important;
+        }
+    }
+    .mat-column-Count {
+        flex: 0 0 7% !important;
+        // min-width: 30px !important;
+        padding-left: 24px;
+    }
+    .mat-column-Item {
+        flex: 0 0 40% !important;
+        min-width: 40% !important;
+    }
+}

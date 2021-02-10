@@ -12,12 +12,13 @@ export class AuthGuard implements CanLoad {
     ) { }
 
     canLoad() {
-        if (this.oidcSecurityService.getToken()) {
-            return true;
-        } else {
-            this.router.navigate(['/home']);
-        }
-        return false;
+        return true;
+        // if (this.oidcSecurityService.getToken()) {
+        //     return true;
+        // } else {
+        //     this.router.navigate(['/home']);
+        // }
+        // return false;
     }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {

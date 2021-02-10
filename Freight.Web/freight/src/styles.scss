@@ -199,3 +199,10 @@ mat-cell:first-of-type, mat-header-cell:first-of-type, mat-footer-cell:first-of-
     flex: 1;
   }
 }
+mat-header-row {
+  background-color: #FEFEFE !important;
+}
+.mat-column-index {
+  max-width: 120px;
+  min-width: 60px !important;
+} 

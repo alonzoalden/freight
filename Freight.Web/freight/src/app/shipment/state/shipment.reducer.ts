@@ -1,11 +1,13 @@
 import { createReducer, on } from '@ngrx/store';
-import { Shipment } from '../../_shared/model/shipment';
+import { Shipment, ShipmentDetail, ShipmentPackage } from '../../_shared/model/shipment';
 import { ShipmentApiActions, ShipmentPageActions } from './actions';
 // import { Item } from '../component/edit-shipment/''node_modules/app/_shared/model/item';
 
 export interface ShipmentState {
   allShipments: Shipment[];
   selectedShipment: Shipment;
+  selectedShipmentDetail: ShipmentDetail;
+  currentShipmentPackageRow: ShipmentPackage;
   isSaving: boolean;
   isLoading: boolean,
   error: string;
@@ -14,6 +16,8 @@ export interface ShipmentState {
 const initalState: ShipmentState = {
   allShipments: null,
   selectedShipment: null,
+  selectedShipmentDetail: null,
+  currentShipmentPackageRow: null,
   isSaving: false,
   isLoading: false,
   error: ''
@@ -50,6 +54,12 @@ export const shipmentReducer = createReducer<ShipmentState>(
       selectedShipment: action.currentShipment
     };
   }),
+  on(ShipmentPageActions.setCurrentShipmentPackageRow, (state, action): ShipmentState => {
+    return {
+      ...state,
+      currentShipmentPackageRow: action.currentShipmentPackageRow
+    };
+  }),
   on(ShipmentPageActions.updateShipment, (state, action): ShipmentState => {
     return {
       ...state,
@@ -70,7 +80,32 @@ export const shipmentReducer = createReducer<ShipmentState>(
   on(ShipmentApiActions.updateShipmentFailure, (state, action): ShipmentState => {
     return {
       ...state,
+      isLoading: false,
+    };
+  }),
+
+  on(ShipmentPageActions.deleteShipmentPackage, (state, action): ShipmentState => {
+    return {
+      ...state,
+      isLoading: true
+    };
+  }),
+  on(ShipmentApiActions.deleteShipmentPackageSuccess, (state, action): ShipmentState => {
+    let updatedPackages = state.selectedShipmentDetail?.shipmentPackages.filter(shipmentpackage => shipmentpackage.shipmentPackageID !== action.shipmentPackageID);
+    state.selectedShipmentDetail.shipmentPackages = updatedPackages;
+
+    return {
+      ...state,
+      isLoading: false,
+      currentShipmentPackageRow: null,
+      selectedShipmentDetail: state.selectedShipmentDetail
+    };
+  }),
+  on(ShipmentApiActions.deleteShipmentPackageFailure, (state, action): ShipmentState => {
+    return {
+      ...state,
       isSaving: false,
     };
   }),
+
 );

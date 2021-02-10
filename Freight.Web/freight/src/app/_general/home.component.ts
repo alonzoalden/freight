@@ -36,6 +36,7 @@ export class HomeComponent implements OnInit {
     // Configure the layout
     this._fuseConfigService.config = this._fuseConfigService.hideLayoutConfig();
     this.composeForm = this.createProductForm();
+    this._fuseSplashScreenService.hide();
   }
 
   ngOnDestroy() {
@@ -45,7 +46,7 @@ export class HomeComponent implements OnInit {
     this._fuseSplashScreenService.show();
     this.oidcSecurityService.authorize();
     //this.store.dispatch(AppPageActions.loadBusinesses());
-    this.router.navigate(['/dashboard']);
+    //this.router.navigate(['/dashboard']);
   }
   
   logout(): void {
@@ -78,7 +79,6 @@ export class HomeComponent implements OnInit {
 
 
   scrollToElement(element): void {
-    console.log(element);
     const el = document.getElementById(element);
     if (el) {
       el.scrollIntoView({ block: 'center' });

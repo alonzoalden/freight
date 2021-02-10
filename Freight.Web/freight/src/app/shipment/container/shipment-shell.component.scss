@@ -48,3 +48,9 @@ shipment-shell {
 .edit-fields-dialog {
   max-width: 800px !important;
 }
+.mat-button-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 36px;
+}

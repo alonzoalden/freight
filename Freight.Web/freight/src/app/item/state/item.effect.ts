@@ -14,11 +14,27 @@ export class ItemEffects {
 
   constructor(private actions$: Actions, private itemService: ItemService, private notifyService: NotificationsService) { }
 
+  loadAllItemList$ = createEffect(() => {
+    return this.actions$
+      .pipe(
+        ofType(ItemPageActions.loadAllItemList),
+        concatMap(action => this.itemService.getAllItemList()
+          .pipe(
+            map(items => ItemApiActions.loadItemsListSuccess({ items })),
+            catchError(error => {
+              this.notifyService.error('Error', `${error}`, { clickToClose: true });
+              return of(ItemApiActions.loadItemsListFailure({ error }))
+            })
+          )
+        )
+      );
+  });
+
   loadItemList$ = createEffect(() => {
     return this.actions$
       .pipe(
         ofType(ItemPageActions.loadItemList),
-        concatMap(action => this.itemService.getAllItemList()
+        concatMap(action => this.itemService.getItemList(action.businessid)
           .pipe(
             map(items => ItemApiActions.loadItemsListSuccess({ items })),
             catchError(error => {
@@ -48,6 +64,24 @@ export class ItemEffects {
         )
       );
   });
+  createItem$ = createEffect(() => {
+    return this.actions$
+      .pipe(
+        ofType(ItemPageActions.createItem),
+        concatMap(action => this.itemService.createItem(action.item)
+          .pipe(
+            map((item) => {
+              this.notifyService.success('Success', `${item.itemName} has been updated.`, { timeOut:3500, clickToClose: true });
+              return ItemApiActions.createItemSuccess({ item });
+            }),
+            catchError(error => {
+              this.notifyService.error('Error', `${error}`, { clickToClose: true });
+              return of(ItemApiActions.createItemFailure({ error }))
+            })
+          )
+        )
+      );
+  });
 
   deleteItem$ = createEffect(() => {
     return this.actions$
@@ -56,11 +90,11 @@ export class ItemEffects {
         concatMap(action => this.itemService.deleteItem(action.itemid)
           .pipe(
             map((item) => {
-              
-              this.notifyService.success('Success', `${item.itemNumber} has been removed.`, { timeOut:3500, clickToClose: true });
+              this.notifyService.success('Success', `Item has been removed.`, { timeOut:3500, clickToClose: true });
               return ItemApiActions.deleteItemSuccess({ itemid: action.itemid });
             }),
             catchError(error => {
+              console.log(error)
               this.notifyService.error('Error', `${error}`, { clickToClose: true });
               return of(ItemApiActions.deleteItemFailure({ error }))
             })
