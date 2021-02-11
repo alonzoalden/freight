@@ -1,0 +1,40 @@
+<div class="dialog-content-wrapper">
+  <mat-toolbar class="mat-accent m-0">
+    <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+      <div fxLayout="row" fxLayoutAlign="start center">
+        <span class="title dialog-title">{{selectedShipmentFee?.shipmentFeeID ? 'Edit' : 'Add' }} Fee</span>
+        <mat-spinner diameter="20" *ngIf="isLoading"></mat-spinner>
+      </div>
+      <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-toolbar-row>
+  </mat-toolbar>
+  <div mat-dialog-content class="p-24 m-0" style="max-height: 65vh !important;">
+    <form name="shipmentFeeForm" [formGroup]="shipmentFeeForm" class="compose-form" fxLayout="column" fxFlex>
+      shipmentFeeID: [Number(this.selectedShipmentFee.shipmentFeeID)],
+      shipmentID: [Number(this.selectedShipmentFee.shipmentID || 1)],
+      feeID: [Number(this.selectedShipmentFee.feeID) || 0],
+      feeAmount: [this.selectedShipmentFee.feeAmount]
+      <div fxLayout="column" fxLayoutAlign="start start">
+        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+          <mat-label> feeID </mat-label>
+          <!-- <input matInput placeholder="Fee" name="feeID" formControlName="feeID"required> -->
+          <mat-select placeholder="Fees" name="fee" formControlName="fee" required>
+            <mat-option *ngFor="let fee of fees" value="{{fee}}">{{ fee.feeType }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        
+      </div>
+    </form>
+  </div>
+  <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="space-between center">
+    <button  mat-raised-button color="accent" (click)="onSave()" class="dialog-button" [disabled]="shipmentFeeForm.invalid" aria-label="SAVE">
+      <div fxLayoutAlign="center">
+        <span *ngIf="!isSaving">SAVE</span>
+        <mat-spinner diameter="20" *ngIf="isSaving"></mat-spinner>
+      </div>
+    </button>
+  </div>
+</div>

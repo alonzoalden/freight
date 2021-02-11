@@ -101,11 +101,7 @@ export class ShipmentContact {
     public businessID: number,
     public shipmentID: number,
     public contactID: number,
-    public feeAmount: number,
-    public updatedBy: string,
-    public updatedOn: Date,
-    public createdBy: string,
-    public createdOn: Date,
+    public updatedBy: number
   ) { }
 }
 export class ShipmentDetail {

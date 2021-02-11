@@ -17,6 +17,12 @@ export const getCurrentBusinessEntityId = createSelector(
   state => state.currentBusinessEntityId
 );
 
+export const getCurrentUser = createSelector(
+  getAppFeatureState,
+  state => state.currentUser
+);
+
+
 export const getTest = createSelector(
   getAppFeatureState,
   state => state.test

@@ -2,10 +2,12 @@ import { createReducer, on } from '@ngrx/store';
 import { AppPageActions, AppApiActions } from './actions';
 
 import { BusinessEntity } from '../_shared/model/business-entity';
+import { Business } from 'app/_shared/model/business';
 
 export interface AppState {
-  businesses: BusinessEntity[];
+  businesses: Business[];
   currentBusinessEntityId: number | null;
+  currentUser: any;
   error: string;
   test: string;
 }
@@ -13,6 +15,7 @@ export interface AppState {
 const initalState: AppState = {
   businesses: [],
   currentBusinessEntityId: null,
+  currentUser: null,
   error: '',
   test: ''
 };

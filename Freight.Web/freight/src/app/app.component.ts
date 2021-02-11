@@ -22,6 +22,8 @@ import { FuseProgressBarService } from '@fuse/components/progress-bar/progress-b
 import { MatDialog } from '@angular/material/dialog';
 import { CreateCompanyDialogComponent } from './_general/create-company/create-company-dialog.component';
 import { UserService } from './user/user.service';
+import { Business } from './_shared/model/business';
+import { User } from './_shared/model/user';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -30,7 +32,7 @@ import { UserService } from './user/user.service';
 export class AppComponent implements OnInit {
   fuseConfig: any;
   navigation: any;
-  businessEntities$: Observable<BusinessEntity[]>;
+  businessEntities$: Observable<Business[]>;
   selectedBusinessEntityId$: Observable<number>;
   dialogRef: any;
   private _unsubscribeAll: Subject<any>;
@@ -59,7 +61,7 @@ export class AppComponent implements OnInit {
     this.oidcSecurityService.checkAuth()
       .subscribe((auth) => {
         if (!auth) {
-          //this.router.navigate(['/home']);
+          this.router.navigate(['/home']);
         } else {
           
           if (this.router.url == '/') {
@@ -69,13 +71,13 @@ export class AppComponent implements OnInit {
           this.userService.getCurrentUser()
             .subscribe(
               (user) => {
-                console.log(user);
                 if (!user.BusinessID) {
                   // If user is not assigned to company:
-                  this.router.navigate(['/business']);
-                  //this.openCreateCompanyDialog();
+                  this.openCreateCompanyDialog(user);
+
                 } else {
-                  this.store.dispatch(AppPageActions.setCurrentBusiness({currentBusinessId: user.BusinessID}));
+                  this.store.dispatch(AppPageActions.setCurrentUser({user}));
+                  this.store.dispatch(AppPageActions.setCurrentBusiness({currentBusinessId: user.businessID}));
                   this.router.navigate(['/dashboard']);
                 }
               },
@@ -85,9 +87,6 @@ export class AppComponent implements OnInit {
               );
         }
       });
-
-    // If user is not assigned to company:
-    // this.openCreateCompanyDialog();
   }
 
   changeBusiness(e): void {
@@ -183,17 +182,21 @@ export class AppComponent implements OnInit {
         this.document.body.classList.add(this.fuseConfig.colorTheme);
       });
   }
-  openCreateCompanyDialog(data = {}): void {
+  openCreateCompanyDialog(data: User): void {
     this.dialogRef = this._matDialog.open(CreateCompanyDialogComponent, {
       panelClass: 'edit-fields-dialog',
       disableClose: true,
-      width: '100%'
+      width: '100%',
+      data: data
     });
     this.dialogRef.afterClosed()
       .subscribe(response => {
         if (!response) {
           return;
         }
+        this.store.dispatch(AppPageActions.setCurrentUser({user: data}));
+        this.store.dispatch(AppPageActions.setCurrentBusiness({currentBusinessId: response.BusinessID}));
+        this.store.dispatch(AppPageActions.loadBusinesses({userID: data.userID }));
       });
   }
 }

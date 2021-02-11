@@ -24,7 +24,7 @@ export const getCurrentBusinessEntity = createSelector(
   getAppFeatureState,
   getCurrentBusinessEntityId,
   (state, currentBusinessEntityId) => {
-    return currentBusinessEntityId ? state.businesses.find(b => b.id === currentBusinessEntityId) : null;
+    return currentBusinessEntityId ? state.businesses.find(b => b.businessID === currentBusinessEntityId) : null;
   }
 );
 

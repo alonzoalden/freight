@@ -35,12 +35,12 @@ export class ItemShellComponent implements OnDestroy {
     this.itemEntities$ = this.store.select(fromItem.getAllItemList);
     this.selectedItem$ = this.store.select(fromItem.getSelectedItem);
     this.isLoading$ = this.store.select(fromItem.getIsLoading);
-    // this.appStore.select(fromApp.getCurrentBusinessEntityId)
-    //   .pipe(takeUntil(this._unsubscribeAll))
-    //   .subscribe(businessid => {
-    //     this.store.dispatch(ItemPageActions.loadItemList({ businessid }));
-    //   });
-    this.store.dispatch(ItemPageActions.loadAllItemList());
+    this.appStore.select(fromApp.getCurrentBusinessEntityId)
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe(businessid => {
+        this.store.dispatch(ItemPageActions.loadItemList({ businessid }));
+      });
+    //this.store.dispatch(ItemPageActions.loadAllItemList());
 
   }
   selectItem(item: Item): void {

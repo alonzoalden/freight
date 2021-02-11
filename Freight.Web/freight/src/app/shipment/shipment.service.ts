@@ -4,7 +4,7 @@ import { Observable, BehaviorSubject, throwError, Subject } from "rxjs";
 import { environment } from "../../environments/environment";
 import { catchError, tap, takeUntil } from "rxjs/operators";
 //import { Item } from "./component/edit-shipment/node_modules/app/_shared/model/item";
-import { Shipment } from "../_shared/model/shipment";
+import { Shipment, ShipmentContact, ShipmentFee, ShipmentLine, ShipmentPackage } from "../_shared/model/shipment";
 @Injectable()
 export class ShipmentService implements OnDestroy {
   private apiURL = environment.webapiURL;
@@ -51,6 +51,13 @@ export class ShipmentService implements OnDestroy {
         catchError(this.handleError)
       );
   }
+  getShipmentList(businessid): Observable<any> {
+    return this.http
+      .get(this.apiURL + `/item/business/${businessid}`)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
 
   getShipment(id: string): Observable<any> {
     return this.http.get<any>(this.apiURL + '/shipment/' + id)
@@ -86,25 +93,83 @@ export class ShipmentService implements OnDestroy {
       );
   }
 
+  editShipmentPackage(body: ShipmentPackage): Observable<any> {
+    return this.http.put<any>(this.apiURL + '/shipment/package', body)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+  editShipmentLine(body: ShipmentLine): Observable<any> {
+    return this.http.put<any>(this.apiURL + '/shipment/line', body)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+  editShipmentFee(body: ShipmentFee): Observable<any> {
+    return this.http.put<any>(this.apiURL + '/shipment/fee', body)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+  editShipmentContact(body: ShipmentContact): Observable<any> {
+    return this.http.put<any>(this.apiURL + '/shipment/contact', body)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
   deleteShipment(id: string): Observable<any> {
     return this.http.delete<any>(this.apiURL + '/shipment/' + id)
       .pipe(
-        tap((data: Shipment) => {
-          this.onShipmentSelected.next(data);
-        }),
+        catchError(this.handleError)
+      );
+  }
+  deleteShipmentLine(id: string): Observable<any> {
+    return this.http.delete<any>(this.apiURL + '/shipment/line/' + id)
+      .pipe(
         catchError(this.handleError)
       );
   }
   deleteShipmentPackage(id: string): Observable<any> {
     return this.http.delete<any>(this.apiURL + '/shipment/package/' + id)
       .pipe(
-        tap((data: Shipment) => {
-          this.onShipmentSelected.next(data);
-        }),
+        catchError(this.handleError)
+      );
+  }
+  deleteShipmentFee(id: string): Observable<any> {
+    return this.http.delete<any>(this.apiURL + '/shipment/fee/' + id)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+  deleteShipmentContact(id: string): Observable<any> {
+    return this.http.delete<any>(this.apiURL + '/shipment/contact/' + id)
+      .pipe(
         catchError(this.handleError)
       );
   }
   
+  getItemList(businessid): Observable<any> {
+    return this.http
+      .get(this.apiURL + `/item/business/${businessid}`)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+  getFeeList(businessid): Observable<any> {
+    return this.http
+      .get(this.apiURL + `/fee/business/${businessid}`)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+  getContactList(businessid): Observable<any> {
+    return this.http
+      .get(this.apiURL + `/customer/business/${businessid}`)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
   handleError = (err: HttpErrorResponse) => {
     let errorMessage: string;
     if (err.error instanceof Error) {

@@ -9,10 +9,11 @@ import { NotificationsService } from 'angular2-notifications';
 //import { Item } from 'app/_shared/model/item';
 import { Store } from '@ngrx/store';
 import * as fromShipment from '../../state';
+
 import { ShipmentApiActions, ShipmentPageActions } from '../../state/actions';
 import { ShipmentEffects } from '../../state/shipment.effect';
 import { Actions, ofType } from '@ngrx/effects';
-import { Shipment, ShipmentPackage } from '../../../_shared/model/shipment';
+import { Shipment, ShipmentLine } from '../../../_shared/model/shipment';
 import { ShipmentService } from '../../shipment.service';
 import { AppService } from 'app/app.service';
 import { Router } from '@angular/router';
@@ -20,19 +21,22 @@ import { MatTabGroup } from '@angular/material/tabs';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MediaObserver } from '@angular/flex-layout';
 import { fuseAnimations } from '@fuse/animations';
+import { Item } from 'app/_shared/model/item';
+import * as fromApp from 'app/_state';
 
 @Component({
-  selector: 'edit-shipment-packages-dialog',
-  templateUrl: './edit-shipment-packages-dialog.component.html',
-  styleUrls: ['./edit-shipment-packages-dialog.component.scss'],
+  selector: 'edit-shipment-lines-dialog',
+  templateUrl: './edit-shipment-lines-dialog.component.html',
+  styleUrls: ['./edit-shipment-lines-dialog.component.scss'],
   animations: fuseAnimations
 })
-export class EditShipmentPackagesDialogComponent implements OnInit, OnDestroy {
+export class EditShipmentLinesDialogComponent implements OnInit, OnDestroy {
   //imageURL = environment.imageURL;
-  shipmentPackageForm: FormGroup;
+  shipmentLineForm: FormGroup;
   selectedShipment: Shipment;
-  selectedShipmentPackage: ShipmentPackage;
-  isSaving: boolean;  
+  selectedShipmentLine: ShipmentLine;
+  lines: any;
+  isSaving: boolean;
   isLoading: boolean;
   composeForm: any;
   private _unsubscribeAll: Subject<any>;
@@ -40,7 +44,7 @@ export class EditShipmentPackagesDialogComponent implements OnInit, OnDestroy {
   constructor(
     private store: Store<fromShipment.State>,
     private _formBuilder: FormBuilder,
-    public matDialogRef: MatDialogRef<EditShipmentPackagesDialogComponent>,
+    public matDialogRef: MatDialogRef<EditShipmentLinesDialogComponent>,
     public appService: AppService,
     private shipmentService: ShipmentService,
     private notifyService: NotificationsService,
@@ -49,14 +53,34 @@ export class EditShipmentPackagesDialogComponent implements OnInit, OnDestroy {
     private router: Router,
     private dom: DomSanitizer,
     public media: MediaObserver,
+    private appStore: Store<fromApp.State>,
     @Inject(MAT_DIALOG_DATA) private inputData: any,
   ) {
     this._unsubscribeAll = new Subject();
   }
 
   ngOnInit(): void {
-    this.selectedShipmentPackage = this.inputData;
-    this.shipmentPackageForm = this.createshipmentPackageForm();
+
+
+    this.selectedShipmentLine = this.inputData;
+    this.shipmentLineForm = this.createShipmentLineForm();
+
+    this.appStore.select(fromApp.getCurrentBusinessEntityId)
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe(businessID => {
+        this.store.dispatch(ShipmentPageActions.loadItemList({ businessID }));
+      });
+
+    this.store.select(fromShipment.getItemList)
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe((lines: Item[]) => {
+        this.lines = lines
+      });
+    this.store.select(fromShipment.getIsLoading)
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe(loading => {
+        this.isLoading = loading
+      });
     this.store.select(fromShipment.getIsSaving)
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe(loading => {
@@ -87,32 +111,19 @@ export class EditShipmentPackagesDialogComponent implements OnInit, OnDestroy {
     this._unsubscribeAll.complete();
   }
 
-  createshipmentPackageForm(): FormGroup {
+  createShipmentLineForm(): FormGroup {
     return this._formBuilder.group({
-      shipmentPackageID: [Number(this.selectedShipmentPackage.shipmentID) || 0],
-      businessID: [Number(this.selectedShipmentPackage.businessID || 1)],
-      shipmentID: [Number(this.selectedShipmentPackage.businessID || 1)],
-      status: [this.selectedShipmentPackage.status],
-      packageNumber: [this.selectedShipmentPackage.packageNumber],
-      dimension: [this.selectedShipmentPackage.dimension],
-      weight: [this.selectedShipmentPackage.weight],
-      weightUnit: [this.selectedShipmentPackage.weightUnit],
-      shipmentPackageRateID: [this.selectedShipmentPackage.shipmentPackageRateID],
-      shippingCarrierID: [this.selectedShipmentPackage.shippingCarrierID],
-      shippingServiceID: [this.selectedShipmentPackage.shippingServiceID],
-      shippingPackageID: [this.selectedShipmentPackage.shippingPackageID],
-      shippingRate: [this.selectedShipmentPackage.shippingRate],
-      trackingNumber: [this.selectedShipmentPackage.trackingNumber],
-      uspspicNumber: [this.selectedShipmentPackage.uspspicNumber],
-      shippingLabelPath: [this.selectedShipmentPackage.shippingLabelPath],
-      shipDate: [this.selectedShipmentPackage.shipDate],
-      isRated: [this.selectedShipmentPackage.isRated],
-      isLabeled: [this.selectedShipmentPackage.isLabeled],
-      isManual: [this.selectedShipmentPackage.isManual]
+      shipmentLineID: [Number(this.selectedShipmentLine.shipmentLineID)],
+      shipmentID: [Number(this.selectedShipmentLine.shipmentID || 1)],
+      itemID: [Number(this.selectedShipmentLine.itemID) || 0],
+      quantity: [this.selectedShipmentLine.quantity],
+      unitPrice: [this.selectedShipmentLine.unitPrice],
+      line: []
     });
   }
+
   onSave(): void {
-    if (this.selectedShipmentPackage.shipmentPackageID) {
+    if (this.selectedShipmentLine.shipmentLineID) {
       this.edit();
     } else {
       this.save();
@@ -120,10 +131,10 @@ export class EditShipmentPackagesDialogComponent implements OnInit, OnDestroy {
   }
 
   save(): void {
-    this.matDialogRef.close(this.shipmentPackageForm.value);
+    this.matDialogRef.close(this.shipmentLineForm.value);
   }
   edit(): void {
-    this.store.dispatch(ShipmentPageActions.editShipmentPackage({ shipmentPackage: this.shipmentPackageForm.value }));
+    this.store.dispatch(ShipmentPageActions.updateShipment({ shipment: this.shipmentLineForm.value }));
   }
 
   onFileSelected(event, type) {

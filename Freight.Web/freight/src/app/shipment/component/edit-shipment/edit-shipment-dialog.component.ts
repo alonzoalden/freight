@@ -12,7 +12,7 @@ import * as fromShipment from '../../state';
 import { ShipmentApiActions, ShipmentPageActions } from '../../state/actions';
 import { ShipmentEffects } from '../../state/shipment.effect';
 import { Actions, ofType } from '@ngrx/effects';
-import { Shipment, ShipmentDetail, ShipmentPackage } from '../../../_shared/model/shipment';
+import { Shipment, ShipmentContact, ShipmentDetail, ShipmentFee, ShipmentLine, ShipmentPackage } from '../../../_shared/model/shipment';
 import { ShipmentService } from '../../shipment.service';
 import { AppService } from 'app/app.service';
 import { Router } from '@angular/router';
@@ -23,6 +23,9 @@ import { fuseAnimations } from '@fuse/animations';
 import { EditShipmentPackagesDialogComponent } from '../edit-shipment-packages/edit-shipment-packages-dialog.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { ConfirmationDialogComponent } from 'app/_shared/confirmation-dialog/confirmation-dialog.component';
+import { EditShipmentLinesDialogComponent } from '../edit-shipment-lines/edit-shipment-lines-dialog.component';
+import { EditShipmentFeesDialogComponent } from '../edit-shipment-fees/edit-shipment-fees-dialog.component';
+import { EditShipmentContactsDialogComponent } from '../edit-shipment-contacts/edit-shipment-contacts-dialog.component';
 
 @Component({
   selector: 'edit-shipment-dialog',
@@ -32,15 +35,22 @@ import { ConfirmationDialogComponent } from 'app/_shared/confirmation-dialog/con
 })
 export class EditShipmentDialogComponent implements OnInit, OnDestroy {
   //imageURL = environment.imageURL;
+  dataSourceLines: any;
   dataSourcePackages: any;
-  displayedPackageColumns = ['index', 'shippingCarrierID', 'weight', 'shippingServiceID', 'trackingNumber', 'status', 'actions'];
+  dataSourceFees: any;
+  dataSourceContacts: any;
+  displayedLinesColumns = ['index', 'itemNumber', 'itemName', 'htsCode', 'unitPrice', 'quantity', 'actions'];
+  displayedPackageColumns = ['index', 'shippingCarrierID', 'dimension', 'weight', 'shippingServiceID', 'trackingNumber', 'status', 'actions'];
+  displayedFeeColumns = ['index', 'feeType', 'description', 'feeAmount', 'actions'];
+  displayedContactsColumns = ['index', 'from', 'lastName', 'email', 'updates', 'actions'];
 
-
-  
   shipmentForm: FormGroup;
   selectedShipment: Shipment;
   selectedShipmentDetail: ShipmentDetail;
   selectedShipmentPackageRow: ShipmentPackage;
+  selectedShipmentLineRow: ShipmentLine;
+  selectedShipmentFeeRow: ShipmentFee;
+  selectedShipmentContactRow: ShipmentContact;
   isSaving: boolean;
   elected: any;
   fileDetailManifest: any;
@@ -72,7 +82,6 @@ export class EditShipmentDialogComponent implements OnInit, OnDestroy {
     public appService: AppService,
     private shipmentService: ShipmentService,
     private notifyService: NotificationsService,
-    private shipmentEffects: ShipmentEffects,
     private readonly actions$: Actions,
     private router: Router,
     private dom: DomSanitizer,
@@ -86,7 +95,10 @@ export class EditShipmentDialogComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.selectedShipment = this.inputData;
     this.shipmentForm = this.createShipmentForm();
+    this.dataSourceLines = new MatTableDataSource<any>(this.selectedShipmentDetail?.shipmentLines || []);
     this.dataSourcePackages = new MatTableDataSource<any>(this.selectedShipmentDetail?.shipmentPackages || []);
+    this.dataSourceFees = new MatTableDataSource<any>(this.selectedShipmentDetail?.shipmentFees || []);
+    this.dataSourceContacts = new MatTableDataSource<any>(this.selectedShipmentDetail?.shipmentContacts || []);
 
     this.store.select(fromShipment.getIsSaving)
       .pipe(takeUntil(this._unsubscribeAll))
@@ -97,8 +109,25 @@ export class EditShipmentDialogComponent implements OnInit, OnDestroy {
     this.store.select(fromShipment.getSelectedShipmentPackageRow)
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe(row => {
-        console.log(row);
         this.selectedShipmentPackageRow = row;
+      });
+
+    this.store.select(fromShipment.getSelectedShipmentLineRow)
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe(row => {
+        this.selectedShipmentLineRow = row;
+      });
+
+    this.store.select(fromShipment.getSelectedShipmentFeeRow)
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe(row => {
+        this.selectedShipmentFeeRow = row;
+      });
+
+    this.store.select(fromShipment.getSelectedShipmentContactRow)
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe(row => {
+        this.selectedShipmentContactRow = row;
       });
 
     this.actions$
@@ -165,6 +194,9 @@ export class EditShipmentDialogComponent implements OnInit, OnDestroy {
   }
 
   create(): void {
+
+    // to do: include all data in Shipment to save.
+
     this.isSaving = true;
     this.shipmentService.createShipment(this.shipmentForm.value)
       .subscribe(
@@ -185,6 +217,16 @@ export class EditShipmentDialogComponent implements OnInit, OnDestroy {
   onSelectPackage(currentShipmentPackageRow: ShipmentPackage): void {
     this.store.dispatch(ShipmentPageActions.setCurrentShipmentPackageRow({ currentShipmentPackageRow }));
   }
+  onSelectLine(currentShipmentLineRow: ShipmentLine): void {
+    this.store.dispatch(ShipmentPageActions.setCurrentShipmentLineRow({ currentShipmentLineRow }));
+  }
+  onSelectContact(currentShipmentContactRow: ShipmentContact): void {
+    this.store.dispatch(ShipmentPageActions.setCurrentShipmentContactRow({ currentShipmentContactRow }));
+  }
+  onSelectFee(currentShipmentFeeRow: ShipmentFee): void {
+    this.store.dispatch(ShipmentPageActions.setCurrentShipmentFeeRow({ currentShipmentFeeRow }));
+  }
+
   onDeletePackage(row: ShipmentPackage): void {
     this.dialogRef = this._matDialog.open(ConfirmationDialogComponent, {
       data: { message: `Are you sure you want to remove this package?` },
@@ -199,7 +241,51 @@ export class EditShipmentDialogComponent implements OnInit, OnDestroy {
           }
         }
       });
-    
+  }
+  onDeleteLine(row: ShipmentLine): void {
+    this.dialogRef = this._matDialog.open(ConfirmationDialogComponent, {
+      data: { message: `Are you sure you want to remove this line?` },
+    });
+    this.dialogRef.afterClosed()
+      .subscribe((response) => {
+        if (response) {
+          if (row.shipmentLineID) {
+            this.store.dispatch(ShipmentPageActions.deleteShipmentLine({ shipmentLineID: row.shipmentLineID }));
+          } else {
+            this.dataSourceLines.data = this.dataSourceLines.data.filter(pkg => pkg !== row);
+          }
+        }
+      });
+  }
+  onDeleteFee(row: ShipmentFee): void {
+    this.dialogRef = this._matDialog.open(ConfirmationDialogComponent, {
+      data: { message: `Are you sure you want to remove this fee?` },
+    });
+    this.dialogRef.afterClosed()
+      .subscribe((response) => {
+        if (response) {
+          if (row.shipmentFeeID) {
+            this.store.dispatch(ShipmentPageActions.deleteShipmentFee({ shipmentFeeID: row.shipmentFeeID }));
+          } else {
+            this.dataSourceFees.data = this.dataSourceFees.data.filter(pkg => pkg !== row);
+          }
+        }
+      });
+  }
+  onDeleteContact(row: ShipmentContact): void {
+    this.dialogRef = this._matDialog.open(ConfirmationDialogComponent, {
+      data: { message: `Are you sure you want to remove this contact?` },
+    });
+    this.dialogRef.afterClosed()
+      .subscribe((response) => {
+        if (response) {
+          if (row.shipmentContactID) {
+            this.store.dispatch(ShipmentPageActions.deleteShipmentContact({ shipmentContactID: row.shipmentContactID }));
+          } else {
+            this.dataSourceContacts.data = this.dataSourceContacts.data.filter(pkg => pkg !== row);
+          }
+        }
+      });
   }
 
   onSelectedTabChange() {
@@ -297,9 +383,6 @@ export class EditShipmentDialogComponent implements OnInit, OnDestroy {
     this[type] = null;
   }
   viewPDF(type) {
-    console.log(type);
-    console.log(this[type]);
-
     let win = window.open();
     win.document.write('<iframe src="data:application/pdf;' + this[type] + '" frameborder="0" style="border:0; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%;" allowfullscreen></iframe>');
 
@@ -315,22 +398,143 @@ export class EditShipmentDialogComponent implements OnInit, OnDestroy {
     downloadLink.download = fileName;
     downloadLink.click();
   }
-  openEditShipmentPackageDialog(data = {}) {
+  openEditShipmentPackageDialog(data, updateType) {
     this.dialogRef = this._matDialog.open(EditShipmentPackagesDialogComponent, {
       panelClass: 'edit-fields-dialog',
       width: '100%',
       disableClose: true,
-      data: data 
+      data: data
     });
     this.dialogRef.afterClosed()
-      .subscribe(data => {
+      .subscribe((data: ShipmentPackage) => {
         if (!data) {
           return;
         }
-        this.dataSourcePackages.data.unshift(data);
-
+        if (updateType == 'edit') {
+          if (data.shippingPackageID) {
+            // if editing a saved package
+            const index = this.dataSourcePackages.data.findIndex(item => item.shippingPackageID == data.shippingPackageID);
+            this.dataSourcePackages.data.splice(index, 1, data);
+            this.onSelectPackage(this.dataSourcePackages.data[index]);
+          }
+          else if (!data.shippingPackageID) {
+            // if editing a package that is not saved yet
+            const index = this.dataSourcePackages.data.findIndex(item => item == this.selectedShipmentPackageRow);
+            this.dataSourcePackages.data.splice(index, 1, data);
+            this.onSelectPackage(this.dataSourcePackages.data[index]);
+          }
+        }
+        else {
+          // if creating
+          this.dataSourcePackages.data.unshift(data);
+          this.onSelectPackage(this.dataSourcePackages.data[0]);
+        }
         this.dataSourcePackages.data = this.dataSourcePackages.data;
-        this.onSelectPackage(this.dataSourcePackages.data[0]);
+        
+      });
+  }
+  openEditShipmentLineDialog(data, updateType) {
+    this.dialogRef = this._matDialog.open(EditShipmentLinesDialogComponent, {
+      panelClass: 'edit-fields-dialog',
+      width: '100%',
+      disableClose: true,
+      data: data
+    });
+    this.dialogRef.afterClosed()
+      .subscribe((data: ShipmentLine) => {
+        if (!data) {
+          return;
+        }
+        if (updateType == 'edit') {
+          if (data.shipmentLineID) {
+            // if editing a saved package
+            const index = this.dataSourceLines.data.findIndex(item => item.shipmentLineID == data.shipmentLineID);
+            this.dataSourceLines.data.splice(index, 1, data);
+            this.onSelectPackage(this.dataSourceLines.data[index]);
+          }
+          else if (!data.shipmentLineID) {
+            // if editing a package that is not saved yet
+            const index = this.dataSourceLines.data.findIndex(item => item == this.selectedShipmentPackageRow);
+            this.dataSourceLines.data.splice(index, 1, data);
+            this.onSelectPackage(this.dataSourceLines.data[index]);
+          }
+        }
+        else {
+          // if creating
+          this.dataSourceLines.data.unshift(data);
+          this.onSelectPackage(this.dataSourceLines.data[0]);
+        }
+        this.dataSourceLines.data = this.dataSourceLines.data;
+        
+      });
+  }
+  openEditShipmentFeeDialog(data, updateType) {
+    this.dialogRef = this._matDialog.open(EditShipmentFeesDialogComponent, {
+      panelClass: 'edit-fields-dialog',
+      width: '100%',
+      disableClose: true,
+      data: data
+    });
+    this.dialogRef.afterClosed()
+      .subscribe((data: ShipmentFee) => {
+        if (!data) {
+          return;
+        }
+        if (updateType == 'edit') {
+          if (data.shipmentFeeID) {
+            // if editing a saved package
+            const index = this.dataSourceFees.data.findIndex(item => item.shipmentFeeID == data.shipmentFeeID);
+            this.dataSourceFees.data.splice(index, 1, data);
+            this.onSelectPackage(this.dataSourceFees.data[index]);
+          }
+          else if (!data.shipmentFeeID) {
+            // if editing a package that is not saved yet
+            const index = this.dataSourceFees.data.findIndex(item => item == this.selectedShipmentPackageRow);
+            this.dataSourceFees.data.splice(index, 1, data);
+            this.onSelectPackage(this.dataSourceFees.data[index]);
+          }
+        }
+        else {
+          // if creating
+          this.dataSourceFees.data.unshift(data);
+          this.onSelectPackage(this.dataSourceFees.data[0]);
+        }
+        this.dataSourceFees.data = this.dataSourceFees.data;
+        
+      });
+  }
+  openEditShipmentContactDialog(data, updateType) {
+    this.dialogRef = this._matDialog.open(EditShipmentContactsDialogComponent, {
+      panelClass: 'edit-fields-dialog',
+      width: '100%',
+      disableClose: true,
+      data: data
+    });
+    this.dialogRef.afterClosed()
+      .subscribe((data: ShipmentContact) => {
+        if (!data) {
+          return;
+        }
+        if (updateType == 'edit') {
+          if (data.shipmentContactID) {
+            // if editing a saved package
+            const index = this.dataSourceContacts.data.findIndex(item => item.shipmentContactID == data.shipmentContactID);
+            this.dataSourceContacts.data.splice(index, 1, data);
+            this.onSelectPackage(this.dataSourceContacts.data[index]);
+          }
+          else if (!data.shipmentContactID) {
+            // if editing a package that is not saved yet
+            const index = this.dataSourceContacts.data.findIndex(item => item == this.selectedShipmentPackageRow);
+            this.dataSourceContacts.data.splice(index, 1, data);
+            this.onSelectPackage(this.dataSourceContacts.data[index]);
+          }
+        }
+        else {
+          // if creating
+          this.dataSourceContacts.data.unshift(data);
+          this.onSelectPackage(this.dataSourceContacts.data[0]);
+        }
+        this.dataSourceContacts.data = this.dataSourceContacts.data;
       });
   }
 }

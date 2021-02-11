@@ -38,6 +38,13 @@ export class FeeService implements OnDestroy {
         catchError(this.handleError)
       );
   }
+  getFeeList(businessid): Observable<any> {
+    return this.http
+      .get(this.apiURL + `/fee/business/${businessid}`)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
 
   getFee(id: string): Observable<any> {
     return this.http.get<any>(this.apiURL + '/fee/' + id)

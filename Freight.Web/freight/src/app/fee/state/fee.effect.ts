@@ -18,7 +18,7 @@ export class FeeEffects {
     return this.actions$
       .pipe(
         ofType(FeePageActions.loadFeeList),
-        concatMap(action => this.feeService.getAllFeeList()
+        concatMap(action => this.feeService.getFeeList(action.businessid)
           .pipe(
             map(fees => FeeApiActions.loadFeesListSuccess({ fees })),
             catchError(error => {

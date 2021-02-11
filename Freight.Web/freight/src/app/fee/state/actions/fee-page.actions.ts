@@ -2,7 +2,8 @@ import { createAction, props } from '@ngrx/store';
 import { Fee } from 'app/_shared/model/fee';
 
 export const loadFeeList = createAction(
-  '[Fee Page] Load Fee List'
+  '[Fee Page] Load Fee List',
+  props<{ businessid: any }>()
 );
 export const getFee = createAction(
   '[Fee Page] Get Fee',

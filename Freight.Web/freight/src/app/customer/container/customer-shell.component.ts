@@ -6,8 +6,8 @@ import { Observable, Subject } from 'rxjs';
 import { fuseAnimations } from '@fuse/animations';
 import { MatDialog } from '@angular/material/dialog';
 import { Customer } from 'app/_shared/model/customer';
-
-
+import * as fromApp from 'app/_state';
+import { takeUntil } from 'rxjs/operators';
 @Component({
   selector: 'customer-shell',
   templateUrl: './customer-shell.component.html',
@@ -24,7 +24,8 @@ export class CustomerShellComponent implements OnDestroy {
 
   constructor(
     public _matDialog: MatDialog,
-    private store: Store<fromCustomer.State>
+    private store: Store<fromCustomer.State>,
+    private appStore: Store<fromApp.State>,
   ) {
     this._unsubscribeAll = new Subject();
   }
@@ -33,7 +34,11 @@ export class CustomerShellComponent implements OnDestroy {
     this.customerEntities$ = this.store.select(fromCustomer.getAllcustomerList);
     this.selectedCustomer$ = this.store.select(fromCustomer.getSelectedcustomer);
     this.isLoading$ = this.store.select(fromCustomer.getIsLoading);
-    this.store.dispatch(CustomerPageActions.loadCustomerList());
+    this.appStore.select(fromApp.getCurrentBusinessEntityId)
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe(businessid => {
+        this.store.dispatch(CustomerPageActions.loadCustomerList({ businessid }));
+      });
   }
   selectCustomer(customer: Customer): void {
     this.store.dispatch(CustomerPageActions.setCurrentCustomer({ currentCustomer: customer }));

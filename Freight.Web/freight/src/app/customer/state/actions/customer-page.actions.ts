@@ -2,7 +2,8 @@ import { createAction, props } from '@ngrx/store';
 import { Customer } from 'app/_shared/model/customer';
 
 export const loadCustomerList = createAction(
-  '[Customer Page] Load Customer List'
+  '[Customer Page] Load Customer List',
+  props<{ businessid: any }>()
 );
 export const getCustomer = createAction(
   '[Customer Page] Get Customer',

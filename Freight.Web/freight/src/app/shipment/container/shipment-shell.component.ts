@@ -6,7 +6,8 @@ import { Observable, Subject } from 'rxjs';
 import { fuseAnimations } from '@fuse/animations';
 import { MatDialog } from '@angular/material/dialog';
 import { Shipment } from '../../_shared/model/shipment';
-
+import { takeUntil } from 'rxjs/operators';
+import * as fromApp from 'app/_state';
 @Component({
   selector: 'shipment-shell',
   templateUrl: './shipment-shell.component.html',
@@ -23,7 +24,8 @@ export class ShipmentShellComponent implements OnDestroy {
 
   constructor(
     public _matDialog: MatDialog,
-    private store: Store<fromShipment.State>
+    private store: Store<fromShipment.State>,
+    private appStore: Store<fromApp.State>,
   ) {
     this._unsubscribeAll = new Subject();
   }
@@ -32,7 +34,12 @@ export class ShipmentShellComponent implements OnDestroy {
     this.shipmentEntities$ = this.store.select(fromShipment.getAllShipmentList);
     this.selectedShipment$ = this.store.select(fromShipment.getSelectedShipment);
     this.isLoading$ = this.store.select(fromShipment.getIsLoading);
-    this.store.dispatch(ShipmentPageActions.loadShipmentList());
+    this.appStore.select(fromApp.getCurrentBusinessEntityId)
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe(businessID => {
+        this.store.dispatch(ShipmentPageActions.loadShipmentList({ businessID }));
+      });
+    //this.store.dispatch(ShipmentPageActions.loadShipmentList());
   }
   selectItem(shipment: Shipment): void {
     this.store.dispatch(ShipmentPageActions.setCurrentShipment({ currentShipment: shipment }));

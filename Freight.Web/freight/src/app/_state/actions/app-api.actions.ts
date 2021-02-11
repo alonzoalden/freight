@@ -1,10 +1,11 @@
 import { createAction, props } from '@ngrx/store';
+import { Business } from 'app/_shared/model/business';
 
 import { BusinessEntity } from '../../_shared/model/business-entity';
 
 export const loadBusinessesSuccess = createAction(
     '[App API] Load Business Entity List Success',
-    props<{ businesses: BusinessEntity[] }>()
+    props<{ businesses: Business[] }>()
 );
 
 export const loadBusinessesFailure = createAction(

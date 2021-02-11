@@ -18,7 +18,7 @@ export class CustomerEffects {
     return this.actions$
       .pipe(
         ofType(CustomerPageActions.loadCustomerList),
-        concatMap(action => this.customerService.getAllCustomerList()
+        concatMap(action => this.customerService.getCustomerList(action.businessid)
           .pipe(
             map(customers => CustomerApiActions.loadCustomersListSuccess({ customers })),
             catchError(error => {

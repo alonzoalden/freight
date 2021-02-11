@@ -7,6 +7,7 @@ import * as fromDashboard from '../state';
 import { AppPageActions } from '../../_state/actions';
 
 import { BusinessEntity } from 'app/_shared/model/business-entity';
+import { Business } from 'app/_shared/model/business';
 
 @Component({
   selector     : 'dashboard-shell',
@@ -15,7 +16,7 @@ import { BusinessEntity } from 'app/_shared/model/business-entity';
 })
 
 export class DashboardShellComponent implements OnInit {
-  businessEntities$: Observable<BusinessEntity[]>;
+  businessEntities$: Observable<Business[]>;
   selectedBusinessEntityId$: Observable<number>;
   isSelected$: Observable<boolean>;
 

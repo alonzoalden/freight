@@ -53,7 +53,7 @@ import { CreateCompanyDialogComponent } from 'app/_general/create-company/create
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatProgressSpinnerModule, MatSpinner } from '@angular/material/progress-spinner';
 import { AuthGuard } from 'app/_general/auth/auth.guard';
-import { RequestInterceptor } from "app/_general/core/request.interceptor";
+import { TokenInterceptor } from "app/_general/core/request.interceptor";
 import { ResponseInterceptor } from "app/_general/core/response.interceptor";
 
 
@@ -143,14 +143,9 @@ export function configureAuth(oidcConfigService: OidcConfigService): () => any {
     },
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: RequestInterceptor,
+      useClass: TokenInterceptor,
       multi: true,
-    },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: ResponseInterceptor,
-      multi: true,
-    },
+    }
   ],
   bootstrap: [AppComponent],
   entryComponents: [
@@ -163,6 +158,6 @@ export class AppModule {
     this.eventService
       .registerForEvents()
       .pipe(filter((notification) => notification.type === EventTypes.ConfigLoaded))
-      .subscribe((config) => console.log('ConfigLoaded', config));
+      .subscribe((config) => {});
   }
 }

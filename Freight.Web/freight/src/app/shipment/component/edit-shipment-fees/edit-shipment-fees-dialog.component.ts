@@ -12,7 +12,7 @@ import * as fromShipment from '../../state';
 import { ShipmentApiActions, ShipmentPageActions } from '../../state/actions';
 import { ShipmentEffects } from '../../state/shipment.effect';
 import { Actions, ofType } from '@ngrx/effects';
-import { Shipment, ShipmentPackage } from '../../../_shared/model/shipment';
+import { Shipment, ShipmentFee } from '../../../_shared/model/shipment';
 import { ShipmentService } from '../../shipment.service';
 import { AppService } from 'app/app.service';
 import { Router } from '@angular/router';
@@ -20,19 +20,21 @@ import { MatTabGroup } from '@angular/material/tabs';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MediaObserver } from '@angular/flex-layout';
 import { fuseAnimations } from '@fuse/animations';
-
+import { Fee } from 'app/_shared/model/fee';
+import * as fromApp from 'app/_state';
 @Component({
-  selector: 'edit-shipment-packages-dialog',
-  templateUrl: './edit-shipment-packages-dialog.component.html',
-  styleUrls: ['./edit-shipment-packages-dialog.component.scss'],
+  selector: 'edit-shipment-fees-dialog',
+  templateUrl: './edit-shipment-fees-dialog.component.html',
+  styleUrls: ['./edit-shipment-fees-dialog.component.scss'],
   animations: fuseAnimations
 })
-export class EditShipmentPackagesDialogComponent implements OnInit, OnDestroy {
+export class EditShipmentFeesDialogComponent implements OnInit, OnDestroy {
   //imageURL = environment.imageURL;
-  shipmentPackageForm: FormGroup;
+  shipmentFeeForm: FormGroup;
   selectedShipment: Shipment;
-  selectedShipmentPackage: ShipmentPackage;
-  isSaving: boolean;  
+  selectedShipmentFee: ShipmentFee;
+  fees: Fee[];
+  isSaving: boolean;
   isLoading: boolean;
   composeForm: any;
   private _unsubscribeAll: Subject<any>;
@@ -40,7 +42,7 @@ export class EditShipmentPackagesDialogComponent implements OnInit, OnDestroy {
   constructor(
     private store: Store<fromShipment.State>,
     private _formBuilder: FormBuilder,
-    public matDialogRef: MatDialogRef<EditShipmentPackagesDialogComponent>,
+    public matDialogRef: MatDialogRef<EditShipmentFeesDialogComponent>,
     public appService: AppService,
     private shipmentService: ShipmentService,
     private notifyService: NotificationsService,
@@ -49,14 +51,31 @@ export class EditShipmentPackagesDialogComponent implements OnInit, OnDestroy {
     private router: Router,
     private dom: DomSanitizer,
     public media: MediaObserver,
+    private appStore: Store<fromApp.State>,
     @Inject(MAT_DIALOG_DATA) private inputData: any,
   ) {
     this._unsubscribeAll = new Subject();
   }
 
   ngOnInit(): void {
-    this.selectedShipmentPackage = this.inputData;
-    this.shipmentPackageForm = this.createshipmentPackageForm();
+    this.selectedShipmentFee = this.inputData;
+    this.shipmentFeeForm = this.createShipmentFeeForm();
+    this.appStore.select(fromApp.getCurrentBusinessEntityId)
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe(businessID => {
+        this.store.dispatch(ShipmentPageActions.loadFeeList({ businessID }));
+      });
+
+    this.store.select(fromShipment.getFeeList)
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe((fees: Fee[]) => {
+        this.fees = fees
+      });
+    this.store.select(fromShipment.getIsLoading)
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe(loading => {
+        this.isLoading = loading
+      });
     this.store.select(fromShipment.getIsSaving)
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe(loading => {
@@ -87,32 +106,17 @@ export class EditShipmentPackagesDialogComponent implements OnInit, OnDestroy {
     this._unsubscribeAll.complete();
   }
 
-  createshipmentPackageForm(): FormGroup {
+  createShipmentFeeForm(): FormGroup {
     return this._formBuilder.group({
-      shipmentPackageID: [Number(this.selectedShipmentPackage.shipmentID) || 0],
-      businessID: [Number(this.selectedShipmentPackage.businessID || 1)],
-      shipmentID: [Number(this.selectedShipmentPackage.businessID || 1)],
-      status: [this.selectedShipmentPackage.status],
-      packageNumber: [this.selectedShipmentPackage.packageNumber],
-      dimension: [this.selectedShipmentPackage.dimension],
-      weight: [this.selectedShipmentPackage.weight],
-      weightUnit: [this.selectedShipmentPackage.weightUnit],
-      shipmentPackageRateID: [this.selectedShipmentPackage.shipmentPackageRateID],
-      shippingCarrierID: [this.selectedShipmentPackage.shippingCarrierID],
-      shippingServiceID: [this.selectedShipmentPackage.shippingServiceID],
-      shippingPackageID: [this.selectedShipmentPackage.shippingPackageID],
-      shippingRate: [this.selectedShipmentPackage.shippingRate],
-      trackingNumber: [this.selectedShipmentPackage.trackingNumber],
-      uspspicNumber: [this.selectedShipmentPackage.uspspicNumber],
-      shippingLabelPath: [this.selectedShipmentPackage.shippingLabelPath],
-      shipDate: [this.selectedShipmentPackage.shipDate],
-      isRated: [this.selectedShipmentPackage.isRated],
-      isLabeled: [this.selectedShipmentPackage.isLabeled],
-      isManual: [this.selectedShipmentPackage.isManual]
+      shipmentFeeID: [Number(this.selectedShipmentFee.shipmentFeeID)],
+      shipmentID: [Number(this.selectedShipmentFee.shipmentID || 1)],
+      feeID: [Number(this.selectedShipmentFee.feeID) || 0],
+      feeAmount: [this.selectedShipmentFee.feeAmount]
     });
   }
+
   onSave(): void {
-    if (this.selectedShipmentPackage.shipmentPackageID) {
+    if (this.selectedShipmentFee.shipmentFeeID) {
       this.edit();
     } else {
       this.save();
@@ -120,10 +124,10 @@ export class EditShipmentPackagesDialogComponent implements OnInit, OnDestroy {
   }
 
   save(): void {
-    this.matDialogRef.close(this.shipmentPackageForm.value);
+    this.matDialogRef.close(this.shipmentFeeForm.value);
   }
   edit(): void {
-    this.store.dispatch(ShipmentPageActions.editShipmentPackage({ shipmentPackage: this.shipmentPackageForm.value }));
+    this.store.dispatch(ShipmentPageActions.updateShipment({ shipment: this.shipmentFeeForm.value }));
   }
 
   onFileSelected(event, type) {

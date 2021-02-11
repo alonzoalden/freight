@@ -1,9 +1,10 @@
 import { createAction, props } from '@ngrx/store';
-import { Shipment, ShipmentPackage } from '../../../_shared/model/shipment';
+import { Shipment, ShipmentContact, ShipmentFee, ShipmentLine, ShipmentPackage } from '../../../_shared/model/shipment';
 // import { Item } from '../../component/edit-shipment/node_modules/app/_shared/model/item';
 
 export const loadShipmentList = createAction(
-  '[Shipment Page] Load Shipment List'
+  '[Shipment Page] Load Shipment List',
+  props<{ businessID: any }>()
 );
 export const getShipment = createAction(
   '[Shipment Page] Get Shipment',
@@ -22,10 +23,65 @@ export const setCurrentShipment = createAction(
   props<{ currentShipment: Shipment }>()
 );
 export const setCurrentShipmentPackageRow = createAction(
-  '[Shipment Page] Set Current Shipment',
+  '[Shipment Page] Set Current Shipment Package Row',
   props<{ currentShipmentPackageRow: ShipmentPackage }>()
 );
+export const setCurrentShipmentLineRow = createAction(
+  '[Shipment Page] Set Current Shipment Line Row',
+  props<{ currentShipmentLineRow: ShipmentLine }>()
+);
+export const setCurrentShipmentFeeRow = createAction(
+  '[Shipment Page] Set Current Shipment Fee Row',
+  props<{ currentShipmentFeeRow: ShipmentFee }>()
+);
+export const setCurrentShipmentContactRow = createAction(
+  '[Shipment Page] Set Current Shipment Contact Row',
+  props<{ currentShipmentContactRow: ShipmentContact }>()
+);
+
+export const editShipmentPackage = createAction(
+  '[Shipment Page] Edit Shipment Package',
+  props<{ shipmentPackage: any }>()
+);
+export const editShipmentLine = createAction(
+  '[Shipment Page] Edit Shipment Line',
+  props<{ shipmentLine: any }>()
+);
+export const editShipmentFee = createAction(
+  '[Shipment Page] Edit Shipment Fee',
+  props<{ shipmentFee: any }>()
+);
+export const editShipmentContact = createAction(
+  '[Shipment Page] Edit Shipment Contact',
+  props<{ shipmentContact: any }>()
+);
+
 export const deleteShipmentPackage = createAction(
   '[Shipment Page] Delete Shipment Package',
   props<{ shipmentPackageID: any }>()
+);
+export const deleteShipmentLine = createAction(
+  '[Shipment Page] Delete Shipment Line',
+  props<{ shipmentLineID: any }>()
+);
+export const deleteShipmentFee = createAction(
+  '[Shipment Page] Delete Shipment Fee',
+  props<{ shipmentFeeID: any }>()
+);
+export const deleteShipmentContact = createAction(
+  '[Shipment Page] Delete Shipment Contact',
+  props<{ shipmentContactID: any }>()
+);
+
+export const loadFeeList = createAction(
+  '[Shipment Page] Load Fee List',
+  props<{ businessID: any }>()
+);
+export const loadItemList = createAction(
+  '[Shipment Page] Load Fee List',
+  props<{ businessID: any }>()
+);
+export const loadContactList = createAction(
+  '[Shipment Page] Load Fee List',
+  props<{ businessID: any }>()
 );

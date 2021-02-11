@@ -6,17 +6,20 @@
   </mat-toolbar>
   <div mat-dialog-content class="p-24 m-0" fxLayout="column">
     <h2>Please enter your company to begin.</h2>
-    <form name="form" [formGroup]="form" class="compose-form mt-12" fxLayout="column" fxFlex>
-      <div fxLayout="column" fxLayoutAlign="start center">
+    <form name="businessForm" [formGroup]="businessForm" class="compose-form mt-12" fxLayout="column" fxFlex>
+      <div fxLayout="column" fxLayoutAlign="start start">
         <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
           <mat-label> Company Name </mat-label>
           <input matInput placeholder="Enter your company name" name="companyName" formControlName="companyName" required>
         </mat-form-field>
+        <mat-checkbox class="mb-8" formControlName="isShipper">Shipper</mat-checkbox>
+        <mat-checkbox class="mb-8" formControlName="is3PL">3PL</mat-checkbox>
+        <mat-checkbox class="mb-8" formControlName="isFFW">FFW</mat-checkbox>
       </div>
     </form>
   </div>
   <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="space-between center">
-    <button  mat-raised-button color="accent" (click)="save()" class="dialog-button" aria-label="SAVE">
+    <button  mat-raised-button color="accent" (click)="createBusiness()" class="dialog-button" aria-label="SAVE" [disabled]="businessForm.invalid">
       <div fxLayoutAlign="center">
         <span *ngIf="!isSaving">SAVE</span>
         <mat-spinner diameter="20" *ngIf="isSaving"></mat-spinner>

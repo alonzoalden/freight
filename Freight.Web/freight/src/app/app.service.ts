@@ -7,6 +7,7 @@ import { BusinessAccess } from './_shared/model/business-access';
 import { tap, catchError } from 'rxjs/operators';
 import { environment } from 'environments/environment';
 import { User } from './_shared/model/user';
+import { Business } from './_shared/model/business';
 @Injectable({
   providedIn: 'root',
 })
@@ -131,14 +132,31 @@ export class AppService {
         catchError(this.handleError)
       );
   }
-  updateUser(userid: string): Observable<User> {
+  createBusiness(body: Business): Observable<any> {
+    return this.http.post<any>(this.apiURL + '/business', body)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+  getBusiness(businessid): Observable<any> {
+    return this.http.get<any>(this.apiURL + '/business/' + businessid)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+  getBusinessList(userid): Observable<any> {
+    return this.http.get<any>(this.apiURL + '/business/businessuser/user/' + userid)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+  updateUser(body: User): Observable<any> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       //Authorization: 'Bearer ' + token
     });
-    return this.http.put<any>(`${this.apiURL}/user`, { headers })
+    return this.http.put<any>(this.apiURL + '/user', body, { headers })
       .pipe(
-        tap((data: User) => { }),
         catchError(this.handleError)
       );
   }

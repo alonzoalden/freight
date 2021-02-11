@@ -6,6 +6,8 @@ import { Observable, Subject } from 'rxjs';
 import { fuseAnimations } from '@fuse/animations';
 import { MatDialog } from '@angular/material/dialog';
 import { Fee } from 'app/_shared/model/fee';
+import { takeUntil } from 'rxjs/operators';
+import * as fromApp from 'app/_state';
 
 
 @Component({
@@ -24,7 +26,8 @@ export class FeeShellComponent implements OnDestroy {
 
   constructor(
     public _matDialog: MatDialog,
-    private store: Store<fromFee.State>
+    private store: Store<fromFee.State>,
+    private appStore: Store<fromApp.State>,
   ) {
     this._unsubscribeAll = new Subject();
   }
@@ -33,7 +36,11 @@ export class FeeShellComponent implements OnDestroy {
     this.feeEntities$ = this.store.select(fromFee.getAllFeeList);
     this.selectedFee$ = this.store.select(fromFee.getSelectedFee);
     this.isLoading$ = this.store.select(fromFee.getIsLoading);
-    this.store.dispatch(FeePageActions.loadFeeList());
+    this.appStore.select(fromApp.getCurrentBusinessEntityId)
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe(businessid => {
+        this.store.dispatch(FeePageActions.loadFeeList({ businessid }));
+      });
   }
   selectFee(fee: Fee): void {
     this.store.dispatch(FeePageActions.setCurrentFee({ currentFee: fee }));

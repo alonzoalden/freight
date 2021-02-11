@@ -1,12 +1,17 @@
 import { createAction, props } from '@ngrx/store';
 
 export const loadBusinesses = createAction(
-  '[App Page] Load Businesses'
+  '[App Page] Load Businesses',
+  props<{ userID: any }>()
 );
 
 export const setCurrentBusiness = createAction(
   '[App Page] Set Current Businesses',
   props<{ currentBusinessId: number }>()
+);
+export const setCurrentUser = createAction(
+  '[App Page] Set Current User',
+  props<{ user: any }>()
 );
 
 export const clearCurrentBusiness = createAction(

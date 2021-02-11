@@ -61,9 +61,6 @@ export class ItemService implements OnDestroy {
     return this.http
       .get(this.apiURL + `/item/business/${businessid}`)
       .pipe(
-        tap((data: Item[]) => {
-          this.allItems.next(data);
-        }),
         catchError(this.handleError)
       );
   }

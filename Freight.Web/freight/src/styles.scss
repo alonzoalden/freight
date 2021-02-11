@@ -203,6 +203,10 @@ mat-header-row {
   background-color: #FEFEFE !important;
 }
 .mat-column-index {
-  max-width: 120px;
+  max-width: 74px;
   min-width: 60px !important;
+  color: #999 !important;
 } 
+.mat-tab-label-active {
+  color: #fff;
+}

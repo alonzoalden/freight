@@ -107,17 +107,67 @@
           <ng-template mat-tab-label>
             <span class="mr-8">Items</span>
           </ng-template>
+
           <div class="content p-24 bottom-actions" [@animate]="{value:'*',params:{x:'100%'}}">
-            <div class="body-container m-0 top">
+            <div class="main-list-layout body-container m-0 top">
               <div fxLayout="column" fxLayoutAlign="start center">
-                mat table
+                <mat-table class="item-list w-100-p" matSort [dataSource]="dataSourceLines" [@animateStagger]="{value:'50'}" *ngIf="!isLoading && dataSourceLines">
+                  <!-- index Column -->
+                  <ng-container matColumnDef="index">
+                    <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                    <mat-cell *matCellDef="let row; let i = index" class="text-muted">{{i + 1}}</mat-cell>
+                  </ng-container>
+                  <!-- itemNumber Column -->
+                  <ng-container matColumnDef="itemNumber">
+                    <mat-header-cell *matHeaderCellDef>Item Number</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.itemNumber}}</mat-cell>
+                  </ng-container>
+                  <!-- itemName Column -->
+                  <ng-container matColumnDef="itemName">
+                    <mat-header-cell *matHeaderCellDef>Item Name</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.itemName}}</mat-cell>
+                  </ng-container>
+                  <!-- htsCode Column -->
+                  <ng-container matColumnDef="htsCode">
+                    <mat-header-cell *matHeaderCellDef>HTSCode</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.htsCode}}</mat-cell>
+                  </ng-container>
+                  <!-- unitPrice Column -->
+                  <ng-container matColumnDef="unitPrice">
+                    <mat-header-cell *matHeaderCellDef>Unit Price</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.unitPrice}}</mat-cell>
+                  </ng-container>
+                  <!-- quantity Column -->
+                  <ng-container matColumnDef="quantity">
+                    <mat-header-cell *matHeaderCellDef>Quantity</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.quantity}}</mat-cell>
+                  </ng-container>
+                  <!-- Actions Column -->
+                  <ng-container matColumnDef="actions">
+                    <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+                    <mat-cell *matCellDef="let row">
+                      <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="more">
+                        <mat-icon>more_horiz</mat-icon>
+                      </button>
+                      <mat-menu #moreMenu="matMenu">
+                        <button mat-menu-item (click)="openEditShipmentLineDialog(row, 'edit')"><mat-icon>build</mat-icon> Edit</button>
+                        <hr>
+                        <button mat-menu-item (click)="onDeleteLine(row)"><mat-icon>delete</mat-icon> Delete</button>
+                      </mat-menu>
+                    </mat-cell>
+                  </ng-container>
+                  <mat-header-row *matHeaderRowDef="displayedLinesColumns; sticky: true"></mat-header-row>
+                  <mat-row *matRowDef="let row; columns: displayedLinesColumns;" (click)="onSelectLine(row)"
+                    [ngClass]="{'selected' : row == selectedShipmentLineRow}" [@animate]="{value:'*',params:{y:'100%'}}" matRipple>
+                  </mat-row>
+                </mat-table>
               </div>
             </div>
             <div class="body-container m-0">
               <div fxLayout="row" fxLayoutAlign="start start">
-                <button mat-raised-button color="primary" [disabled]="isLoading" fxLayoutAlign="center center" class="mr-32">
+                <button mat-raised-button color="primary" [disabled]="isLoading" fxLayoutAlign="center center" class="mr-32" (click)="openEditShipmentLineDialog({}, 'create')">
                   <mat-icon class="mr-8">add_circle_outline</mat-icon>
-                  Add New Item
+                  Add Item
                 </button>
                 <button mat-raised-button color="accent" class="mr-8">
                   Print Packing Slips
@@ -138,14 +188,17 @@
 
             <div class="main-list-layout body-container m-0 top">
               <div fxLayout="column" fxLayoutAlign="start center">
-                
-
                 <mat-table class="item-list w-100-p" matSort [dataSource]="dataSourcePackages" [@animateStagger]="{value:'50'}" *ngIf="!isLoading && dataSourcePackages">
                   
                   <!-- index Column -->
                   <ng-container matColumnDef="index">
                     <mat-header-cell *matHeaderCellDef></mat-header-cell>
                     <mat-cell *matCellDef="let row; let i = index" class="text-muted">{{i + 1}}</mat-cell>
+                  </ng-container>
+                  <!-- dimension Column -->
+                  <ng-container matColumnDef="dimension">
+                    <mat-header-cell *matHeaderCellDef>Dimension</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.dimension}}</mat-cell>
                   </ng-container>
                   <!-- shippingCarrierID Column -->
                   <ng-container matColumnDef="shippingCarrierID">
@@ -181,28 +234,22 @@
                         <mat-icon>more_horiz</mat-icon>
                       </button>
                       <mat-menu #moreMenu="matMenu">
-                        <button mat-menu-item (click)="openEditShipmentPackageDialog(row)"><mat-icon>build</mat-icon> Edit</button>
+                        <button mat-menu-item (click)="openEditShipmentPackageDialog(row, 'edit')"><mat-icon>build</mat-icon> Edit</button>
                         <hr>
                         <button mat-menu-item (click)="onDeletePackage(row)"><mat-icon>delete</mat-icon> Delete</button>
                       </mat-menu>
                     </mat-cell>
                   </ng-container>
-              
-              
                   <mat-header-row *matHeaderRowDef="displayedPackageColumns; sticky: true"></mat-header-row>
                   <mat-row *matRowDef="let row; columns: displayedPackageColumns;" (click)="onSelectPackage(row)"
                     [ngClass]="{'selected' : row == selectedShipmentPackageRow}" [@animate]="{value:'*',params:{y:'100%'}}" matRipple>
                   </mat-row>
                 </mat-table>
-
-
-
-
               </div>
             </div>
             <div class="body-container m-0">
               <div fxLayout="row" fxLayoutAlign="start start">
-                <button mat-raised-button color="primary" [disabled]="isLoading" fxLayoutAlign="center center" class="mr-32" (click)="openEditShipmentPackageDialog()">
+                <button mat-raised-button color="primary" [disabled]="isLoading" fxLayoutAlign="center center" class="mr-32" (click)="openEditShipmentPackageDialog({}, 'create')">
                   <mat-icon class="mr-8">add_circle_outline</mat-icon>
                   Add Package
                 </button>
@@ -216,14 +263,53 @@
           </ng-template>
           <div class="content p-24 bottom-actions" [@animate]="{value:'*',params:{x:'100%'}}">
 
-            <div class="body-container m-0 top">
+            <div class="main-list-layout body-container m-0 top">
               <div fxLayout="column" fxLayoutAlign="start center">
-                mat table
+                <mat-table class="item-list w-100-p" matSort [dataSource]="dataSourceFees" [@animateStagger]="{value:'50'}" *ngIf="!isLoading && dataSourceFees">
+                  <!-- index Column -->
+                  <ng-container matColumnDef="index">
+                    <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                    <mat-cell *matCellDef="let row; let i = index" class="text-muted">{{i + 1}}</mat-cell>
+                  </ng-container>
+                  <!-- feeType Column -->
+                  <ng-container matColumnDef="feeType">
+                    <mat-header-cell *matHeaderCellDef>Fee Type</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.feeType}}</mat-cell>
+                  </ng-container>
+                  <!-- description Column -->
+                  <ng-container matColumnDef="description">
+                    <mat-header-cell *matHeaderCellDef>description</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.description}}</mat-cell>
+                  </ng-container>
+                  <!-- feeAmount Column -->
+                  <ng-container matColumnDef="feeAmount">
+                    <mat-header-cell *matHeaderCellDef>Fee</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.feeAmount}}</mat-cell>
+                  </ng-container>
+                  <!-- Actions Column -->
+                  <ng-container matColumnDef="actions">
+                    <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+                    <mat-cell *matCellDef="let row">
+                      <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="more">
+                        <mat-icon>more_horiz</mat-icon>
+                      </button>
+                      <mat-menu #moreMenu="matMenu">
+                        <button mat-menu-item (click)="openEditShipmentFeeDialog(row, 'edit')"><mat-icon>build</mat-icon> Edit</button>
+                        <hr>
+                        <button mat-menu-item (click)="onDeleteFee(row)"><mat-icon>delete</mat-icon> Delete</button>
+                      </mat-menu>
+                    </mat-cell>
+                  </ng-container>
+                  <mat-header-row *matHeaderRowDef="displayedFeeColumns; sticky: true"></mat-header-row>
+                  <mat-row *matRowDef="let row; columns: displayedFeeColumns;" (click)="onSelectFee(row)"
+                    [ngClass]="{'selected' : row == selectedShipmentFeeRow}" [@animate]="{value:'*',params:{y:'100%'}}" matRipple>
+                  </mat-row>
+                </mat-table>
               </div>
             </div>
             <div class="body-container m-0">
               <div fxLayout="row" fxLayoutAlign="start start">
-                <button mat-raised-button color="primary" [disabled]="isLoading" fxLayoutAlign="center center" class="mr-32">
+                <button mat-raised-button color="primary" [disabled]="isLoading" fxLayoutAlign="center center" class="mr-32" (click)="openEditShipmentFeeDialog({}, 'create')">
                   <mat-icon class="mr-8">add_circle_outline</mat-icon>
                   Add Fee
                 </button>
@@ -522,16 +608,61 @@
           </ng-template>
           <div class="content p-24 bottom-actions" [@animate]="{value:'*',params:{x:'100%'}}">
 
-            <div class="body-container m-0 top">
+            <div class="main-list-layout body-container m-0 top">
               <div fxLayout="column" fxLayoutAlign="start center">
-                mat table
+                <mat-table class="item-list w-100-p" matSort [dataSource]="dataSourceContacts" [@animateStagger]="{value:'50'}" *ngIf="!isLoading && dataSourceContacts">
+                  <!-- index Column -->
+                  <ng-container matColumnDef="index">
+                    <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                    <mat-cell *matCellDef="let row; let i = index" class="text-muted">{{i + 1}}</mat-cell>
+                  </ng-container>
+
+                  <!-- from Column -->
+                  <ng-container matColumnDef="from">
+                    <mat-header-cell *matHeaderCellDef>From</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.from}}</mat-cell>
+                  </ng-container>
+                  <!-- lastName Column -->
+                  <ng-container matColumnDef="lastName">
+                    <mat-header-cell *matHeaderCellDef>lastName</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.lastName}}</mat-cell>
+                  </ng-container>
+                  <!-- email Column -->
+                  <ng-container matColumnDef="email">
+                    <mat-header-cell *matHeaderCellDef>email</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.email}}</mat-cell>
+                  </ng-container>
+                  <!-- updates Column -->
+                  <ng-container matColumnDef="updates">
+                    <mat-header-cell *matHeaderCellDef>updates</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.updates}}</mat-cell>
+                  </ng-container>
+                  <!-- Actions Column -->
+                  <ng-container matColumnDef="actions">
+                    <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+                    <mat-cell *matCellDef="let row">
+                      <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="more">
+                        <mat-icon>more_horiz</mat-icon>
+                      </button>
+                      <mat-menu #moreMenu="matMenu">
+                        <button mat-menu-item (click)="openEditShipmentContactDialog(row, 'edit')"><mat-icon>build</mat-icon> Edit</button>
+                        <hr>
+                        <button mat-menu-item (click)="onDeleteContact(row)"><mat-icon>delete</mat-icon> Delete</button>
+                      </mat-menu>
+                    </mat-cell>
+                  </ng-container>
+                  <mat-header-row *matHeaderRowDef="displayedContactsColumns; sticky: true"></mat-header-row>
+                  <mat-row *matRowDef="let row; columns: displayedContactsColumns;" (click)="onSelectContact(row)"
+                    [ngClass]="{'selected' : row == selectedShipmentContactRow}" [@animate]="{value:'*',params:{y:'100%'}}" matRipple>
+                  </mat-row>
+                </mat-table>
               </div>
             </div>
             <div class="body-container m-0">
               <div fxLayout="row" fxLayoutAlign="start start">
-                <button mat-raised-button color="primary" [disabled]="isLoading" fxLayoutAlign="center center" class="mr-32">
+                <button mat-raised-button color="primary" [disabled]="isLoading" fxLayoutAlign="center center" class="mr-32" (click)="openEditShipmentContactDialog({}, 'create')">
                   <mat-icon class="mr-8">add_circle_outline</mat-icon>
-                  Add New Fee
+                  Add Contact
                 </button>
               </div>
             </div>

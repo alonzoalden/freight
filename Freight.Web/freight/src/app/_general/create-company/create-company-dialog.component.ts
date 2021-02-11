@@ -11,10 +11,13 @@ import { NotificationsService } from 'angular2-notifications';
 import { Item } from 'app/_shared/model/item';
 import { Store } from '@ngrx/store';
 import * as fromItem from '../../item/state';
+import * as fromApp from 'app/_state';
 import { ItemApiActions, ItemPageActions } from '../../item/state/actions';
 import { ItemEffects } from '../../item/state/item.effect';
 import { Actions, ofType } from '@ngrx/effects';
 import { AppService } from 'app/app.service';
+import { User } from 'app/_shared/model/user';
+import { Business } from 'app/_shared/model/business';
 
 @Component({
   selector: 'create-company-dialog',
@@ -23,8 +26,9 @@ import { AppService } from 'app/app.service';
 })
 export class CreateCompanyDialogComponent implements OnInit, OnDestroy {
   //imageURL = environment.imageURL;
-  showExtraToFields: boolean;
-  form: FormGroup;
+  currentUser: User;
+  userForm: FormGroup;
+  businessForm: FormGroup;
   selected: any;
   private _unsubscribeAll: Subject<any>;
   isSaving: boolean;
@@ -47,7 +51,15 @@ export class CreateCompanyDialogComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.selected = this.inputData;
-    this.form = this.createForm();
+    this.userForm = this.createUserForm();
+    this.businessForm = this.createBusinessForm();
+
+    // this.store.select(fromApp.getCurrentUser)
+    //   .pipe(takeUntil(this._unsubscribeAll))
+    //   .subscribe(user => {
+    //     this.currentUser = user;
+    //   });
+
     this.store.select(fromItem.getIsSaving)
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe(loading => {
@@ -68,23 +80,28 @@ export class CreateCompanyDialogComponent implements OnInit, OnDestroy {
     this._unsubscribeAll.complete();
   }
 
-  createForm(): FormGroup {
+  createUserForm(): FormGroup {
     return this._formBuilder.group({
-      companyID: [Number(this.selected?.companyID)],
-      companyName: [this.selected?.companyName],
+      userID: [this.selected?.userID],
+      email: [this.selected?.email],
+      firstName: [this.selected?.firstName],
+      lastName: [this.selected?.lastName],
+      businessID: [this.selected?.businessID],
     });
   }
-  save(): void {
-    if (this.selected.itemID) {
-      this.edit();
-    } else {
-      this.create();
-    }
+  createBusinessForm(): FormGroup {
+    return this._formBuilder.group({
+      businessID: [],
+      userID: [this.selected?.userID],
+      companyName: [''],
+      isShipper: [],
+      is3PL: [],
+      isFFW: [],
+    });
   }
-
-  create(): void {
+  createBusiness(): void {
     this.isSaving = true;
-    this.warehouseItemManagerService.createItem(this.form.value)
+    this.appService.updateUser(this.businessForm.value)
       .subscribe(
         (data: Item) => {
           // this.warehouseItemManagerService.onItemSelected.next(data);
@@ -97,8 +114,23 @@ export class CreateCompanyDialogComponent implements OnInit, OnDestroy {
         }
       );
   }
+  create(): void {
+    this.isSaving = true;
+    this.appService.createBusiness(this.businessForm.value)
+      .subscribe(
+        (data: Business) => {
+          // this.warehouseItemManagerService.onItemSelected.next(data);
+          this.matDialogRef.close(data);
+          this.notifyService.success('Success', `${data.companyName} has been created.`, { timeOut: 3500, clickToClose: true });
+        },
+        error => {
+          this.notifyService.error('Error', `${error}`, { clickToClose: true });
+          this.isSaving = false;
+        }
+      );
+  }
   edit(): void {
-    this.store.dispatch(ItemPageActions.updateItem({ item: this.form.value }));
+    this.store.dispatch(ItemPageActions.updateItem({ item: this.userForm.value }));
   }
 
 }

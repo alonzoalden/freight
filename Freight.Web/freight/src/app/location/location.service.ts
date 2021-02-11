@@ -28,13 +28,20 @@ export class LocationService implements OnDestroy {
     this._unsubscribeAll.complete();
   }
 
-
   getAllLocationList(): Observable<any> {
     return this.http.get(this.apiURL + "/location")
       .pipe(
         tap((data: Location[]) => {
           this.allLocations.next(data);
         }),
+        catchError(this.handleError)
+      );
+  }
+
+  getLocationList(businessid): Observable<any> {
+    return this.http
+      .get(this.apiURL + `/location/business/${businessid}`)
+      .pipe(
         catchError(this.handleError)
       );
   }

@@ -2,7 +2,8 @@ import { createAction, props } from '@ngrx/store';
 import { Location } from 'app/_shared/model/location';
 
 export const loadLocationList = createAction(
-  '[Location Page] Load Location List'
+  '[Location Page] Load Location List',
+  props<{ businessID: any }>()
 );
 export const getLocation = createAction(
   '[Location Page] Get Location',

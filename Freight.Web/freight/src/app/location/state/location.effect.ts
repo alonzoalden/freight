@@ -18,7 +18,7 @@ export class LocationEffects {
     return this.actions$
       .pipe(
         ofType(LocationPageActions.loadLocationList),
-        concatMap(action => this.locationService.getAllLocationList()
+        concatMap(action => this.locationService.getLocationList(action.businessID)
           .pipe(
             map(locations => LocationApiActions.loadLocationsListSuccess({ locations })),
             catchError(error => {

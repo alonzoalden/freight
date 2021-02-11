@@ -8,17 +8,18 @@ import { OidcSecurityService } from 'angular-auth-oidc-client';
 
 import { AppService } from '../app.service';
 import { AppPageActions, AppApiActions } from './actions';
+import { NotificationsService } from 'angular2-notifications';
 
 @Injectable()
 export class AppEffects {
 
-  constructor(private actions$: Actions, private appService: AppService, public oidcSecurityService: OidcSecurityService) { }
+  constructor(private actions$: Actions, private appService: AppService, public oidcSecurityService: OidcSecurityService, private notifyService: NotificationsService) { }
 
   loadBusinesses$ = createEffect(() => {
     return this.actions$
       .pipe(
         ofType(AppPageActions.loadBusinesses),
-        mergeMap(() => this.appService.getBusinessEntities()
+        mergeMap((action) => this.appService.getBusinessList(action.userID)
           .pipe(
             map(businesses => AppApiActions.loadBusinessesSuccess({ businesses })),
             catchError(error => of(AppApiActions.loadBusinessesFailure({ error })))
@@ -39,4 +40,15 @@ export class AppEffects {
         )
       );
   });
+
+  setCurrentBusiness$ = createEffect(() => {
+    return this.actions$
+      .pipe(
+        ofType(AppPageActions.setCurrentBusiness),
+        map(action => {
+          return this.notifyService.success('Success', `Company has been changed`, {timeOut: 4000, clickToClose: true });
+        })
+      );
+  });
+
 }

@@ -6,7 +6,8 @@ import { Observable, Subject } from 'rxjs';
 import { fuseAnimations } from '@fuse/animations';
 import { MatDialog } from '@angular/material/dialog';
 import { Location } from 'app/_shared/model/location';
-
+import * as fromApp from 'app/_state';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'location-shell',
@@ -24,7 +25,8 @@ export class LocationShellComponent implements OnDestroy {
 
   constructor(
     public _matDialog: MatDialog,
-    private store: Store<fromLocation.State>
+    private store: Store<fromLocation.State>,
+    private appStore: Store<fromApp.State>,
   ) {
     this._unsubscribeAll = new Subject();
   }
@@ -33,7 +35,11 @@ export class LocationShellComponent implements OnDestroy {
     this.locationEntities$ = this.store.select(fromLocation.getAllLocationList);
     this.selectedLocation$ = this.store.select(fromLocation.getSelectedLocation);
     this.isLoading$ = this.store.select(fromLocation.getIsLoading);
-    this.store.dispatch(LocationPageActions.loadLocationList());
+    this.appStore.select(fromApp.getCurrentBusinessEntityId)
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe(businessID => {
+        this.store.dispatch(LocationPageActions.loadLocationList({ businessID }));
+      });
   }
   selectLocation(location: Location): void {
     this.store.dispatch(LocationPageActions.setCurrentLocation({ currentLocation: location }));
