@@ -1,14 +1,14 @@
-﻿using Freight.API.BAL;
-using Microsoft.AspNetCore.Authorization;
+﻿using Freight.API.Auth;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 using System.Linq;
 
 namespace Freight.API.Controllers
 {
+    /// <summary>
+    /// Identity Controller
+    /// </summary>
     [Route("identity")]
-    [Authorize]
-    public class IdentityController : ControllerBase
+    public class IdentityController : AuthorizationControllerBase
     {
         /// <summary>
         /// Get all Claims for that User
