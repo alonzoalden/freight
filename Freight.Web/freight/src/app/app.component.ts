@@ -57,7 +57,10 @@ export class AppComponent implements OnInit {
     this.initialize();
     this.businessEntities$ = this.store.select(fromAppState.getBusinessEntities);
     this.selectedBusinessEntityId$ = this.store.select(fromAppState.getCurrentBusinessEntityId);
-    
+    if (this.router.url == '/' && this.oidcSecurityService.getToken()) {
+
+      this.router.navigate(['/dashboard']);
+    }
     this.oidcSecurityService.checkAuth()
       .subscribe((auth) => {
         if (!auth) {
@@ -187,7 +190,6 @@ export class AppComponent implements OnInit {
     this.dialogRef = this._matDialog.open(CreateCompanyDialogComponent, {
       panelClass: 'edit-fields-dialog',
       disableClose: true,
-      width: '100%',
       data: data
     });
     this.dialogRef.afterClosed()
