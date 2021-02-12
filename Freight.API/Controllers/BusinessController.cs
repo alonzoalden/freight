@@ -31,6 +31,19 @@ namespace Freight.API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Failed to get Businesss");
             }
         }
+        [HttpGet]
+        [Route("{businessid}/dashboard")]
+        public IActionResult GetBusinessDashboard(int businessid)
+        {
+            try
+            {
+                return new JsonResult(BusinessBAL.GetBusinessDashboard(businessid));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Failed to get Business Dashboard");
+            }
+        }
 
         [HttpGet]
         [Route("{id}")]
