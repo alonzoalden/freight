@@ -32,7 +32,7 @@ export class EditShipmentFeesDialogComponent implements OnInit, OnDestroy {
   //imageURL = environment.imageURL;
   shipmentFeeForm: FormGroup;
   selectedShipment: Shipment;
-  selectedShipmentFee: ShipmentFee;
+  selectedShipmentFee: any;
   fees: Fee[];
   isSaving: boolean;
   isLoading: boolean;
@@ -112,6 +112,8 @@ export class EditShipmentFeesDialogComponent implements OnInit, OnDestroy {
       shipmentID: [Number(this.selectedShipmentFee.shipmentID || 1)],
       feeID: [Number(this.selectedShipmentFee.feeID) || 0],
       feeAmount: [this.selectedShipmentFee.feeAmount],
+      feeType: [this.selectedShipmentFee.feeType],
+      description: [this.selectedShipmentFee.description],
       fee: [this.fees?.find(i => i.feeID == this.selectedShipmentFee.feeID)]
     });
   }
