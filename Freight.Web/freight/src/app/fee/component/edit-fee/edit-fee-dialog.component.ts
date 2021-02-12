@@ -15,7 +15,7 @@ import { FeeApiActions, FeePageActions } from '../../state/actions';
 import { FeeEffects } from '../../state/fee.effect';
 import { Actions, ofType } from '@ngrx/effects';
 import { AppService } from 'app/app.service';
-
+import * as fromApp from 'app/_state';
 @Component({
   selector: 'edit-fee-dialog',
   templateUrl: './edit-fee-dialog.component.html',
@@ -28,10 +28,12 @@ export class EditFeeDialogComponent implements OnInit, OnDestroy {
   selectedFee: Fee;
   private _unsubscribeAll: Subject<any>;
   isSaving: boolean;
+  businessID: any;
 
   objectKeys = Object.keys;
   @ViewChild('mainInput') mainInput: ElementRef;
   constructor(
+    private appStore: Store<fromApp.State>,
     private store: Store<fromFee.State>,
     private _formBuilder: FormBuilder,
     public matDialogRef: MatDialogRef<EditFeeDialogComponent>,
@@ -47,8 +49,15 @@ export class EditFeeDialogComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.selectedFee = this.inputData;
-    this.feeForm = this.createFeeForm();
     this.focusMainInput();
+    
+    this.appStore.select(fromApp.getCurrentBusinessEntityId)
+    .pipe(takeUntil(this._unsubscribeAll))
+    .subscribe(businessid => {
+      this.businessID = businessid;
+      this.feeForm = this.createFeeForm();
+      });
+
 
     this.store.select(fromFee.getIsSaving)
       .pipe(takeUntil(this._unsubscribeAll))
@@ -80,9 +89,11 @@ export class EditFeeDialogComponent implements OnInit, OnDestroy {
 
   createFeeForm(): FormGroup {
     return this._formBuilder.group({
-      feeID: [Number(this.selectedFee.feeID) || 0],
-      businessID: [Number(this.selectedFee.businessID || 1)],
+      feeID: [this.selectedFee.feeID || 0],
+      businessID: [this.businessID],
       feeType: [this.selectedFee.feeType],
+      feeAmount: [this.selectedFee.feeAmount],
+      description: [this.selectedFee.description],
     });
   }
   save(): void {

@@ -29,8 +29,9 @@
                     class="user-button">
                 <div fxLayout="row" fxLayoutAlign="center center" style="min-width: 100px;">
                     <div class="mr-12" fxFlex fxLayout="column" fxLayoutAlign="center center">
-                        <ng-container *ngIf="!isLoading">
+                        <ng-container *ngIf="!isLoading && currentBusiness">
                             <span class="sm-header" style="margin: 0;">Company</span>
+                            <span class="username">{{currentBusiness.companyName}}</span>
                         </ng-container>
                         <mat-spinner diameter="20" *ngIf="isLoading"></mat-spinner>
                     </div>
@@ -51,7 +52,7 @@
                     <ng-container >
                         <!-- <img class="avatar mr-0 mr-sm-16" src='assets/images/avatars/Velazquez.jpg'> -->
                         <!-- <mat-icon class="s-16 mr-12">account_circle</mat-icon> -->
-                        <span class="username mr-12">Charlie Adams</span>
+                        <span *ngIf="userInfo" class="username mr-12">{{userInfo.firstName + ' ' + userInfo.lastName}}</span>
                         <mat-icon class="s-16">keyboard_arrow_down</mat-icon>
                     </ng-container>
                 </div>

@@ -103,5 +103,23 @@ export const feeReducer = createReducer<FeeState>(
       isSaving: false,
     };
   }),
-  
+  on(FeePageActions.deleteFee, (state, action): FeeState => {
+    return {
+      ...state,
+      isSaving: true
+    };
+  }),
+  on(FeeApiActions.deleteFeeSuccess, (state, action): FeeState => {
+    return {
+      ...state,
+      isSaving: false,
+      allFees: state.allFees.filter(item => item.feeID !== action.feeID)
+    };
+  }),
+  on(FeeApiActions.deleteFeeFailure, (state, action): FeeState => {
+    return {
+      ...state,
+      isSaving: false,
+    };
+  }),
 );

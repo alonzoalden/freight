@@ -197,35 +197,37 @@ export class ShipmentEffects {
         )
       );
   });
-
-  loadItemList$ = createEffect(() => {
-    return this.actions$
-      .pipe(
-        ofType(ShipmentPageActions.loadItemList),
-        concatMap(action => this.shipmentService.getItemList(action.businessID)
-          .pipe(
-            map(items => ShipmentApiActions.loadItemsListSuccess({ items })),
-            catchError(error => {
-              this.notifyService.error('Error', `${error}`, { clickToClose: true });
-              return of(ShipmentApiActions.loadItemsListFailure({ error }))
-            })
-          )
-        )
-      );
-  });
-  loadContactList$ = createEffect(() => {
+  
+  loadContactLists$ = createEffect(() => {
     return this.actions$
       .pipe(
         ofType(ShipmentPageActions.loadContactList),
-        concatMap(action => this.shipmentService.getContactList(action.businessID)
+        mergeMap(action => this.shipmentService.getContactList(action.businessID)
           .pipe(
             map(contacts => ShipmentApiActions.loadContactsListSuccess({ contacts })),
             catchError(error => {
-              this.notifyService.error('Error', `${error}`, { clickToClose: true });
+              //this.notifyService.error('Error', `${error}`, { clickToClose: true });
               return of(ShipmentApiActions.loadContactsListFailure({ error }))
             })
           )
         )
       );
   });
+
+  loadItemLists$ = createEffect(() => {
+    return this.actions$
+      .pipe(
+        ofType(ShipmentPageActions.loadItemList),
+        mergeMap(action => this.shipmentService.getItemList(action.businessID)
+          .pipe(
+            map(items => ShipmentApiActions.loadItemsListSuccess({ items })),
+            catchError(error => {
+              //this.notifyService.error('Error', `${error}`, { clickToClose: true });
+              return of(ShipmentApiActions.loadItemsListFailure({ error }))
+            })
+          )
+        )
+      );
+  });
+  
 }

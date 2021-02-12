@@ -26,7 +26,7 @@ import { ConfirmationDialogComponent } from 'app/_shared/confirmation-dialog/con
 import { EditShipmentLinesDialogComponent } from '../edit-shipment-lines/edit-shipment-lines-dialog.component';
 import { EditShipmentFeesDialogComponent } from '../edit-shipment-fees/edit-shipment-fees-dialog.component';
 import { EditShipmentContactsDialogComponent } from '../edit-shipment-contacts/edit-shipment-contacts-dialog.component';
-
+import * as fromApp from 'app/_state';
 @Component({
   selector: 'edit-shipment-dialog',
   templateUrl: './edit-shipment-dialog.component.html',
@@ -71,11 +71,13 @@ export class EditShipmentDialogComponent implements OnInit, OnDestroy {
   sidebarFolded: boolean;
   user: any;
   dialogRef: any;
+  businessID: any;
   private _unsubscribeAll: Subject<any>;
   objectKeys = Object.keys;
   @ViewChild('tabGroup', { static: false }) tabGroup: MatTabGroup;
 
   constructor(
+    private appStore: Store<fromApp.State>,
     private store: Store<fromShipment.State>,
     private _formBuilder: FormBuilder,
     public matDialogRef: MatDialogRef<EditShipmentDialogComponent>,
@@ -94,12 +96,17 @@ export class EditShipmentDialogComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.selectedShipment = this.inputData;
-    this.shipmentForm = this.createShipmentForm();
+    
     this.dataSourceLines = new MatTableDataSource<any>(this.selectedShipmentDetail?.shipmentLines || []);
     this.dataSourcePackages = new MatTableDataSource<any>(this.selectedShipmentDetail?.shipmentPackages || []);
     this.dataSourceFees = new MatTableDataSource<any>(this.selectedShipmentDetail?.shipmentFees || []);
     this.dataSourceContacts = new MatTableDataSource<any>(this.selectedShipmentDetail?.shipmentContacts || []);
-
+    this.appStore.select(fromApp.getCurrentBusinessEntityId)
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe(businessid => {
+        this.businessID = businessid;
+        this.shipmentForm = this.createShipmentForm();
+      });
     this.store.select(fromShipment.getIsSaving)
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe(loading => {
@@ -157,8 +164,8 @@ export class EditShipmentDialogComponent implements OnInit, OnDestroy {
   createShipmentForm(): FormGroup {
     return this._formBuilder.group({
       shipmentID: [Number(this.selectedShipment.shipmentID) || 0],
-      businessID: [Number(this.selectedShipment.businessID || 1)],
-      shipperID: [Number(this.selectedShipment.shipperID || 2)],
+      businessID: [this.businessID],
+      shipperID: [Number(this.selectedShipment.shipperID || 1)],
       customerID: [Number(this.selectedShipment.customerID)],
       customer: [''],
       originFFW: [Number(this.selectedShipment.originFFW) || 0],

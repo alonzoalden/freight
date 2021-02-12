@@ -1,14 +1,17 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { BusinessEntity } from '../_shared/model/business-entity';
 import { BusinessAccess } from '../_shared/model/business-access';
+import { environment } from "../../environments/environment";
+import { catchError } from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root',
 })
 export class DashboardService {
+  private apiURL = environment.webapiURL;
   constructor(
     protected http: HttpClient,
     protected router: Router) { }
@@ -35,7 +38,24 @@ export class DashboardService {
         headers: [1, 2, 3, 5, 6]
       },
     ];
-    const result = new BusinessAccess(test.find(x => x.id === id).headers);
-    return of(result);
+    //const result = new BusinessAccess(test.find(x => x.id === id).headers);
+    return of(null);
   }
+
+  getDashboardInfo(businessid): Observable<any> {
+    return this.http.get<any>(this.apiURL + `/business/${businessid}/dashboard` )
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+  handleError = (err: HttpErrorResponse) => {
+    let errorMessage: string;
+    if (err.error instanceof Error) {
+      errorMessage = `Network error: ${err.message}`;
+    } else {
+      errorMessage = `Response error: ${err.message}`;
+    }
+    return throwError(errorMessage);
+  };
 }
+

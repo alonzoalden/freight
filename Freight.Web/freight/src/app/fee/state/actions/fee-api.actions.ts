@@ -39,7 +39,7 @@ export const createFeeFailure = createAction(
 
 export const deleteFeeSuccess = createAction(
   '[Fee API] Delete Item Success',
-  props<{ itemid: any }>()
+  props<{ feeID: any }>()
 );
 export const deleteFeeFailure = createAction(
   '[Fee API] Delete Item Fail',

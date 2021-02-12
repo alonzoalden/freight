@@ -12,20 +12,16 @@
   </mat-toolbar>
   <div mat-dialog-content class="p-24 m-0" style="max-height: 65vh !important;">
     <form name="shipmentFeeForm" [formGroup]="shipmentFeeForm" class="compose-form" fxLayout="column" fxFlex>
-      shipmentFeeID: [Number(this.selectedShipmentFee.shipmentFeeID)],
-      shipmentID: [Number(this.selectedShipmentFee.shipmentID || 1)],
-      feeID: [Number(this.selectedShipmentFee.feeID) || 0],
-      feeAmount: [this.selectedShipmentFee.feeAmount]
+      
       <div fxLayout="column" fxLayoutAlign="start start">
         <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
           <mat-label> feeID </mat-label>
           <!-- <input matInput placeholder="Fee" name="feeID" formControlName="feeID"required> -->
-          <mat-select placeholder="Fees" name="fee" formControlName="fee" required>
-            <mat-option *ngFor="let fee of fees" value="{{fee}}">{{ fee.feeType }}
+          <mat-select (selectionChange)="updateForm()" placeholder="Fees" name="fee" formControlName="fee" required>
+            <mat-option *ngFor="let fee of fees" [value]=fee>{{ fee.feeType }}
             </mat-option>
           </mat-select>
         </mat-form-field>
-        
       </div>
     </form>
   </div>

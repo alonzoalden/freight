@@ -10,6 +10,7 @@ import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { Store } from '@ngrx/store';
 import * as fromAppState from 'app/_state';
 import { AppPageActions } from 'app/_state/actions';
+import { User } from 'app/_shared/model/user';
 
 @Component({
     selector: 'navbar-vertical-style-1',
@@ -20,7 +21,7 @@ import { AppPageActions } from 'app/_state/actions';
 export class NavbarVerticalStyle1Component implements OnInit, OnDestroy {
     fuseConfig: any;
     navigation: any;
-
+    userInfo: any;
     // Private
     private _fusePerfectScrollbar: FusePerfectScrollbarDirective;
     private _unsubscribeAll: Subject<any>;
@@ -91,7 +92,12 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy {
     ngOnInit(): void {
         //this.businessEntities$ = this.store.select(fromAppState.getBusinessEntities);
 
-
+        this.store.select(fromAppState.getCurrentUser)
+            .subscribe((user: User) => {
+                this.userInfo = user;
+                //this.currentBusiness = this.companies.find(c => c.businessID == this.userInfo.businessID)
+            });
+    
         this._router.events
             .pipe(
                 filter((event) => event instanceof NavigationEnd),

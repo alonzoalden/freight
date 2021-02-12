@@ -111,10 +111,17 @@ export class EditShipmentFeesDialogComponent implements OnInit, OnDestroy {
       shipmentFeeID: [Number(this.selectedShipmentFee.shipmentFeeID)],
       shipmentID: [Number(this.selectedShipmentFee.shipmentID || 1)],
       feeID: [Number(this.selectedShipmentFee.feeID) || 0],
-      feeAmount: [this.selectedShipmentFee.feeAmount]
+      feeAmount: [this.selectedShipmentFee.feeAmount],
+      fee: [this.fees?.find(i => i.feeID == this.selectedShipmentFee.feeID)]
     });
   }
-
+  updateForm(): void {
+    const line = this.shipmentFeeForm.controls['line'].value;
+    this.shipmentFeeForm.controls.feeID.setValue(line.feeID);
+    this.shipmentFeeForm.controls.feeType.setValue(line.feeType);
+    this.shipmentFeeForm.controls.description.setValue(line.description);
+    this.shipmentFeeForm.controls.feeAmount.setValue(line.feeAmount);
+  }
   onSave(): void {
     if (this.selectedShipmentFee.shipmentFeeID) {
       this.edit();

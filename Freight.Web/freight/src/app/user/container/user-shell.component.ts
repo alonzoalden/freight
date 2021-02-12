@@ -6,7 +6,8 @@ import { Observable, Subject } from 'rxjs';
 import { fuseAnimations } from '@fuse/animations';
 import { MatDialog } from '@angular/material/dialog';
 import { User } from 'app/_shared/model/user';
-
+import * as fromApp from 'app/_state';
+import { takeUntil } from 'rxjs/internal/operators/takeUntil';
 
 @Component({
   selector: 'user-shell',
@@ -24,7 +25,8 @@ export class UserShellComponent implements OnDestroy {
 
   constructor(
     public _matDialog: MatDialog,
-    private store: Store<fromUser.State>
+    private store: Store<fromUser.State>,
+    private appStore: Store<fromApp.State>,
   ) {
     this._unsubscribeAll = new Subject();
   }
@@ -33,6 +35,11 @@ export class UserShellComponent implements OnDestroy {
     this.userEntities$ = this.store.select(fromUser.getAlluserList);
     this.selectedUser$ = this.store.select(fromUser.getSelecteduser);
     this.isLoading$ = this.store.select(fromUser.getIsLoading);
+    // this.appStore.select(fromApp.getCurrentBusinessEntityId)
+    //   .pipe(takeUntil(this._unsubscribeAll))
+    //   .subscribe(businessid => {
+    //     this.store.dispatch(UserPageActions.loadUsersList({ businessid }));
+    //   });
     this.store.dispatch(UserPageActions.loadUserList());
   }
   selectUser(user: User): void {

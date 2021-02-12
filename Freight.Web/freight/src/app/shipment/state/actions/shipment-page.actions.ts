@@ -78,10 +78,11 @@ export const loadFeeList = createAction(
   props<{ businessID: any }>()
 );
 export const loadItemList = createAction(
-  '[Shipment Page] Load Fee List',
+  '[Shipment Page] Load Item List',
   props<{ businessID: any }>()
 );
+
 export const loadContactList = createAction(
-  '[Shipment Page] Load Fee List',
+  '[Shipment Page] Load Contact List',
   props<{ businessID: any }>()
 );

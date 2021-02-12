@@ -37,7 +37,7 @@ export class FeeEffects {
         concatMap(action => this.feeService.updateFee(action.fee)
           .pipe(
             map((fee) => {
-              this.notifyService.success('Success', `${fee.feeName} has been updated.`, { timeOut:3500, clickToClose: true });
+              this.notifyService.success('Success', `${fee.feeType} has been updated.`, { timeOut:3500, clickToClose: true });
               return FeeApiActions.updateFeeSuccess({ fee });
             }),
             catchError(error => {
@@ -55,7 +55,7 @@ export class FeeEffects {
         concatMap(action => this.feeService.createFee(action.fee)
           .pipe(
             map((fee) => {
-              this.notifyService.success('Success', `${fee.feeName} has been updated.`, { timeOut:3500, clickToClose: true });
+              this.notifyService.success('Success', `${fee.feeType} has been created.`, { timeOut:3500, clickToClose: true });
               return FeeApiActions.createFeeSuccess({ fee });
             }),
             catchError(error => {
@@ -74,11 +74,11 @@ export class FeeEffects {
           .pipe(
             map((fee) => {
               this.notifyService.success('Success', `Fee ${action.feeid} has been deleted.`, { timeOut:3500, clickToClose: true });
-              return FeeApiActions.createFeeSuccess({ fee });
+              return FeeApiActions.deleteFeeSuccess({ feeID: action.feeid });
             }),
             catchError(error => {
               this.notifyService.error('Error', `${error}`, { clickToClose: true });
-              return of(FeeApiActions.createFeeFailure({ error }))
+              return of(FeeApiActions.deleteFeeFailure({ error }))
             })
           )
         )

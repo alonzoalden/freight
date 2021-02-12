@@ -15,7 +15,7 @@ import { CustomerApiActions, CustomerPageActions } from '../../state/actions';
 import { CustomerEffects } from '../../state/customer.effect';
 import { Actions, ofType } from '@ngrx/effects';
 import { AppService } from 'app/app.service';
-
+import * as fromApp from 'app/_state';
 @Component({
   selector: 'edit-customer-dialog',
   templateUrl: './edit-customer-dialog.component.html',
@@ -28,10 +28,12 @@ export class EditCustomerDialogComponent implements OnInit, OnDestroy {
   selectedCustomer: Customer;
   private _unsubscribeAll: Subject<any>;
   isSaving: boolean;
+  businessID: any;
 
   objectKeys = Object.keys;
   @ViewChild('mainInput') mainInput: ElementRef;
   constructor(
+    private appStore: Store<fromApp.State>,
     private store: Store<fromCustomer.State>,
     private _formBuilder: FormBuilder,
     public matDialogRef: MatDialogRef<EditCustomerDialogComponent>,
@@ -47,8 +49,14 @@ export class EditCustomerDialogComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.selectedCustomer = this.inputData;
-    this.customerForm = this.inviteCustomerForm();
     this.focusMainInput();
+
+    this.appStore.select(fromApp.getCurrentBusinessEntityId)
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe(businessid => {
+        this.businessID = businessid;
+        this.customerForm = this.inviteCustomerForm();
+      });
 
     this.store.select(fromCustomer.getIsSaving)
       .pipe(takeUntil(this._unsubscribeAll))
@@ -80,8 +88,8 @@ export class EditCustomerDialogComponent implements OnInit, OnDestroy {
 
   inviteCustomerForm(): FormGroup {
     return this._formBuilder.group({
-      customerID: [Number(this.selectedCustomer.customerID) || 1],
-      businessID: [Number(this.selectedCustomer.businessID) || 1],
+      customerID: [Number(this.selectedCustomer.customerID) || 0],
+      businessID: [this.businessID],
       email: [{value: this.selectedCustomer.email, disabled: this.selectedCustomer.customerID}],
       apEmail: [this.selectedCustomer.apEmail],
       companyName: [this.selectedCustomer.companyName]

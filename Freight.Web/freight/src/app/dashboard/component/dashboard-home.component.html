@@ -5,9 +5,9 @@
         <h1 fxLayoutAlign="start center"><div class="circle icon-circle primary mr-8"><mat-icon>local_shipping</mat-icon></div>Shipments</h1>
       </div>
       <div class="card-body" fxLayout="column">
-        <div>Open Shipments <div class="circle accent">1</div></div>
-        <div>Closed Shipments <div class="circle accent">1</div></div>
-        <div>Cancelled Shipments <div class="circle accent">1</div></div>
+        <div>Open Shipments <div class="circle accent">{{dashboardInfo?.shipmentOpen}}</div></div>
+        <div>Closed Shipments <div class="circle accent">{{dashboardInfo?.shipmentClosed}}</div></div>
+        <div>Cancelled Shipments <div class="circle accent">{{dashboardInfo?.shipmentCancelled}}</div></div>
       </div>
     </div>
     <div fxFlex class="fuse-card" fxLayout="column" >
@@ -15,7 +15,7 @@
         <h1 fxLayoutAlign="start center"><div class="circle icon-circle primary mr-8"><mat-icon>people</mat-icon></div>Customers</h1>
       </div>
       <div class="card-body" fxLayout="column">
-        <div>Open Shipments <div class="circle accent">1</div></div>
+        <div>Total Customers <div class="circle accent">{{dashboardInfo?.customer}}</div></div>
         <div></div>
       </div>
     </div>
@@ -24,9 +24,9 @@
         <h1 fxLayoutAlign="start center"><div class="circle icon-circle primary mr-8"><mat-icon>receipt_long</mat-icon></div>Invoices</h1>
       </div>
       <div class="card-body" fxLayout="column">
-        <div>Open Invoices <div class="circle accent">1</div></div>
-        <div>Closed Invoices <div class="circle accent">1</div></div>
-        <div>Cancelled Invoices <div class="circle accent">1</div></div>
+        <div>Open Invoices <div class="circle accent">{{dashboardInfo?.invoiceOpen}}</div></div>
+        <div>Closed Invoices <div class="circle accent">{{dashboardInfo?.invoiceClosed}}</div></div>
+        <div>Past Due Invoices <div class="circle accent">{{dashboardInfo?.invoicePastDue}}</div></div>
       </div>
     </div>
   </div>
@@ -37,7 +37,7 @@
         <h1 fxLayoutAlign="start center"><div class="circle icon-circle primary mr-8"><mat-icon>dns</mat-icon></div>Items</h1>
       </div>
       <div class="card-body" fxLayout="column">
-        <div>Total Items <div class="circle accent">1</div></div>
+        <div>Total Items <div class="circle accent">{{dashboardInfo?.item}}</div></div>
         <div></div>
       </div>
     </div>
@@ -46,7 +46,7 @@
         <h1 fxLayoutAlign="start center"><div class="circle icon-circle primary mr-8"><mat-icon>person</mat-icon></div>Users</h1>
       </div>
       <div class="card-body" fxLayout="column">
-        <div>Total Users <div class="circle accent">1</div></div>
+        <div>Total Users <div class="circle accent">{{dashboardInfo?.businessUser}}</div></div>
         <div></div>
       </div>
     </div>

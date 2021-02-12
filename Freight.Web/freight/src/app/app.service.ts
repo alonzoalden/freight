@@ -145,7 +145,7 @@ export class AppService {
       );
   }
   getBusinessList(userid): Observable<any> {
-    return this.http.get<any>(this.apiURL + '/business/businessuser/user/' + userid)
+    return this.http.get<any>(this.apiURL + '/business/user/' + userid)
       .pipe(
         catchError(this.handleError)
       );
@@ -170,7 +170,7 @@ export class AppService {
     } else {
       // The backend returned an unsuccessful response code.
       // The response body may contain clues as to what went wrong,
-      errorMessage = `Backend returned code ${err.status}: ${err.body.error}`;
+      errorMessage = `Backend returned code ${err.status}: ${err?.body?.error}`;
     }
     console.error(err);
     return throwError(errorMessage);

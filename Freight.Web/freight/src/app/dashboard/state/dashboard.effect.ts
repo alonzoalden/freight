@@ -25,4 +25,16 @@ export class DashboardEffects {
         )
       );
   });
+  loadDashboardInfo$ = createEffect(() => {
+    return this.actions$
+      .pipe(
+        ofType(DashboardPageActions.loadDashboardInfo),
+        concatMap(action => this.dashboardService.getDashboardInfo(action.businessid)
+          .pipe(
+            map(dashboardInfo => DashboardApiActions.loadDashboardInfoSuccess({ dashboardInfo })),
+            catchError(error => of(DashboardApiActions.loadDashboardInfoFailure({ error })))
+          )
+        )
+      );
+  });
 }

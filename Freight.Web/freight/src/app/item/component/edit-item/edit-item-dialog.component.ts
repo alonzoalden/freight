@@ -15,6 +15,7 @@ import { ItemApiActions, ItemPageActions } from '../../state/actions';
 import { ItemEffects } from '../../state/item.effect';
 import { Actions, ofType } from '@ngrx/effects';
 import { AppService } from 'app/app.service';
+import * as fromApp from 'app/_state';
 
 @Component({
   selector: 'edit-item-dialog',
@@ -28,11 +29,13 @@ export class EditItemDialogComponent implements OnInit, OnDestroy {
   selectedItem: Item;
   private _unsubscribeAll: Subject<any>;
   isSaving: boolean;
+  businessID: any;
 
   objectKeys = Object.keys;
 
   constructor(
     private store: Store<fromItem.State>,
+    private appStore: Store<fromApp.State>,
     private _formBuilder: FormBuilder,
     public matDialogRef: MatDialogRef<EditItemDialogComponent>,
     private warehouseItemManagerService: ItemService,
@@ -47,7 +50,15 @@ export class EditItemDialogComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.selectedItem = this.inputData;
-    this.itemForm = this.createItemForm();
+    
+
+    this.appStore.select(fromApp.getCurrentBusinessEntityId)
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe(businessid => {
+        this.businessID = businessid;
+        this.itemForm = this.createItemForm();
+      });
+
     this.store.select(fromItem.getIsSaving)
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe(loading => {
@@ -70,9 +81,9 @@ export class EditItemDialogComponent implements OnInit, OnDestroy {
 
   createItemForm(): FormGroup {
     return this._formBuilder.group({
-      itemID: [Number(this.selectedItem.itemID) || 0],
-      businessID: [Number(this.selectedItem.businessID || 1)],
-      shipperID: [Number(this.selectedItem.shipperID || 2)],
+      itemID: [this.selectedItem.itemID || 0],
+      businessID: [this.businessID],
+      shipperID: [this.selectedItem.shipperID || 1],
       itemNumber: [this.selectedItem.itemNumber],
       itemName: [this.selectedItem.itemName],
       htsCode: [this.selectedItem.htsCode],

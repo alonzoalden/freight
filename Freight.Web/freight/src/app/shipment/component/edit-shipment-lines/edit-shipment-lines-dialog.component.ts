@@ -63,7 +63,7 @@ export class EditShipmentLinesDialogComponent implements OnInit, OnDestroy {
 
 
     this.selectedShipmentLine = this.inputData;
-    this.shipmentLineForm = this.createShipmentLineForm();
+    
 
     this.appStore.select(fromApp.getCurrentBusinessEntityId)
       .pipe(takeUntil(this._unsubscribeAll))
@@ -74,7 +74,8 @@ export class EditShipmentLinesDialogComponent implements OnInit, OnDestroy {
     this.store.select(fromShipment.getItemList)
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((lines: Item[]) => {
-        this.lines = lines
+        this.lines = lines;
+        this.shipmentLineForm = this.createShipmentLineForm();
       });
     this.store.select(fromShipment.getIsLoading)
       .pipe(takeUntil(this._unsubscribeAll))
@@ -113,16 +114,29 @@ export class EditShipmentLinesDialogComponent implements OnInit, OnDestroy {
 
   createShipmentLineForm(): FormGroup {
     return this._formBuilder.group({
-      shipmentLineID: [Number(this.selectedShipmentLine.shipmentLineID)],
+      shipmentLineID: [Number(this.selectedShipmentLine.shipmentLineID) || 0],
       shipmentID: [Number(this.selectedShipmentLine.shipmentID || 1)],
       itemID: [Number(this.selectedShipmentLine.itemID) || 0],
       quantity: [this.selectedShipmentLine.quantity],
-      unitPrice: [this.selectedShipmentLine.unitPrice],
-      line: []
+      unitPrice: [],
+      itemName: [],
+      itemNumber: [],
+      htsCode: [],
+      line: [this.lines?.find(i => i.itemID == this.selectedShipmentLine.itemID)]
     });
   }
-
+  updateForm(): void {
+    const line = this.shipmentLineForm.controls['line'].value;
+    this.shipmentLineForm.controls.itemID.setValue(line.itemID);
+    this.shipmentLineForm.controls.itemName.setValue(line.itemName);
+    this.shipmentLineForm.controls.unitPrice.setValue(line.unitPrice);
+    this.shipmentLineForm.controls.itemNumber.setValue(line.itemNumber);
+    this.shipmentLineForm.controls.htsCode.setValue(line.htsCode);
+  }
+  
   onSave(): void {
+    
+
     if (this.selectedShipmentLine.shipmentLineID) {
       this.edit();
     } else {

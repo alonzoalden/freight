@@ -15,7 +15,7 @@ import { UserApiActions, UserPageActions } from '../../state/actions';
 import { UserEffects } from '../../state/user.effect';
 import { Actions, ofType } from '@ngrx/effects';
 import { AppService } from 'app/app.service';
-
+import * as fromApp from 'app/_state';
 @Component({
   selector: 'edit-user-dialog',
   templateUrl: './edit-user-dialog.component.html',
@@ -28,11 +28,13 @@ export class EditUserDialogComponent implements OnInit, OnDestroy {
   selectedUser: User;
   private _unsubscribeAll: Subject<any>;
   isSaving: boolean;
+  businessID: any;
 
   objectKeys = Object.keys;
   @ViewChild('mainInput') mainInput: ElementRef;
   constructor(
     private store: Store<fromUser.State>,
+    private appStore: Store<fromApp.State>,
     private _formBuilder: FormBuilder,
     public matDialogRef: MatDialogRef<EditUserDialogComponent>,
     private userService: UserService,
@@ -49,6 +51,11 @@ export class EditUserDialogComponent implements OnInit, OnDestroy {
     this.selectedUser = this.inputData;
     this.userForm = this.inviteUserForm();
     this.focusMainInput();
+    this.appStore.select(fromApp.getCurrentBusinessEntityId)
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe(businessid => {
+        this.businessID = businessid;
+      });
 
     this.store.select(fromUser.getIsSaving)
       .pipe(takeUntil(this._unsubscribeAll))

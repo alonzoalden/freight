@@ -42,6 +42,12 @@ export const appReducer = createReducer<AppState>(
       currentBusinessEntityId: action.currentBusinessId
     };
   }),
+  on(AppPageActions.setCurrentUser, (state, action): AppState => {
+    return {
+      ...state,
+      currentUser: action.user
+    };
+  }),
   on(AppPageActions.clearCurrentBusiness, (state): AppState => {
     return {
       ...state,

@@ -66,7 +66,7 @@ export class UserListComponent implements OnInit, OnDestroy {
     this.inputEnabled = true;
   }
   ngOnChanges(changes): void {
-    if (changes.users && changes.users.currentValue?.length) {
+    if (changes.users) {
       this.dataSource = new MatTableDataSource<any>(this.users);
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;

@@ -1,18 +1,19 @@
 <div id="dashboard-container" class="page-layout inner-scroll">
-  
-  <div *ngIf="!(isSelected$ | async)">
+  <!-- *ngIf="!(isSelected$ | async)" -->
+  <div >
     <dashboard-home
       [businesses]="businessEntities$ | async"
+      [dashboardInfo]="dashboardInfo$ | async"
       (selected)="businessSelected($event)"
     ></dashboard-home>
   </div>
   
-  <div *ngIf="(isSelected$ | async)">
+  <!-- <div *ngIf="(isSelected$ | async)">
     <button (click)="test()">TEST</button>
     <div>
       <dashboard-business
         [id]="selectedBusinessEntityId$ | async"
       ></dashboard-business>
     </div>
-  </div>
+  </div> -->
 </div>

@@ -45,6 +45,13 @@ export class UserService implements OnDestroy {
         catchError(this.handleError)
       );
   }
+  getUserList(businessid): Observable<any> {
+    return this.http
+      .get(this.apiURL + `/user/business/${businessid}`)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
   getCurrentUser(): Observable<any> {
     return this.http.get<any>(this.apiURL + '/user/current')
       .pipe(

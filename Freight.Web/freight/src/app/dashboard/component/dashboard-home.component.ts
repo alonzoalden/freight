@@ -9,9 +9,14 @@ import { BusinessEntity } from '../../_shared/model/business-entity';
 
 export class DashboardHomeComponent {
   @Input() businesses: BusinessEntity[];
+  @Input() dashboardInfo: any;
   @Output() selected = new EventEmitter<BusinessEntity>();
 
   constructor() { }
+  
+  ngOnInit() {
+    console.log(this.dashboardInfo)
+  }
 
   businessSelected(business: BusinessEntity): void {
     this.selected.emit(business);

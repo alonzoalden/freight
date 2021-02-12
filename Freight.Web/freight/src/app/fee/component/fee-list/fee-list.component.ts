@@ -66,7 +66,7 @@ export class FeeListComponent implements OnInit, OnDestroy {
     this.inputEnabled = true;
   }
   ngOnChanges(changes): void {
-    if (changes.fees && changes.fees.currentValue?.length) {
+    if (changes.fees) {
       this.dataSource = new MatTableDataSource<any>(this.fees);
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;

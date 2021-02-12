@@ -41,14 +41,14 @@ export class AppEffects {
       );
   });
 
-  setCurrentBusiness$ = createEffect(() => {
-    return this.actions$
-      .pipe(
-        ofType(AppPageActions.setCurrentBusiness),
-        map(action => {
-          return this.notifyService.success('Success', `Company has been changed`, {timeOut: 4000, clickToClose: true });
-        })
-      );
-  });
+  // setCurrentBusiness$ = createEffect(() => {
+  //   return this.actions$
+  //     .pipe(
+  //       ofType(AppPageActions.setCurrentBusiness),
+  //       map(action => {
+  //         return this.notifyService.success('Success', `Company has been changed`, {timeOut: 4000, clickToClose: true });
+  //       })
+  //     );
+  // });
 
 }

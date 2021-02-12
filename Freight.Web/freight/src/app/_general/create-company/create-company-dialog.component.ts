@@ -44,14 +44,13 @@ export class CreateCompanyDialogComponent implements OnInit, OnDestroy {
     private notifyService: NotificationsService,
     private itemEffects: ItemEffects,
     private readonly actions$: Actions,
-    @Inject(MAT_DIALOG_DATA) private inputData: any,
+    @Inject(MAT_DIALOG_DATA) private inputData: User,
   ) {
     this._unsubscribeAll = new Subject();
   }
 
   ngOnInit(): void {
     this.selected = this.inputData;
-    this.userForm = this.createUserForm();
     this.businessForm = this.createBusinessForm();
 
     // this.store.select(fromApp.getCurrentUser)
@@ -80,33 +79,49 @@ export class CreateCompanyDialogComponent implements OnInit, OnDestroy {
     this._unsubscribeAll.complete();
   }
 
-  createUserForm(): FormGroup {
-    return this._formBuilder.group({
-      userID: [this.selected?.userID],
-      email: [this.selected?.email],
-      firstName: [this.selected?.firstName],
-      lastName: [this.selected?.lastName],
-      businessID: [this.selected?.businessID],
-    });
-  }
+  // createUserForm(): FormGroup {
+  //   return this._formBuilder.group({
+  //     userID: [this.selected?.userID],
+  //     email: [this.selected?.email],
+  //     firstName: [this.selected?.firstName],
+  //     lastName: [this.selected?.lastName],
+  //     businessID: [this.selected?.businessID],
+  //   });
+  // }
   createBusinessForm(): FormGroup {
     return this._formBuilder.group({
       businessID: [],
       userID: [this.selected?.userID],
       companyName: [''],
-      isShipper: [],
-      is3PL: [],
-      isFFW: [],
+      isShipper: [false],
+      is3PL: [false],
+      isFFW: [false],
+      firstName: [''],
+      lastName: [''],
+    
     });
   }
   createBusiness(): void {
     this.isSaving = true;
-    this.appService.updateUser(this.businessForm.value)
+    let businessdata = {...this.businessForm.value};
+    delete businessdata.firstName;
+    delete businessdata.lastName;
+    this.appService.createBusiness(businessdata)
       .subscribe(
-        (data: Item) => {
-          // this.warehouseItemManagerService.onItemSelected.next(data);
-          this.matDialogRef.close(data);
-          this.notifyService.success('Success', `${data.itemNumber} has been created.`, { timeOut: 3500, clickToClose: true });
+        (data: Business) => {
+
+          let userData = new User(this.inputData.userID, data.businessID, this.inputData.email,
+            this.businessForm.value.firstName, this.businessForm.value.lastName, '', '')
+          
+          this.appService.updateUser(userData)
+            .subscribe(
+              (user: User) => {
+                this.isSaving = false;
+                this.matDialogRef.close(user);
+                this.notifyService.success('Success', `${businessdata.companyName} has been created.`, { timeOut: 3500, clickToClose: true });
+              }
+            )
+          
         },
         error => {
           this.notifyService.error('Error', `${error}`, { clickToClose: true });

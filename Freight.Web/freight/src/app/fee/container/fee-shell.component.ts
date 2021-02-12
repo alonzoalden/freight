@@ -39,7 +39,9 @@ export class FeeShellComponent implements OnDestroy {
     this.appStore.select(fromApp.getCurrentBusinessEntityId)
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe(businessid => {
-        this.store.dispatch(FeePageActions.loadFeeList({ businessid }));
+        if (businessid) {
+          this.store.dispatch(FeePageActions.loadFeeList({ businessid }));
+        }
       });
   }
   selectFee(fee: Fee): void {

@@ -66,7 +66,7 @@ export class ShipmentListComponent implements OnInit, OnDestroy {
     this.inputEnabled = true;
   }
   ngOnChanges(changes): void {
-    if (changes.items && changes.items.currentValue?.length) {
+    if (changes.items) {
       this.dataSource = new MatTableDataSource<any>(this.shipments);
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;

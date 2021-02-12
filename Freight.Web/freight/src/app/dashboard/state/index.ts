@@ -37,3 +37,10 @@ export const getBusinessAccesses = createSelector(
   getDashboardFeatureState,
   state => state.access
 );
+
+export const getDashboardInfo = createSelector(
+  getDashboardFeatureState,
+  state => state.dashboardInfo
+);
+
+

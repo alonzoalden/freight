@@ -20,6 +20,7 @@ import { OidcSecurityService } from 'angular-auth-oidc-client';
 import { UserService } from 'app/user/user.service';
 import { Business } from 'app/_shared/model/business';
 import * as fromApp from 'app/_state';
+import { User } from 'app/_shared/model/user';
 @Component({
   selector: 'toolbar',
   templateUrl: './toolbar.component.html',
@@ -35,9 +36,10 @@ export class ToolbarComponent implements OnInit, OnDestroy {
   navigation: any;
   selectedLanguage: any;
   userStatusOptions: any[];
-  companies: any;
+  companies: Business[];
   userInfo: any;
   isLoading: boolean;
+  currentBusiness: any;
   objectKeys = Object.keys;
   private _unsubscribeAll: Subject<any>;
 
@@ -104,12 +106,21 @@ export class ToolbarComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     //this.businessEntities$ = this.store.select(fromAppState.getBusinessEntities);
-    
+
     this.store.select(fromAppState.getBusinessEntities)
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((companies: Business[]) => {
         this.companies = companies;
+        this.currentBusiness = this.companies.find(c => c.businessID == this.userInfo.businessID)
       });
+
+    this.store.select(fromAppState.getCurrentUser)
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe((user: User) => {
+        this.userInfo = user;
+        this.currentBusiness = this.companies.find(c => c.businessID == this.userInfo.businessID)
+      });
+
 
     // Subscribe to the config changes
     this._fuseConfigService.config
@@ -154,8 +165,8 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     //this.router.navigate(['/']);
   }
   onUpdateCompany(company: Business) {
-
-    this.store.dispatch(AppPageActions.setCurrentBusiness({currentBusinessId: company.businessID}));
+    this.currentBusiness = this.companies.find(c => c.businessID == company.businessID)
+    this.store.dispatch(AppPageActions.setCurrentBusiness({ currentBusinessId: company.businessID }));
 
 
     // const updatedUserInfo = { ...this.appService.userInfo.value };

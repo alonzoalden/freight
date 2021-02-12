@@ -60,18 +60,18 @@ export class EditShipmentContactsDialogComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.selectedShipmentContact = this.inputData;
-    this.shipmentContactForm = this.createShipmentContactForm();
-
+    
     this.appStore.select(fromApp.getCurrentBusinessEntityId)
-      .pipe(takeUntil(this._unsubscribeAll))
-      .subscribe(businessID => {
-        this.store.dispatch(ShipmentPageActions.loadFeeList({ businessID }));
-      });
-
+    .pipe(takeUntil(this._unsubscribeAll))
+    .subscribe(businessID => {
+      this.store.dispatch(ShipmentPageActions.loadContactList({ businessID }));
+    });
+    
     this.store.select(fromShipment.getContactList)
-      .pipe(takeUntil(this._unsubscribeAll))
-      .subscribe((contacts: Customer[]) => {
-        this.contacts = contacts
+    .pipe(takeUntil(this._unsubscribeAll))
+    .subscribe((contacts: Customer[]) => {
+      this.contacts = contacts
+      this.shipmentContactForm = this.createShipmentContactForm();
       });
     this.store.select(fromShipment.getIsLoading)
       .pipe(takeUntil(this._unsubscribeAll))
@@ -120,7 +120,18 @@ export class EditShipmentContactsDialogComponent implements OnInit, OnDestroy {
       businessID: [this.selectedShipmentContact.businessID],
       shipmentID: [this.selectedShipmentContact.shipmentID],
       contactID: [this.selectedShipmentContact.contactID],
+      email: [],
+      firstName: [],
+      lastName: [],
+      contact: [this.contacts?.find(i => i.shipmentContactID == this.selectedShipmentContact.shipmentContactID)]
     });
+  }
+  updateForm(): void {
+    const line = this.shipmentContactForm.controls['contact'].value;
+    this.shipmentContactForm.controls.contactID.setValue(line.contactID);
+    this.shipmentContactForm.controls.email.setValue(line.email);
+    this.shipmentContactForm.controls.firstName.setValue(line.firstName);
+    this.shipmentContactForm.controls.lastName.setValue(line.lastName);
   }
 
   onSave(): void {

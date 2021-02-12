@@ -58,7 +58,6 @@ export class AppComponent implements OnInit {
     this.businessEntities$ = this.store.select(fromAppState.getBusinessEntities);
     this.selectedBusinessEntityId$ = this.store.select(fromAppState.getCurrentBusinessEntityId);
     if (this.router.url == '/' && this.oidcSecurityService.getToken()) {
-
       this.router.navigate(['/dashboard']);
     }
     this.oidcSecurityService.checkAuth()
@@ -74,11 +73,12 @@ export class AppComponent implements OnInit {
           this.userService.getCurrentUser()
             .subscribe(
               (user) => {
-                if (!user.BusinessID) {
+                if (!user.businessID) {
                   // If user is not assigned to company:
                   this.openCreateCompanyDialog(user);
 
                 } else {
+                  console.log(user)
                   this.store.dispatch(AppPageActions.setCurrentUser({user}));
                   this.store.dispatch(AppPageActions.setCurrentBusiness({currentBusinessId: user.businessID}));
                   this.store.dispatch(AppPageActions.loadBusinesses({userID: user.userID }));
@@ -200,6 +200,7 @@ export class AppComponent implements OnInit {
         this.store.dispatch(AppPageActions.setCurrentUser({user: data}));
         this.store.dispatch(AppPageActions.setCurrentBusiness({currentBusinessId: response.BusinessID}));
         this.store.dispatch(AppPageActions.loadBusinesses({userID: data.userID }));
+        this.router.navigate(['/dashboard']);
       });
   }
 }

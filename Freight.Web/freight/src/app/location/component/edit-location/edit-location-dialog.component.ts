@@ -15,7 +15,7 @@ import { LocationApiActions, LocationPageActions } from '../../state/actions';
 import { LocationEffects } from '../../state/location.effect';
 import { Actions, ofType } from '@ngrx/effects';
 import { AppService } from 'app/app.service';
-
+import * as fromApp from 'app/_state';
 @Component({
   selector: 'edit-location-dialog',
   templateUrl: './edit-location-dialog.component.html',
@@ -28,10 +28,12 @@ export class EditLocationDialogComponent implements OnInit, OnDestroy {
   selectedLocation: Location;
   private _unsubscribeAll: Subject<any>;
   isSaving: boolean;
+  businessID: any;
 
   objectKeys = Object.keys;
   @ViewChild('mainInput') mainInput: ElementRef;
   constructor(
+    private appStore: Store<fromApp.State>,
     private store: Store<fromLocation.State>,
     private _formBuilder: FormBuilder,
     public matDialogRef: MatDialogRef<EditLocationDialogComponent>,
@@ -47,8 +49,13 @@ export class EditLocationDialogComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.selectedLocation = this.inputData;
-    this.locationForm = this.createLocationForm();
     this.focusMainInput();
+    this.appStore.select(fromApp.getCurrentBusinessEntityId)
+    .pipe(takeUntil(this._unsubscribeAll))
+    .subscribe(businessid => {
+      this.businessID = businessid;
+      this.locationForm = this.createLocationForm();
+      });
 
     this.store.select(fromLocation.getIsSaving)
       .pipe(takeUntil(this._unsubscribeAll))
@@ -81,7 +88,7 @@ export class EditLocationDialogComponent implements OnInit, OnDestroy {
   createLocationForm(): FormGroup {
     return this._formBuilder.group({
       locationID: [Number(this.selectedLocation.locationID) || 0],
-      businessID: [Number(this.selectedLocation.businessID || 1)],
+      businessID: [this.businessID],
       locationName: [this.selectedLocation.locationName],
     });
   }
