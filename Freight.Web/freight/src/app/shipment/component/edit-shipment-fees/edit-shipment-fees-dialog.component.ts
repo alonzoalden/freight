@@ -116,7 +116,7 @@ export class EditShipmentFeesDialogComponent implements OnInit, OnDestroy {
     });
   }
   updateForm(): void {
-    const line = this.shipmentFeeForm.controls['line'].value;
+    const line = this.shipmentFeeForm.controls['fee'].value;
     this.shipmentFeeForm.controls.feeID.setValue(line.feeID);
     this.shipmentFeeForm.controls.feeType.setValue(line.feeType);
     this.shipmentFeeForm.controls.description.setValue(line.description);
