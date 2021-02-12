@@ -91,6 +91,19 @@ namespace Freight.API.DAL
             }
         }
 
+        //Business Dashboard
+        public BusinessDashboard GetBusinessDashboard(int businessid)
+        {
+            using (SqlConnection connection = new SqlConnection(DefaultConnection))
+            {
+                DynamicParameters p = new DynamicParameters();
+                p.Add("businessid", businessid);
+                BusinessDashboard result = connection.Query<BusinessDashboard>("spGetBusinessDashboard", p, commandType: CommandType.StoredProcedure).Single();
+
+                return result;
+            }
+        }
+
         //Business User
         public BusinessUser GetBusinessUser(int businessuserid)
         {

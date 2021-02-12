@@ -4,6 +4,33 @@
         <name>Freight.API</name>
     </assembly>
     <members>
+        <member name="T:Freight.API.Auth.AuthorizationControllerBase">
+            <summary> 
+            Authorization Controller Base 
+            </summary> 
+        </member>
+        <member name="P:Freight.API.Auth.AuthorizationControllerBase.Int_Example">
+            <summary> 
+            Int Example 
+            </summary> 
+        </member>
+        <member name="P:Freight.API.Auth.AuthorizationControllerBase.String_Example">
+            <summary> 
+            String Example 
+            </summary> 
+        </member>
+        <member name="M:Freight.API.Auth.AuthorizationControllerBase.ClaimValueOrEmpty(System.String)">
+            <summary> 
+            Returns claim's value or an empty string 
+            </summary> 
+            <param name="name"></param> 
+            <returns></returns> 
+        </member>
+        <member name="T:Freight.API.Controllers.IdentityController">
+            <summary>
+            Identity Controller
+            </summary>
+        </member>
         <member name="M:Freight.API.Controllers.IdentityController.Get">
             <summary>
             Get all Claims for that User

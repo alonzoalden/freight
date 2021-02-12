@@ -39,6 +39,12 @@ namespace Freight.API.BAL
             BusinessDAL.DeleteBusiness(id);
         }
 
+        //Business Dashboard
+        public BusinessDashboard GetBusinessDashboard(int businessid)
+        {
+            return BusinessDAL.GetBusinessDashboard(businessid);
+        }
+
         //Business User
         public BusinessUser GetBusinessUser(int id)
         {
