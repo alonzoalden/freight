@@ -51,7 +51,7 @@ namespace Freight.API.Controllers
         {
             try
             {
-                return new JsonResult(CustomerBAL.GetCustomer(businessid));
+                return new JsonResult(CustomerBAL.GetCustomerByBusinessID(businessid));
             }
             catch (Exception ex)
             {
