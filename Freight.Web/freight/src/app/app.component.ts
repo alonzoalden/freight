@@ -54,6 +54,7 @@ export class AppComponent implements OnInit {
     public _matDialog: MatDialog) { }
 
   ngOnInit(): void {
+    //this.openCreateCompanyDialog(null);
     this.initialize();
     this.businessEntities$ = this.store.select(fromAppState.getBusinessEntities);
     this.selectedBusinessEntityId$ = this.store.select(fromAppState.getCurrentBusinessEntityId);
@@ -79,6 +80,7 @@ export class AppComponent implements OnInit {
                   if (!user.businessID) {
                     // If user is not assigned to company:
                     this.openCreateCompanyDialog(user);
+                    this._fuseSplashScreenService.hide();
 
                   } else {
                     this.store.dispatch(AppPageActions.setCurrentUser({ user }));
@@ -199,7 +201,9 @@ export class AppComponent implements OnInit {
     this.dialogRef = this._matDialog.open(CreateCompanyDialogComponent, {
       panelClass: 'edit-fields-dialog',
       disableClose: true,
-      data: data
+      data: data,
+      width: '100%',
+      height: '100%',
     });
     this.dialogRef.afterClosed()
       .subscribe(response => {
@@ -207,9 +211,9 @@ export class AppComponent implements OnInit {
           return;
         }
         this.store.dispatch(AppPageActions.setCurrentUser({ user: response }));
-        this.store.dispatch(AppPageActions.setCurrentBusiness({ currentBusinessId: response.BusinessID }));
+        this.store.dispatch(AppPageActions.setCurrentBusiness({ currentBusinessId: response.businessID }));
         this.store.dispatch(AppPageActions.loadBusinesses({ userID: response.userID }));
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['/business']);
       });
   }
 }

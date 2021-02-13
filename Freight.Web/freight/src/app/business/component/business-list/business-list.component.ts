@@ -25,6 +25,10 @@ import { EditBusinessDialogComponent } from "../edit-business/edit-business-dial
 import { Business } from "app/_shared/model/business";
 import * as fromBusiness from '../../state';
 import { Store } from "@ngrx/store";
+import { FuseConfig } from "@fuse/types";
+import { FuseConfigService } from "@fuse/services/config.service";
+import { User } from "app/_shared/model/user";
+
 @Component({
   selector: 'business-list',
   templateUrl: './business-list.component.html',
@@ -32,6 +36,7 @@ import { Store } from "@ngrx/store";
   animations: [fuseAnimations],
 })
 export class BusinessListComponent implements OnInit, OnDestroy {
+  @Input() userInfo: User;
   @Input() businesss: Business[] = [];
   @Input() selected: Business;
   @Input() isLoading: boolean;
@@ -58,7 +63,8 @@ export class BusinessListComponent implements OnInit, OnDestroy {
     private businessService: BusinessService,
     public _matDialog: MatDialog,
     private store: Store<fromBusiness.State>,
-    private notifyService: NotificationsService
+    private notifyService: NotificationsService,
+    private _fuseConfigService: FuseConfigService,
   ) {
     this._unsubscribeAll = new Subject();
     this.searchTerm = "";
@@ -74,7 +80,13 @@ export class BusinessListComponent implements OnInit, OnDestroy {
     }
   }
   ngOnInit(): void {
+    if (!this.userInfo.businessID) {
+      this._fuseConfigService.config = this._fuseConfigService.hideLayoutConfig();
+    }
     this.focusMainInput();
+  }
+  resetLayout() {
+    this._fuseConfigService.config = this._fuseConfigService.resetToDefaults();
   }
 
   ngOnDestroy(): void {
@@ -125,10 +137,11 @@ export class BusinessListComponent implements OnInit, OnDestroy {
     }
   }
   openEditBusinessDialog(data = {}): void {
+    
     this.dialogRef = this._matDialog.open(EditBusinessDialogComponent, {
       panelClass: 'edit-fields-dialog',
       width: '100%',
-      data: data
+      data: {data, userInfo: this.userInfo}
     });
     this.dialogRef.afterClosed()
       .subscribe(response => {

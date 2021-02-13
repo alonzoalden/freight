@@ -39,8 +39,8 @@ export class BusinessService implements OnDestroy {
       );
   }
 
-  getBusiness(id: string): Observable<any> {
-    return this.http.get<any>(this.apiURL + '/business/' + id)
+  getBusinessList(userid: string): Observable<any> {
+    return this.http.get<any>(this.apiURL + '/business/user/' + userid)
       .pipe(
         tap((data: Business) => {
           this.onBusinessSelected.next(data);
@@ -66,9 +66,6 @@ export class BusinessService implements OnDestroy {
   createBusiness(body: Business): Observable<any> {
     return this.http.post<any>(this.apiURL + '/business', body)
       .pipe(
-        tap((data: Business) => {
-          this.onBusinessSelected.next(data);
-        }),
         catchError(this.handleError)
       );
   }

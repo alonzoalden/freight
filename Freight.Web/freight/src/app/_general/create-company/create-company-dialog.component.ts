@@ -18,6 +18,7 @@ import { Actions, ofType } from '@ngrx/effects';
 import { AppService } from 'app/app.service';
 import { User } from 'app/_shared/model/user';
 import { Business } from 'app/_shared/model/business';
+import { OidcSecurityService } from 'angular-auth-oidc-client';
 
 @Component({
   selector: 'create-company-dialog',
@@ -44,6 +45,7 @@ export class CreateCompanyDialogComponent implements OnInit, OnDestroy {
     private notifyService: NotificationsService,
     private itemEffects: ItemEffects,
     private readonly actions$: Actions,
+    private oidcSecurityService: OidcSecurityService,
     @Inject(MAT_DIALOG_DATA) private inputData: User,
   ) {
     this._unsubscribeAll = new Subject();
@@ -98,36 +100,42 @@ export class CreateCompanyDialogComponent implements OnInit, OnDestroy {
       isFFW: [false],
       firstName: [''],
       lastName: [''],
-    
     });
   }
   createBusiness(): void {
     this.isSaving = true;
-    let businessdata = {...this.businessForm.value};
+    let businessdata = { ...this.businessForm.value };
     delete businessdata.firstName;
     delete businessdata.lastName;
-    this.appService.createBusiness(businessdata)
+    let userData = new User(this.inputData.userID, 0, this.inputData.email, this.businessForm.value.firstName, this.businessForm.value.lastName, '', '')
+    this.appService.updateUser(userData)
       .subscribe(
-        (data: Business) => {
-
-          let userData = new User(this.inputData.userID, data.businessID, this.inputData.email,
-            this.businessForm.value.firstName, this.businessForm.value.lastName, '', '')
-          
-          this.appService.updateUser(userData)
-            .subscribe(
-              (user: User) => {
-                this.isSaving = false;
-                this.matDialogRef.close(user);
-                this.notifyService.success('Success', `${businessdata.companyName} has been created.`, { timeOut: 3500, clickToClose: true });
-              }
-            )
-          
-        },
-        error => {
-          this.notifyService.error('Error', `${error}`, { clickToClose: true });
+        (user: User) => {
           this.isSaving = false;
+          this.matDialogRef.close(user);
+          this.notifyService.success('Success', `Your information has been saved.`, { timeOut: 3500, clickToClose: true });
         }
-      );
+      )
+    
+    // this.appService.createBusiness(businessdata)
+    //   .subscribe(
+    //     (data: Business) => {
+    //       let userData = new User(this.inputData.userID, data.businessID, this.inputData.email,
+    //         this.businessForm.value.firstName, this.businessForm.value.lastName, '', '')
+    //       this.appService.updateUser(userData)
+    //         .subscribe(
+    //           (user: User) => {
+    //             this.isSaving = false;
+    //             this.matDialogRef.close(user);
+    //             this.notifyService.success('Success', `${businessdata.companyName} has been created.`, { timeOut: 3500, clickToClose: true });
+    //           }
+    //         )
+    //     },
+    //     error => {
+    //       this.notifyService.error('Error', `${error}`, { clickToClose: true });
+    //       this.isSaving = false;
+    //     }
+    //   );
   }
   create(): void {
     this.isSaving = true;
@@ -146,6 +154,9 @@ export class CreateCompanyDialogComponent implements OnInit, OnDestroy {
   }
   edit(): void {
     this.store.dispatch(ItemPageActions.updateItem({ item: this.userForm.value }));
+  }
+  logout() {
+    this.oidcSecurityService.logoff();
   }
 
 }

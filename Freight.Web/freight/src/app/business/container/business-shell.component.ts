@@ -6,7 +6,8 @@ import { Observable, Subject } from 'rxjs';
 import { fuseAnimations } from '@fuse/animations';
 import { MatDialog } from '@angular/material/dialog';
 import { Business } from 'app/_shared/model/business';
-
+import * as fromAppState from 'app/_state';
+import { User } from 'app/_shared/model/user';
 
 @Component({
   selector: 'business-shell',
@@ -16,6 +17,7 @@ import { Business } from 'app/_shared/model/business';
   animations: fuseAnimations
 })
 export class BusinessShellComponent implements OnDestroy {
+  userInfo$: Observable<User>;
   businessEntities$: Observable<Business[]>;
   selectedBusiness$: Observable<Business>;
   isLoading$: Observable<boolean>;
@@ -24,7 +26,9 @@ export class BusinessShellComponent implements OnDestroy {
 
   constructor(
     public _matDialog: MatDialog,
+    private appStore: Store<fromAppState.State>,
     private store: Store<fromBusiness.State>
+    
   ) {
     this._unsubscribeAll = new Subject();
   }
@@ -33,7 +37,14 @@ export class BusinessShellComponent implements OnDestroy {
     this.businessEntities$ = this.store.select(fromBusiness.getAllBusinessList);
     this.selectedBusiness$ = this.store.select(fromBusiness.getSelectedBusiness);
     this.isLoading$ = this.store.select(fromBusiness.getIsLoading);
-    this.store.dispatch(BusinessPageActions.loadBusinessList());
+    this.userInfo$ = this.store.select(fromAppState.getCurrentUser);
+
+    this.userInfo$.subscribe(user => {
+      if (user && user.userID) {
+        this.store.dispatch(BusinessPageActions.loadBusinessList({userid: user.userID}));
+      }
+    })
+
   }
   selectBusiness(business: Business): void {
     this.store.dispatch(BusinessPageActions.setCurrentBusiness({ currentBusiness: business }));

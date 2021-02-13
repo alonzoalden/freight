@@ -2,8 +2,10 @@ import { createAction, props } from '@ngrx/store';
 import { Business } from 'app/_shared/model/business';
 
 export const loadBusinessList = createAction(
-  '[Business Page] Load Business List'
+  '[Business Page] Load Business List',
+  props<{ userid: any }>()
 );
+
 export const getBusiness = createAction(
   '[Business Page] Get Business',
   props<{ business: Business }>()

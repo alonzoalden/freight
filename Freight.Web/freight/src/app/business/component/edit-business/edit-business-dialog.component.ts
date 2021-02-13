@@ -12,9 +12,12 @@ import { Business } from 'app/_shared/model/business';
 import { Store } from '@ngrx/store';
 import * as fromBusiness from '../../state';
 import { BusinessApiActions, BusinessPageActions } from '../../state/actions';
+import { AppPageActions } from 'app/_state/actions';
 import { BusinessEffects } from '../../state/business.effect';
 import { Actions, ofType } from '@ngrx/effects';
 import { AppService } from 'app/app.service';
+import { User } from 'app/_shared/model/user';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'edit-business-dialog',
@@ -39,14 +42,16 @@ export class EditBusinessDialogComponent implements OnInit, OnDestroy {
     public appService: AppService,
     private notifyService: NotificationsService,
     private businessEffects: BusinessEffects,
+    private router: Router,
     private readonly actions$: Actions,
     @Inject(MAT_DIALOG_DATA) private inputData: any,
+
   ) {
     this._unsubscribeAll = new Subject();
   }
 
   ngOnInit(): void {
-    this.selectedBusiness = this.inputData;
+    this.selectedBusiness = this.inputData.data;
     this.businessForm = this.createBusinessForm();
     this.focusMainInput();
 
@@ -69,7 +74,25 @@ export class EditBusinessDialogComponent implements OnInit, OnDestroy {
         takeUntil(this._unsubscribeAll),
         ofType(BusinessApiActions.createBusinessSuccess))
       .subscribe((data) => {
-        this.matDialogRef.close(data);
+        if (!this.inputData.userInfo.businessID) {
+
+          // TO DO: make this whole step into 1 dispatch 
+          let userData = new User(this.inputData.userInfo.userID, data.business.businessID, this.inputData.userInfo.email, this.inputData.userInfo.firstName, this.inputData.userInfo.lastName, '', '')
+          this.appService.updateUser(userData)
+            .subscribe(
+              (user: User) => {
+                this.store.dispatch(AppPageActions.setCurrentUser({ user }));
+                this.store.dispatch(AppPageActions.setCurrentBusiness({ currentBusinessId: user.businessID }));
+                this.store.dispatch(AppPageActions.loadBusinesses({ userID: user.userID }));
+                this.matDialogRef.close();
+                this.router.navigate(['/dashboard']);
+              }
+            );
+
+        }
+        else {
+          this.matDialogRef.close();
+        }
       });
   }
   ngOnDestroy(): void {
@@ -80,12 +103,12 @@ export class EditBusinessDialogComponent implements OnInit, OnDestroy {
 
   createBusinessForm(): FormGroup {
     return this._formBuilder.group({
-      businessID: [Number(this.selectedBusiness.businessID)],
-      userID: [Number(this.selectedBusiness.userID)],
-      companyName: [this.selectedBusiness.companyName],
-      isShipper: [this.selectedBusiness.isShipper],
-      is3PL: [this.selectedBusiness.is3PL],
-      isFFW: [this.selectedBusiness.isFFW],
+      businessID: [0],
+      userID: [this.inputData.userInfo.userID],
+      companyName: [this.selectedBusiness.companyName || ''],
+      isShipper: [this.selectedBusiness.isShipper || false],
+      is3PL: [this.selectedBusiness.is3PL || false],
+      isFFW: [this.selectedBusiness.isFFW || false],
     });
   }
   save(): void {
@@ -96,7 +119,7 @@ export class EditBusinessDialogComponent implements OnInit, OnDestroy {
     }
   }
   focusMainInput(): void {
-    
+
   }
   create(): void {
     this.store.dispatch(BusinessPageActions.createBusiness({ business: this.businessForm.value }));

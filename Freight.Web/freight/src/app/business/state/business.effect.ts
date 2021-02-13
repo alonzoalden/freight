@@ -18,7 +18,7 @@ export class BusinessEffects {
     return this.actions$
       .pipe(
         ofType(BusinessPageActions.loadBusinessList),
-        concatMap(action => this.businessService.getAllBusinessList()
+        concatMap(action => this.businessService.getBusinessList(action.userid)
           .pipe(
             map(businesss => BusinessApiActions.loadBusinesssListSuccess({ businesss })),
             catchError(error => {
@@ -29,7 +29,6 @@ export class BusinessEffects {
         )
       );
   });
-
   updateBusiness$ = createEffect(() => {
     return this.actions$
       .pipe(
@@ -55,7 +54,7 @@ export class BusinessEffects {
         concatMap(action => this.businessService.createBusiness(action.business)
           .pipe(
             map((business) => {
-              this.notifyService.success('Success', `${business.businessName} has been updated.`, { timeOut:3500, clickToClose: true });
+              this.notifyService.success('Success', `${action.business.companyName} has been created.`, { timeOut:3500, clickToClose: true });
               return BusinessApiActions.createBusinessSuccess({ business });
             }),
             catchError(error => {

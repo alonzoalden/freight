@@ -7,6 +7,7 @@
     <div class="content" #scrollContainer fusePerfectScrollbar>
       <!-- <router-outlet (activate)="onActivate($event, scrollContainer)"></router-outlet> -->
       <business-list
+        [userInfo]="userInfo$ | async"
         [businesss]="businessEntities$ | async"
         [selected]="selectedBusiness$ | async"
         [isLoading]="isLoading$ | async"
