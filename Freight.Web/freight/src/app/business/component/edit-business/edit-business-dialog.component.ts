@@ -84,14 +84,14 @@ export class EditBusinessDialogComponent implements OnInit, OnDestroy {
                 this.store.dispatch(AppPageActions.setCurrentUser({ user }));
                 this.store.dispatch(AppPageActions.setCurrentBusiness({ currentBusinessId: user.businessID }));
                 this.store.dispatch(AppPageActions.loadBusinesses({ userID: user.userID }));
-                this.matDialogRef.close();
+                this.matDialogRef.close(user);
                 this.router.navigate(['/dashboard']);
               }
             );
-
         }
         else {
-          this.matDialogRef.close();
+          this.store.dispatch(AppPageActions.loadBusinesses({ userID: this.inputData.userInfo.userID }));
+          this.matDialogRef.close(data);
         }
       });
   }

@@ -28,7 +28,7 @@ import { Store } from "@ngrx/store";
 import { FuseConfig } from "@fuse/types";
 import { FuseConfigService } from "@fuse/services/config.service";
 import { User } from "app/_shared/model/user";
-
+import { BusinessPageActions } from '../../state/actions';
 @Component({
   selector: 'business-list',
   templateUrl: './business-list.component.html',
@@ -148,6 +148,7 @@ export class BusinessListComponent implements OnInit, OnDestroy {
         if (!response) {
           return;
         }
+        this.store.dispatch(BusinessPageActions.loadBusinessList({userid: this.userInfo.userID}));
       });
   }
   focusMainInput() {
