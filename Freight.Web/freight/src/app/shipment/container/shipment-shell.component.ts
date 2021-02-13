@@ -33,7 +33,7 @@ export class ShipmentShellComponent implements OnDestroy {
   ngOnInit(): void {
     this.shipmentEntities$ = this.store.select(fromShipment.getAllShipmentList);
     this.selectedShipment$ = this.store.select(fromShipment.getSelectedShipment);
-    this.isLoading$ = this.store.select(fromShipment.getIsLoading);
+    setTimeout(() => this.isLoading$ = this.store.select(fromShipment.getIsLoading), 1);
     this.appStore.select(fromApp.getCurrentBusinessEntityId)
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe(businessID => {

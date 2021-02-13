@@ -151,11 +151,7 @@ export class AppService {
       );
   }
   updateUser(body: User): Observable<any> {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      //Authorization: 'Bearer ' + token
-    });
-    return this.http.put<any>(this.apiURL + '/user', body, { headers })
+    return this.http.put<any>(this.apiURL + '/user', body)
       .pipe(
         catchError(this.handleError)
       );

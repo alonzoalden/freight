@@ -38,7 +38,7 @@ export class ShipmentListComponent implements OnInit, OnDestroy {
   @Input() isLoading: boolean;
   @Output() select = new EventEmitter<Item>();
   files: any;
-  dataSource: any;
+  dataSource: any = new MatTableDataSource();
   displayedColumns = ['itemNumber', 'itemName', 'htsCode', 'fnsku', 'unitPrice', 'actions'];
   isLeadRole: boolean;
   filteredCourses: any[];
@@ -124,18 +124,18 @@ export class ShipmentListComponent implements OnInit, OnDestroy {
   }
   openEditShipmentDialog(data = {}) {
     this.dialogRef = this._matDialog.open(EditShipmentDialogComponent, {
-        data: { data },
-        width: '100%',
-        height: '100%',
-        disableClose: true
+      data: { data },
+      width: '100%',
+      height: '100%',
+      disableClose: true
     });
     this.dialogRef.afterClosed()
-        .subscribe(result => {
-            if (!result) {
-                return;
-            }
-            // this.completePackRequest('managerCompletePack');
-        });
+      .subscribe(result => {
+        if (!result) {
+          return;
+        }
+        // this.completePackRequest('managerCompletePack');
+      });
   }
   focusMainInput() {
     if (this.inputEnabled) {
@@ -146,6 +146,6 @@ export class ShipmentListComponent implements OnInit, OnDestroy {
     this.searchTerm = '';
     this.applyFilter(this.searchTerm);
     this.focusMainInput();
-    
+
   }
 }

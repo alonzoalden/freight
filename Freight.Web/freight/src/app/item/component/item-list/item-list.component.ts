@@ -39,7 +39,7 @@ export class ItemListComponent implements OnInit, OnDestroy {
   @Output() select = new EventEmitter<Item>();
   @Output() deleteItem = new EventEmitter<any>();
   files: any;
-  dataSource: any;
+  dataSource: any = new MatTableDataSource();
   displayedColumns = ['itemNumber', 'itemName', 'htsCode', 'fnsku', 'unitPrice', 'actions'];
   isLeadRole: boolean;
   filteredCourses: any[];
@@ -67,12 +67,10 @@ export class ItemListComponent implements OnInit, OnDestroy {
     this.inputEnabled = true;
   }
   ngOnChanges(changes): void {
-    if (changes.items) {
-      this.dataSource = new MatTableDataSource<any>(this.items);
-      this.dataSource.sort = this.sort;
-      this.dataSource.paginator = this.paginator;
-      this.focusMainInput();
-    }
+    this.dataSource = new MatTableDataSource<any>(this.items);
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
+    this.focusMainInput();
   }
   ngOnInit(): void {
     this.focusMainInput();
@@ -97,7 +95,7 @@ export class ItemListComponent implements OnInit, OnDestroy {
           this.deleteItem.emit(itemid);
         }
       });
-    
+
   }
 
   toggleSidebar(name): void {
@@ -110,21 +108,8 @@ export class ItemListComponent implements OnInit, OnDestroy {
   cancelSearch(): void {
     this.toggleSearch();
     this.searchTerm = "";
-    this.filterBySearchTerm();
   }
 
-  filterBySearchTerm(): void {
-    const searchTerm = this.searchTerm.toLowerCase();
-
-    // Search
-    if (searchTerm === "") {
-      this.filteredCourses = this.dataSource.data;
-    } else {
-      this.filteredCourses = this.dataSource.data.filter((course) => {
-        return course.title.toLowerCase().includes(searchTerm);
-      });
-    }
-  }
 
   applyFilter(filterValue: string) {
     if (this.dataSource) {

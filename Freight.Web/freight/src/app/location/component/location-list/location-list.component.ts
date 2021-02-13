@@ -38,7 +38,7 @@ export class LocationListComponent implements OnInit, OnDestroy {
   @Output() select = new EventEmitter<Location>();
   @Output() deleteLocation = new EventEmitter<any>();
   files: any;
-  dataSource: any;
+  dataSource: any = new MatTableDataSource();
   displayedColumns = ['locationName', 'actions'];
   isLeadRole: boolean;
   filteredCourses: any[];
@@ -146,6 +146,6 @@ export class LocationListComponent implements OnInit, OnDestroy {
     this.searchTerm = '';
     this.applyFilter(this.searchTerm);
     this.focusMainInput();
-    
+
   }
 }

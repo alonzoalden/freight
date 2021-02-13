@@ -2,7 +2,7 @@
 
     <div class="logo">
         <img class="logo-icon" src="assets/images/logos/fuse.svg">
-        <span class="logo-text secondary-text">COMPANY</span>
+        <span class="logo-text secondary-text">FBASIMPLIFY</span>
     </div>
 
     <div class="buttons">
@@ -26,8 +26,8 @@
 
     <div class="user" fxLayout="column" [ngClass]="fuseConfig.layout.navbar.secondaryBackground">
 
-        <div class="h3 username">{{userInfo?.firstName + ' ' + userInfo?.lastName}}</div>
-        <div class="h5 email hint-text mt-8">{{userInfo?.email}}</div>
+        <div class="h3 username" *ngIf="userInfo">{{userInfo.firstName + ' ' + userInfo.lastName}}</div>
+        <div class="h5 email hint-text mt-8" *ngIf="userInfo">{{userInfo.email}}</div>
         <div class="avatar-container" [ngClass]="fuseConfig.layout.navbar.primaryBackground">
             <!-- <img class="avatar" src="assets/images/avatars/Velazquez.jpg"> -->
             <mat-icon class="avatar" style="font-size: 60px; width: 60px; height: 60px;">account_circle</mat-icon>

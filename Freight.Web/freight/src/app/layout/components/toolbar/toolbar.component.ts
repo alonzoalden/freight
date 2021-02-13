@@ -35,11 +35,10 @@ export class ToolbarComponent implements OnInit, OnDestroy {
   languages: any;
   navigation: any;
   selectedLanguage: any;
-  userStatusOptions: any[];
   companies: Business[];
-  userInfo: any;
+  userInfo: User;
   isLoading: boolean;
-  currentBusiness: any;
+  currentBusiness: Business;
   objectKeys = Object.keys;
   private _unsubscribeAll: Subject<any>;
 
@@ -57,46 +56,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     //private appStore: Store<fromApp.State>,
   ) {
     // Set the defaults
-    this.userStatusOptions = [
-      {
-        title: 'Online',
-        icon: 'icon-checkbox-marked-circle',
-        color: '#4CAF50'
-      },
-      {
-        title: 'Away',
-        icon: 'icon-clock',
-        color: '#FFC107'
-      },
-      {
-        title: 'Do not Disturb',
-        icon: 'icon-minus-circle',
-        color: '#F44336'
-      },
-      {
-        title: 'Invisible',
-        icon: 'icon-checkbox-blank-circle-outline',
-        color: '#BDBDBD'
-      },
-      {
-        title: 'Offline',
-        icon: 'icon-checkbox-blank-circle-outline',
-        color: '#616161'
-      }
-    ];
-
-    this.languages = [
-      {
-        id: 'en',
-        title: 'English',
-        flag: 'us'
-      },
-      {
-        id: 'tr',
-        title: 'China',
-        flag: 'cn'
-      }
-    ];
+    
 
     this.navigation = navigation;
 
@@ -126,9 +86,11 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     this._fuseConfigService.config
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((settings) => {
-        this.horizontalNavbar = settings.layout.navbar.position === 'top';
-        this.rightNavbar = settings.layout.navbar.position === 'right';
-        this.hiddenNavbar = settings.layout.navbar.hidden === true;
+        setTimeout(() => {
+          this.horizontalNavbar = settings.layout.navbar.position === 'top';
+          this.rightNavbar = settings.layout.navbar.position === 'right';
+          this.hiddenNavbar = settings.layout.navbar.hidden === true;
+        });
       });
 
     // Set the selected language from default languages
@@ -165,10 +127,18 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     //this.router.navigate(['/']);
   }
   onUpdateCompany(company: Business) {
-    this.currentBusiness = this.companies.find(c => c.businessID == company.businessID)
-    this.store.dispatch(AppPageActions.setCurrentBusiness({ currentBusinessId: company.businessID }));
-
-
+    const userData = {...this.userInfo};
+    userData.businessID = company.businessID;
+    this.isLoading = true;
+    this.appService.updateUser(userData)
+      .subscribe((user)=> {
+        this.isLoading = false;
+        this.currentBusiness = this.companies.find(c => c.businessID == company.businessID)
+        this.store.dispatch(AppPageActions.setCurrentBusiness({ currentBusinessId: company.businessID }));
+        this.store.dispatch(AppPageActions.setCurrentUser({ user }));
+        this.notifyService.success('Success', `Company has been updated to ${this.currentBusiness.companyName}`, {timeOut: 4000, clickToClose: true });
+      });
+    
     // const updatedUserInfo = { ...this.appService.userInfo.value };
     // updatedUserInfo.WarehouseID = key;
     // this.isLoading = true;

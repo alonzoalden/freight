@@ -58,39 +58,48 @@ export class AppComponent implements OnInit {
     this.businessEntities$ = this.store.select(fromAppState.getBusinessEntities);
     this.selectedBusinessEntityId$ = this.store.select(fromAppState.getCurrentBusinessEntityId);
     if (this.router.url == '/' && this.oidcSecurityService.getToken()) {
-      this.router.navigate(['/dashboard']);
+      //this.router.navigate(['/dashboard']);
+      //this._fuseSplashScreenService.hide();
     }
     this.oidcSecurityService.checkAuth()
-      .subscribe((auth) => {
-        if (!auth) {
-          this.router.navigate(['/home']);
-        } else {
-          
-          if (this.router.url == '/') {
-            this.router.navigate(['/dashboard']);
-          }
+      .subscribe(
+        (auth) => {
+          if (!auth) {
+            this.router.navigate(['/home']);
+            this._fuseSplashScreenService.hideFaster();
+          } else {
 
-          this.userService.getCurrentUser()
-            .subscribe(
-              (user) => {
-                if (!user.businessID) {
-                  // If user is not assigned to company:
-                  this.openCreateCompanyDialog(user);
+            if (this.router.url == '/') {
+              this.router.navigate(['/dashboard']);
+            }
 
-                } else {
-                  console.log(user)
-                  this.store.dispatch(AppPageActions.setCurrentUser({user}));
-                  this.store.dispatch(AppPageActions.setCurrentBusiness({currentBusinessId: user.businessID}));
-                  this.store.dispatch(AppPageActions.loadBusinesses({userID: user.userID }));
-                  this.router.navigate(['/dashboard']);
-                }
-              },
-              (err) => {
-                console.log(err);
-              },
+            this.userService.getCurrentUser()
+              .subscribe(
+                (user) => {
+                  if (!user.businessID) {
+                    // If user is not assigned to company:
+                    this.openCreateCompanyDialog(user);
+
+                  } else {
+                    this.store.dispatch(AppPageActions.setCurrentUser({ user }));
+                    this.store.dispatch(AppPageActions.setCurrentBusiness({ currentBusinessId: user.businessID }));
+                    this.store.dispatch(AppPageActions.loadBusinesses({ userID: user.userID }));
+                    this.router.navigate(['/dashboard']);
+                    this._fuseSplashScreenService.hide();
+                  }
+                },
+                (err) => {
+                  window.location.reload();
+                  console.log(err);
+                },
               );
+          }
+        },
+        (err) => {
+          window.location.reload();
+          console.log(err);
         }
-      });
+        );
   }
 
   changeBusiness(e): void {
@@ -197,9 +206,9 @@ export class AppComponent implements OnInit {
         if (!response) {
           return;
         }
-        this.store.dispatch(AppPageActions.setCurrentUser({user: data}));
-        this.store.dispatch(AppPageActions.setCurrentBusiness({currentBusinessId: response.BusinessID}));
-        this.store.dispatch(AppPageActions.loadBusinesses({userID: data.userID }));
+        this.store.dispatch(AppPageActions.setCurrentUser({ user: response }));
+        this.store.dispatch(AppPageActions.setCurrentBusiness({ currentBusinessId: response.BusinessID }));
+        this.store.dispatch(AppPageActions.loadBusinesses({ userID: response.userID }));
         this.router.navigate(['/dashboard']);
       });
   }

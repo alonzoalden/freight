@@ -54,7 +54,9 @@ export class FuseSplashScreenService {
                     take(1)
                 )
                 .subscribe((event: RouterEvent) => {
-                    this.hide();
+                    if (!this.oidcSecurityService.getToken()) {
+                        //this.hide();
+                    }
                     // setTimeout(() => {
                     //     this.hide();
                     // });
@@ -103,6 +105,21 @@ export class FuseSplashScreenService {
         setTimeout(() => {
             this.player.play();
         }, 400);
+    }
+
+    hideFaster(): void {
+        this.player =
+            this._animationBuilder
+                .build([
+                    style({ opacity: '1' }),
+                    animate('400ms ease', style({
+                        opacity: '0',
+                        zIndex: '-10'
+                    }))
+                ]).create(this.splashScreenEl);
+
+        this.player.play();
+
     }
     
 }

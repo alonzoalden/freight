@@ -38,7 +38,7 @@ export class UserListComponent implements OnInit, OnDestroy {
   @Output() select = new EventEmitter<User>();
   @Output() deleteUser = new EventEmitter<any>();
   files: any;
-  dataSource: any;
+  dataSource: any = new MatTableDataSource();
   displayedColumns = ['userName', 'firstName', 'lastName', 'actions'];
   isLeadRole: boolean;
   filteredCourses: any[];
@@ -143,7 +143,7 @@ export class UserListComponent implements OnInit, OnDestroy {
   onClearSearch(): void {
     this.searchTerm = '';
     this.applyFilter(this.searchTerm);
-    this.focusMainInput(); 
+    this.focusMainInput();
   }
   onDelete(id: any): void {
     this.deleteUser.emit(id);

@@ -71,7 +71,7 @@ export class ItemEffects {
         concatMap(action => this.itemService.createItem(action.item)
           .pipe(
             map((item) => {
-              this.notifyService.success('Success', `${item.itemName} has been updated.`, { timeOut:3500, clickToClose: true });
+              this.notifyService.success('Success', `${item.itemName} has been created.`, { timeOut:3500, clickToClose: true });
               return ItemApiActions.createItemSuccess({ item });
             }),
             catchError(error => {

@@ -38,7 +38,7 @@ export class FeeListComponent implements OnInit, OnDestroy {
   @Output() select = new EventEmitter<Fee>();
   @Output() deleteFee = new EventEmitter<any>();
   files: any;
-  dataSource: any;
+  dataSource: any = new MatTableDataSource();
   displayedColumns = ['feeName', 'actions'];
   isLeadRole: boolean;
   filteredCourses: any[];
@@ -143,7 +143,7 @@ export class FeeListComponent implements OnInit, OnDestroy {
   onClearSearch(): void {
     this.searchTerm = '';
     this.applyFilter(this.searchTerm);
-    this.focusMainInput(); 
+    this.focusMainInput();
   }
   onDelete(id: any): void {
     this.deleteFee.emit(id);

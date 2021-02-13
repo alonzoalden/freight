@@ -15,7 +15,6 @@ export class DashboardHomeComponent {
   constructor() { }
   
   ngOnInit() {
-    console.log(this.dashboardInfo)
   }
 
   businessSelected(business: BusinessEntity): void {

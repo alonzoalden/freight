@@ -35,7 +35,7 @@
     <mat-spinner [@animate]="{value:'*',params:{delay:'400ms', y:'225px'}}"></mat-spinner>
   </div>
 
-  <mat-table class="item-list" matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}" *ngIf="!isLoading && dataSource">
+  <mat-table class="item-list" matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}" *ngIf="dataSource?.data?.length">
     <!-- customerName Column -->
     <ng-container matColumnDef="customerName">
       <mat-header-cell *matHeaderCellDef>Customer Name</mat-header-cell>
@@ -86,7 +86,7 @@
     [@animate]="{value:'*',params:{delay:'500ms', y:'225px'}}" class="center-box-message">
     Please search for an customer.
   </div> -->
-  <div *ngIf="!isLoading && dataSource?.data.length === 0"
+  <div *ngIf="!isLoading && !dataSource?.data?.length"
     [@animate]="{value:'*',params:{delay:'400ms', y:'225px'}}" class="center-box-message">
     No customers found.
   </div>
@@ -97,6 +97,6 @@
           Invite New Customer
       </button>
     </div>
-    <mat-paginator #paginator [pageSizeOptions]="[10, 20, 50, 100, 200]" [showFirstLastButtons]="true"></mat-paginator>
+    <mat-paginator *ngIf="dataSource?.data?.length" #paginator [pageSizeOptions]="[10, 20, 50, 100, 200]" [showFirstLastButtons]="true"></mat-paginator>
   </div>
 </div>

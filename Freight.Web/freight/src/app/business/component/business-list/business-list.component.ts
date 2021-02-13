@@ -38,7 +38,7 @@ export class BusinessListComponent implements OnInit, OnDestroy {
   @Output() select = new EventEmitter<Business>();
   @Output() deleteBusiness = new EventEmitter<any>();
   files: any;
-  dataSource: any;
+  dataSource: any = new MatTableDataSource();
   displayedColumns = ['companyName', 'isShipper', 'is3PL', 'isFFW'];
   isLeadRole: boolean;
   filteredCourses: any[];
@@ -66,7 +66,7 @@ export class BusinessListComponent implements OnInit, OnDestroy {
     this.inputEnabled = true;
   }
   ngOnChanges(changes): void {
-    if (changes.businesss && changes.businesss.currentValue?.length) {
+    if (changes.businesss) {
       this.dataSource = new MatTableDataSource<any>(this.businesss);
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
@@ -146,6 +146,6 @@ export class BusinessListComponent implements OnInit, OnDestroy {
     this.searchTerm = '';
     this.applyFilter(this.searchTerm);
     this.focusMainInput();
-    
+
   }
 }
