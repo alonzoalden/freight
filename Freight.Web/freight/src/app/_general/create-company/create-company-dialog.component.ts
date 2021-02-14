@@ -19,6 +19,7 @@ import { AppService } from 'app/app.service';
 import { User } from 'app/_shared/model/user';
 import { Business } from 'app/_shared/model/business';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
+import { FuseSplashScreenService } from '@fuse/services/splash-screen.service';
 
 @Component({
   selector: 'create-company-dialog',
@@ -46,12 +47,14 @@ export class CreateCompanyDialogComponent implements OnInit, OnDestroy {
     private itemEffects: ItemEffects,
     private readonly actions$: Actions,
     private oidcSecurityService: OidcSecurityService,
+    private _fuseSplashScreenService: FuseSplashScreenService,
     @Inject(MAT_DIALOG_DATA) private inputData: User,
   ) {
     this._unsubscribeAll = new Subject();
   }
 
   ngOnInit(): void {
+    this._fuseSplashScreenService.hide();
     this.selected = this.inputData;
     this.businessForm = this.createBusinessForm();
 

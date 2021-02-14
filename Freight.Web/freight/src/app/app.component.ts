@@ -80,7 +80,6 @@ export class AppComponent implements OnInit {
                   if (!user.businessID) {
                     // If user is not assigned to company:
                     this.openCreateCompanyDialog(user);
-                    this._fuseSplashScreenService.hide();
 
                   } else {
                     this.store.dispatch(AppPageActions.setCurrentUser({ user }));
