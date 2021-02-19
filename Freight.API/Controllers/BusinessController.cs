@@ -32,6 +32,45 @@ namespace Freight.API.Controllers
             }
         }
         [HttpGet]
+        [Route("shipper")]
+        public IActionResult GetBusinessShipper()
+        {
+            try
+            {
+                return new JsonResult(BusinessBAL.GetBusinessShipper());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Failed to get Businesss");
+            }
+        }
+        [HttpGet]
+        [Route("3pl")]
+        public IActionResult GetBusiness3PL()
+        {
+            try
+            {
+                return new JsonResult(BusinessBAL.GetBusiness3PL());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Failed to get Businesss");
+            }
+        }
+        [HttpGet]
+        [Route("ffw")]
+        public IActionResult GetBusinessFFW()
+        {
+            try
+            {
+                return new JsonResult(BusinessBAL.GetBusinessFFW());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Failed to get Businesss");
+            }
+        }
+        [HttpGet]
         [Route("{businessid}/dashboard")]
         public IActionResult GetBusinessDashboard(int businessid)
         {
@@ -44,7 +83,6 @@ namespace Freight.API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Failed to get Business Dashboard");
             }
         }
-
         [HttpGet]
         [Route("{id}")]
         public IActionResult GetBusiness(int id)
@@ -83,7 +121,6 @@ namespace Freight.API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Failed to update Business");
             }
         }
-
         [HttpPost]
         public IActionResult CreateBusiness(BusinessInsert business)
         {
@@ -96,7 +133,6 @@ namespace Freight.API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Failed to create Business");
             }
         }
-
         [HttpDelete]
         [Route("{id}")]
         public IActionResult DeleteBusiness(int id)
@@ -111,7 +147,6 @@ namespace Freight.API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Failed to delete Business");
             }
         }
-
         //Business User
         [HttpGet]
         [Route("businessuser/{businessuserid}")]

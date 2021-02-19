@@ -11,5 +11,6 @@ namespace Freight.API.Common.Model.Shipment
         public List<ShipmentPackage> ShipmentPackages { get; set; }
         public List<ShipmentFee> ShipmentFees { get; set; }
         public List<ShipmentContact> ShipmentContacts { get; set; }
+        public List<ShipmentComment> ShipmentComments { get; set; }
     }
 }

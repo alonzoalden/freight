@@ -17,7 +17,6 @@ namespace Freight.API.DAL
         {
             DefaultConnection = connection.Default;
         }
-
         public List<Business> GetBusinesses()
         {
             using (SqlConnection connection = new SqlConnection(DefaultConnection))
@@ -27,7 +26,33 @@ namespace Freight.API.DAL
                 return results;
             }
         }
+        public List<Business> GetBusinessShipper()
+        {
+            using (SqlConnection connection = new SqlConnection(DefaultConnection))
+            {
+                List<Business> results = connection.Query<Business>("spGetBusinessShipper", commandType: CommandType.StoredProcedure).ToList();
 
+                return results;
+            }
+        }
+        public List<Business> GetBusiness3PL()
+        {
+            using (SqlConnection connection = new SqlConnection(DefaultConnection))
+            {
+                List<Business> results = connection.Query<Business>("spGetBusiness3PL", commandType: CommandType.StoredProcedure).ToList();
+
+                return results;
+            }
+        }
+        public List<Business> GetBusinessFFW()
+        {
+            using (SqlConnection connection = new SqlConnection(DefaultConnection))
+            {
+                List<Business> results = connection.Query<Business>("spGetBusinessFFW", commandType: CommandType.StoredProcedure).ToList();
+
+                return results;
+            }
+        }
         public Business GetBusiness(int id)
         {
             using (SqlConnection connection = new SqlConnection(DefaultConnection))
