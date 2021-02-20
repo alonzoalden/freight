@@ -72,6 +72,11 @@ export class EditShipmentDialogComponent implements OnInit, OnDestroy {
   user: any;
   dialogRef: any;
   businessID: any;
+  threePLList: any;
+  ffwList: any;
+  shippersList: any;
+  customersList: any;
+
   private _unsubscribeAll: Subject<any>;
   objectKeys = Object.keys;
   @ViewChild('tabGroup', { static: false }) tabGroup: MatTabGroup;
@@ -96,7 +101,8 @@ export class EditShipmentDialogComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.selectedShipment = this.inputData;
-    
+
+
     this.dataSourceLines = new MatTableDataSource<any>(this.selectedShipmentDetail?.shipmentLines || []);
     this.dataSourcePackages = new MatTableDataSource<any>(this.selectedShipmentDetail?.shipmentPackages || []);
     this.dataSourceFees = new MatTableDataSource<any>(this.selectedShipmentDetail?.shipmentFees || []);
@@ -105,6 +111,7 @@ export class EditShipmentDialogComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe(businessid => {
         this.businessID = businessid;
+        this.store.dispatch(ShipmentPageActions.getCustomers({businessID: businessid}));
         this.shipmentForm = this.createShipmentForm();
       });
     this.store.select(fromShipment.getIsSaving)
@@ -137,6 +144,27 @@ export class EditShipmentDialogComponent implements OnInit, OnDestroy {
         this.selectedShipmentContactRow = row;
       });
 
+
+    this.store.select(fromShipment.get3plList)
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe(data => {
+        this.threePLList = data;
+      });
+    this.store.select(fromShipment.getFFWList)
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe(data => {
+        this.ffwList = data;
+      });
+    this.store.select(fromShipment.getCustomers)
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe(data => {
+        this.customersList = data;
+      });
+    this.store.select(fromShipment.getShippersList)
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe(data => {
+        this.shippersList = data;
+      });
     this.actions$
       .pipe(
         takeUntil(this._unsubscribeAll),
@@ -145,6 +173,10 @@ export class EditShipmentDialogComponent implements OnInit, OnDestroy {
         this.matDialogRef.close(data);
       });
 
+
+    this.store.dispatch(ShipmentPageActions.get3pl());
+    this.store.dispatch(ShipmentPageActions.getFfw());
+    this.store.dispatch(ShipmentPageActions.getShippers());
     if (this.router.url.includes('all')) {
     }
     if (this.router.url.includes('open')) {
@@ -437,7 +469,7 @@ export class EditShipmentDialogComponent implements OnInit, OnDestroy {
           this.onSelectPackage(this.dataSourcePackages.data[0]);
         }
         this.dataSourcePackages.data = this.dataSourcePackages.data;
-        
+
       });
   }
   openEditShipmentLineDialog(data, updateType) {
@@ -472,7 +504,7 @@ export class EditShipmentDialogComponent implements OnInit, OnDestroy {
           this.onSelectPackage(this.dataSourceLines.data[0]);
         }
         this.dataSourceLines.data = this.dataSourceLines.data;
-        
+
       });
   }
   openEditShipmentFeeDialog(data, updateType) {
@@ -507,7 +539,7 @@ export class EditShipmentDialogComponent implements OnInit, OnDestroy {
           this.onSelectPackage(this.dataSourceFees.data[0]);
         }
         this.dataSourceFees.data = this.dataSourceFees.data;
-        
+
       });
   }
   openEditShipmentContactDialog(data, updateType) {

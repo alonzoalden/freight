@@ -1,9 +1,9 @@
 import { createAction, props } from '@ngrx/store';
-import { User } from 'app/_shared/model/user';
+import { BusinessUser, User } from 'app/_shared/model/user';
 
 export const loadUsersListSuccess = createAction(
   '[User API] Load Users List Success',
-  props<{ users: User[] }>()
+  props<{ users: BusinessUser[] }>()
 );
 export const loadUsersListFailure = createAction(
   '[User API] Load Users List Fail',

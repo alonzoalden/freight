@@ -47,7 +47,7 @@ export class UserService implements OnDestroy {
   }
   getUserList(businessid): Observable<any> {
     return this.http
-      .get(this.apiURL + `/user/business/${businessid}`)
+      .get(this.apiURL + `/business/businessuser/business/${businessid}`)
       .pipe(
         catchError(this.handleError)
       );
@@ -63,11 +63,7 @@ export class UserService implements OnDestroy {
   }
 
   updateUser(body: User): Observable<any> {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      //Authorization: 'Bearer ' + token
-    });
-    return this.http.put<any>(this.apiURL + '/user', body, { headers })
+    return this.http.put<any>(this.apiURL + '/business/businessuser', body)
       .pipe(
         tap((data: User) => {
           this.onUserSelected.next(data);

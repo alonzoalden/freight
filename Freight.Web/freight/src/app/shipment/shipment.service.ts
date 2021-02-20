@@ -170,6 +170,34 @@ export class ShipmentService implements OnDestroy {
         catchError(this.handleError)
       );
   }
+  getFFWList(): Observable<any> {
+    return this.http
+      .get(this.apiURL + `/business/ffw`)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+  get3plList(): Observable<any> {
+    return this.http
+      .get(this.apiURL + `/business/3pl`)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+  getShipperList(): Observable<any> {
+    return this.http
+      .get(this.apiURL + `/business/shipper`)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+  getCustomerList(businessid): Observable<any> {
+    return this.http
+      .get(this.apiURL + `/customer/business/${businessid}`)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
   handleError = (err: HttpErrorResponse) => {
     let errorMessage: string;
     if (err.error instanceof Error) {

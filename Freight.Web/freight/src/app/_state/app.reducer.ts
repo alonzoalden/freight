@@ -6,6 +6,7 @@ import { Business } from 'app/_shared/model/business';
 
 export interface AppState {
   businesses: Business[];
+  currentBusiness: Business;
   currentBusinessEntityId: number | null;
   currentUser: any;
   error: string;
@@ -14,6 +15,7 @@ export interface AppState {
 
 const initalState: AppState = {
   businesses: [],
+  currentBusiness: null,
   currentBusinessEntityId: null,
   currentUser: null,
   error: '',
@@ -26,6 +28,7 @@ export const appReducer = createReducer<AppState>(
     return {
       ...state,
       businesses: action.businesses,
+      currentBusiness: action.businesses.find(business => business.businessID == state.currentBusinessEntityId),
       error: ''
     };
   }),

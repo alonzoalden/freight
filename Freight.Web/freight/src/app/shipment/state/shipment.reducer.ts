@@ -21,6 +21,10 @@ export interface ShipmentState {
   feeList: Fee[];
   itemList: Item[];
   contactList: Customer[];
+  ffwList: any[];
+  threePLList: any[];
+  shippersList: any[];
+  customersList: any[];
   isSaving: boolean;
   isLoading: boolean,
   error: string;
@@ -41,10 +45,16 @@ const initalState: ShipmentState = {
   feeList: null,
   itemList: null,
   contactList: null,
+  ffwList: [],
+  threePLList: [],
+  shippersList: [],
+  customersList: [],
   isSaving: false,
   isLoading: false,
   error: ''
 };
+
+
 
 export const shipmentReducer = createReducer<ShipmentState>(
   initalState,
@@ -372,4 +382,94 @@ export const shipmentReducer = createReducer<ShipmentState>(
     };
   }),
 
+
+  on(ShipmentPageActions.get3pl, (state, action): ShipmentState => {
+    return {
+      ...state,
+      isLoading: true,
+      error: ''
+    };
+  }),
+  on(ShipmentApiActions.get3plSuccess, (state, action): ShipmentState => {
+    return {
+      ...state,
+      threePLList: action.threePL,
+      isLoading: false,
+      error: ''
+    };
+  }),
+  on(ShipmentApiActions.get3plFailure, (state, action): ShipmentState => {
+    return {
+      ...state,
+      isLoading: false,
+      error: action.error
+    };
+  }),
+
+  on(ShipmentPageActions.getFfw, (state, action): ShipmentState => {
+    return {
+      ...state,
+      isLoading: true,
+      error: ''
+    };
+  }),
+  on(ShipmentApiActions.getFfwSuccess, (state, action): ShipmentState => {
+    return {
+      ...state,
+      ffwList: action.ffw,
+      isLoading: false,
+      error: ''
+    };
+  }),
+  on(ShipmentApiActions.getFfwFailure, (state, action): ShipmentState => {
+    return {
+      ...state,
+      isLoading: false,
+      error: action.error
+    };
+  }),
+  on(ShipmentPageActions.getShippers, (state, action): ShipmentState => {
+    return {
+      ...state,
+      isLoading: true,
+      error: ''
+    };
+  }),
+  on(ShipmentApiActions.getShippersSuccess, (state, action): ShipmentState => {
+    return {
+      ...state,
+      shippersList: action.shippers,
+      isLoading: false,
+      error: ''
+    };
+  }),
+  on(ShipmentApiActions.getShipperFailure, (state, action): ShipmentState => {
+    return {
+      ...state,
+      isLoading: false,
+      error: action.error
+    };
+  }),
+  on(ShipmentPageActions.getCustomers, (state, action): ShipmentState => {
+    return {
+      ...state,
+      isLoading: true,
+      error: ''
+    };
+  }),
+  on(ShipmentApiActions.getCustomersSuccess, (state, action): ShipmentState => {
+    return {
+      ...state,
+      customersList: action.customers,
+      isLoading: false,
+      error: ''
+    };
+  }),
+  on(ShipmentApiActions.getCustomersFailure, (state, action): ShipmentState => {
+    return {
+      ...state,
+      isLoading: false,
+      error: action.error
+    };
+  }),
 );

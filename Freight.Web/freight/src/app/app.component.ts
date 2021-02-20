@@ -85,7 +85,9 @@ export class AppComponent implements OnInit {
                     this.store.dispatch(AppPageActions.setCurrentUser({ user }));
                     this.store.dispatch(AppPageActions.setCurrentBusiness({ currentBusinessId: user.businessID }));
                     this.store.dispatch(AppPageActions.loadBusinesses({ userID: user.userID }));
-                    this.router.navigate(['/dashboard']);
+                    if (this.router.url == '/') {
+                      this.router.navigate(['/dashboard']);
+                    }
                     this._fuseSplashScreenService.hide();
                   }
                 },

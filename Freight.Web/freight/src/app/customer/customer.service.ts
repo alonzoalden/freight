@@ -3,7 +3,7 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from "@angular/common/http
 import { Observable, BehaviorSubject, throwError, Subject } from "rxjs";
 import { environment } from "../../environments/environment";
 import { catchError, tap, takeUntil } from "rxjs/operators";
-import { Customer } from "app/_shared/model/customer";
+import { Contact, Customer } from "app/_shared/model/customer";
 @Injectable()
 export class CustomerService implements OnDestroy {
   private apiURL = environment.webapiURL;
@@ -75,9 +75,46 @@ export class CustomerService implements OnDestroy {
         catchError(this.handleError)
       );
   }
+  getContactList(customerid: any): Observable<any> {
+    return this.http
+      .get(this.apiURL + `/contact/customer/${customerid}`)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+  createContact(body: Contact): Observable<any> {
+    return this.http.post<any>(this.apiURL + '/contact', body)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+  getContact(id: any): Observable<any> {
+    return this.http.get<any>(this.apiURL + '/contact/' + id)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+  deleteContact(id: any): Observable<any> {
+    return this.http.delete<any>(this.apiURL + '/contact/' + id)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+  updateContact(body: Contact): Observable<any> {
+    return this.http.put<any>(this.apiURL + '/contact', body)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
 
   deleteCustomer(customerid: any): Observable<any> {
     return this.http.delete<any>(this.apiURL + '/customer/' + customerid)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+  verifyUserEmail(email: any): Observable<any> {
+    return this.http.get<any>(this.apiURL + `/user/email/${email}` )
       .pipe(
         catchError(this.handleError)
       );

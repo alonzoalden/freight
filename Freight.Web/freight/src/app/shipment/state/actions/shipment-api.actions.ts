@@ -137,3 +137,39 @@ export const loadItemsListFailure = createAction(
   '[Shipment API] Load Item List Fail',
   props<{ error: string }>()
 );
+
+
+export const getShippersSuccess = createAction(
+  '[Shipment API] Get Shippers Success',
+  props<{ shippers: any[] }>()
+);
+export const getShipperFailure = createAction(
+  '[Shipment API] Get Shippers Fail',
+  props<{ error: string }>()
+);
+
+export const get3plSuccess = createAction(
+  '[Shipment API] Get 3PL Success',
+  props<{ threePL: any[] }>()
+);
+export const get3plFailure = createAction(
+  '[Shipment API] Get 3PL Fail',
+  props<{ error: string }>()
+);
+export const getFfwSuccess = createAction(
+  '[Shipment API] Get 3PL Success',
+  props<{ ffw: any[] }>()
+);
+export const getFfwFailure = createAction(
+  '[Shipment API] Get 3PL Fail',
+  props<{ error: string }>()
+);
+
+export const getCustomersSuccess = createAction(
+  '[Shipment Page] Get Business Customers Success',
+  props<{ customers: any[] }>()
+); 
+export const getCustomersFailure = createAction(
+  '[Shipment Page] Get Business Customers Failure',
+  props<{ error: string }>()
+); 

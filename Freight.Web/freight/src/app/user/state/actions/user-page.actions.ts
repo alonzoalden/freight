@@ -4,6 +4,10 @@ import { User } from 'app/_shared/model/user';
 export const loadUserList = createAction(
   '[User Page] Load User List'
 );
+export const loadUsersList = createAction(
+  '[User Page] Load User List',
+  props<{ businessid: any }>()
+);
 export const getUser = createAction(
   '[User Page] Get User',
   props<{ user: User }>()

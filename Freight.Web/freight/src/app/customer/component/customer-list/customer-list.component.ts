@@ -25,6 +25,7 @@ import { EditCustomerDialogComponent } from "../edit-customer/edit-customer-dial
 import { Customer } from "app/_shared/model/customer";
 import * as fromCustomer from '../../state';
 import { Store } from "@ngrx/store";
+import { EditContactDialogComponent } from "../edit-contact/edit-contact-dialog.component";
 @Component({
   selector: 'customer-list',
   templateUrl: './customer-list.component.html',
@@ -124,6 +125,19 @@ export class CustomerListComponent implements OnInit, OnDestroy {
   }
   openEditCustomerDialog(data = {}): void {
     this.dialogRef = this._matDialog.open(EditCustomerDialogComponent, {
+      panelClass: 'edit-fields-dialog',
+      width: '100%',
+      data: data
+    });
+    this.dialogRef.afterClosed()
+      .subscribe(response => {
+        if (!response) {
+          return;
+        }
+      });
+  }
+  openEditContactDialog(data = {}): void {
+    this.dialogRef = this._matDialog.open(EditContactDialogComponent, {
       panelClass: 'edit-fields-dialog',
       width: '100%',
       data: data

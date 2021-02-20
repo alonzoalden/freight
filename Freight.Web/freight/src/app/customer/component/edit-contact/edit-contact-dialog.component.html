@@ -1,38 +1,36 @@
 <div class="dialog-content-wrapper">
   <mat-toolbar class="mat-accent m-0">
     <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
-      <span class="title dialog-title">{{selectedUser.userID ? 'Edit' : 'Invite' }} User</span>
+      <span class="title dialog-title">{{selectedContact.customerID ? 'Edit' : 'Create' }} Customer Contact</span>
       <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
         <mat-icon>close</mat-icon>
       </button>
     </mat-toolbar-row>
   </mat-toolbar>
   <div mat-dialog-content class="p-24 m-0">
-    <form name="userForm" [formGroup]="userForm" class="compose-form" fxLayout="column" fxFlex>
+    <form name="contactForm" [formGroup]="contactForm" class="compose-form" fxLayout="column" fxFlex>
       <div fxLayout="column" fxLayoutAlign="start start">
+        
         <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
           <mat-label> E-mail </mat-label>
           <input #mainInput matInput placeholder="Email" name="email" formControlName="email" required>
         </mat-form-field>
         <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
-          <mat-label> First Name </mat-label>
-          <input #mainInput matInput placeholder="First Name" name="firstName" formControlName="userFirstName" required>
+          <mat-label> Full Name </mat-label>
+          <input #mainInput matInput placeholder="Full Name" name="fullName" formControlName="fullName" required>
         </mat-form-field>
         <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
-          <mat-label> Last Name </mat-label>
-          <input #mainInput matInput placeholder="Last Name" name="lastName" formControlName="userLastName" required>
+          <mat-label> Title </mat-label>
+          <input #mainInput matInput placeholder="Title" name="title" formControlName="title" required>
         </mat-form-field>
-        <mat-checkbox formControlName="isOwner"> Owner </mat-checkbox>
-        <mat-checkbox formControlName="isAdmin"> Administrator </mat-checkbox>
-        <mat-checkbox formControlName="isActive"> Active </mat-checkbox>
       </div>
     </form>
   </div>
   <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="space-between center">
-    <button mat-raised-button color="accent" (click)="save()" class="dialog-button" [disabled]="userForm.invalid"
+    <button mat-raised-button color="accent" (click)="save()" class="dialog-button" [disabled]="contactForm.invalid"
       aria-label="SAVE">
       <div fxLayoutAlign="center">
-        <span *ngIf="!isSaving">{{ selectedUser.userID ? 'SAVE' : 'INVITE' }}</span>
+        <span *ngIf="!isSaving">INVITE</span>
         <mat-spinner diameter="20" *ngIf="isSaving"></mat-spinner>
       </div>
     </button>

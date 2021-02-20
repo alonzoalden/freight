@@ -86,3 +86,17 @@ export const loadContactList = createAction(
   '[Shipment Page] Load Contact List',
   props<{ businessID: any }>()
 );
+
+export const getShippers = createAction(
+  '[User Page] Get Shippers',
+);
+export const get3pl = createAction(
+  '[User Page] Get 3PL',
+);
+export const getFfw = createAction(
+  '[User Page] Get FFW',
+);
+export const getCustomers = createAction(
+  '[User Page] Get Customer',
+  props<{ businessID: any }>()
+); 

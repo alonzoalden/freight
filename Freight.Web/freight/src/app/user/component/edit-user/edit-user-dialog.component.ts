@@ -8,7 +8,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { environment } from 'environments/environment';
 import { UserService } from 'app/user/user.service';
 import { NotificationsService } from 'angular2-notifications';
-import { User } from 'app/_shared/model/user';
+import { BusinessUser, User } from 'app/_shared/model/user';
 import { Store } from '@ngrx/store';
 import * as fromUser from '../../state';
 import { UserApiActions, UserPageActions } from '../../state/actions';
@@ -25,7 +25,7 @@ export class EditUserDialogComponent implements OnInit, OnDestroy {
   //imageURL = environment.imageURL;
   showExtraToFields: boolean;
   userForm: FormGroup;
-  selectedUser: User;
+  selectedUser: BusinessUser;
   private _unsubscribeAll: Subject<any>;
   isSaving: boolean;
   businessID: any;
@@ -48,6 +48,7 @@ export class EditUserDialogComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+
     this.selectedUser = this.inputData;
     this.userForm = this.inviteUserForm();
     this.focusMainInput();
@@ -88,10 +89,13 @@ export class EditUserDialogComponent implements OnInit, OnDestroy {
   inviteUserForm(): FormGroup {
     return this._formBuilder.group({
       userID: [this.selectedUser.userID],
-      email: [{value: this.selectedUser.email, disabled: this.selectedUser.userID}],
-      firstName: [this.selectedUser.firstName],
-      lastName: [this.selectedUser.lastName],
-      isAdmin: [this.selectedUser.lastName]
+      businessID: [this.selectedUser.businessID],
+      email: [{value: this.selectedUser.userEmail, disabled: this.selectedUser.userID}],
+      userFirstName: [this.selectedUser.userFirstName],
+      userLastName: [this.selectedUser.userLastName],
+      isAdmin: [this.selectedUser.isAdmin],
+      isActive: [this.selectedUser.isActive],
+      isOwner: [this.selectedUser.isOwner],
     });
   }
   save(): void {
@@ -109,7 +113,7 @@ export class EditUserDialogComponent implements OnInit, OnDestroy {
   }
   edit(): void {
     const dataToSend = this.userForm.value;
-    dataToSend.email = this.selectedUser.email;
+    dataToSend.userEmail = this.selectedUser.userEmail;
     this.store.dispatch(UserPageActions.updateUser({ user: dataToSend }));
   }
 }

@@ -49,6 +49,23 @@ export const getItemList = createSelector(
   state => state.itemList
 );
 
+export const get3plList = createSelector(
+  getShipmentFeatureState,
+  state => state.threePLList
+);
+export const getFFWList = createSelector(
+  getShipmentFeatureState,
+  state => state.ffwList
+);
+export const getShippersList = createSelector(
+  getShipmentFeatureState,
+  state => state.shippersList
+);
+export const getCustomers = createSelector(
+  getShipmentFeatureState,
+  state => state.customersList
+);
+
 export const getIsSaving = createSelector(
   getShipmentFeatureState,
   state => state.isSaving

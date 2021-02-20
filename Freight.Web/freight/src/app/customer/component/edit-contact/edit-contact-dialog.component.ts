@@ -8,7 +8,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { environment } from 'environments/environment';
 import { CustomerService } from 'app/customer/customer.service';
 import { NotificationsService } from 'angular2-notifications';
-import { Customer } from 'app/_shared/model/customer';
+import { Contact, Customer } from 'app/_shared/model/customer';
 import { Store } from '@ngrx/store';
 import * as fromCustomer from '../../state';
 import { CustomerApiActions, CustomerPageActions } from '../../state/actions';
@@ -16,28 +16,29 @@ import { CustomerEffects } from '../../state/customer.effect';
 import { Actions, ofType } from '@ngrx/effects';
 import { AppService } from 'app/app.service';
 import * as fromApp from 'app/_state';
+
 @Component({
-  selector: 'edit-customer-dialog',
-  templateUrl: './edit-customer-dialog.component.html',
-  styleUrls: ['./edit-customer-dialog.component.scss'],
+  selector: 'edit-contact-dialog',
+  templateUrl: './edit-contact-dialog.component.html',
+  styleUrls: ['./edit-contact-dialog.component.scss'],
 })
-export class EditCustomerDialogComponent implements OnInit, OnDestroy {
+export class EditContactDialogComponent implements OnInit, OnDestroy {
   //imageURL = environment.imageURL;
   showExtraToFields: boolean;
-  customerForm: FormGroup;
+  contactForm: FormGroup;
+  selectedContact: Contact;
   selectedCustomer: Customer;
   private _unsubscribeAll: Subject<any>;
   isSaving: boolean;
   businessID: any;
-  business: any;
-  user: any;
+
   objectKeys = Object.keys;
   @ViewChild('mainInput') mainInput: ElementRef;
   constructor(
     private appStore: Store<fromApp.State>,
     private store: Store<fromCustomer.State>,
     private _formBuilder: FormBuilder,
-    public matDialogRef: MatDialogRef<EditCustomerDialogComponent>,
+    public matDialogRef: MatDialogRef<EditContactDialogComponent>,
     private customerService: CustomerService,
     public appService: AppService,
     private notifyService: NotificationsService,
@@ -49,27 +50,26 @@ export class EditCustomerDialogComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.selectedCustomer = this.inputData;
+    this.selectedContact = this.inputData;
     this.focusMainInput();
-    this.appStore.select(fromApp.getCurrentBusiness)
+
+    this.appStore.select(fromApp.getCurrentBusinessEntityId)
       .pipe(takeUntil(this._unsubscribeAll))
-      .subscribe(business => {
-        if (business) {
-          this.business = business;
-        }
+      .subscribe(businessid => {
+        this.businessID = businessid;
+        this.contactForm = this.inviteContactForm();
       });
-    this.appStore.select(fromApp.getCurrentUser)
-      .pipe(takeUntil(this._unsubscribeAll))
-      .subscribe(user => {
-        if (user) {
-          this.user = user;
-          this.customerForm = this.inviteCustomerForm();
-        }
-      });
+
     this.store.select(fromCustomer.getIsSaving)
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe(loading => {
         this.isSaving = loading
+      });
+
+    this.store.select(fromCustomer.getSelectedcustomer)
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe(customer => {
+        this.selectedCustomer = customer
       });
 
     this.actions$
@@ -93,32 +93,34 @@ export class EditCustomerDialogComponent implements OnInit, OnDestroy {
     this._unsubscribeAll.next();
     this._unsubscribeAll.complete();
   }
-  inviteCustomerForm(): FormGroup {
+
+  inviteContactForm(): FormGroup {
     return this._formBuilder.group({
-      // customerID: [Number(this.selectedCustomer.customerID) || 0],
-      companyName: [this.business?.companyName],
-      businessID: [this.user?.businessID],
-      email: [this.selectedCustomer.email],
-      apEmail: [this.selectedCustomer.apEmail],
-      createdBy: [this.user?.userID]
+      contactID: [Number(this.selectedContact.contactID) || 0],
+      customerID: [this.selectedCustomer.customerID],
+      businessID: [this.selectedCustomer.businessID],
+      fullName: [this.selectedContact.fullName],
+      email: [this.selectedContact.email],
+      title: [this.selectedContact.title],
+      updatedBy: [this.selectedContact.updatedBy],
     });
   }
   save(): void {
-    if (this.selectedCustomer.customerID) {
+    if (this.selectedContact.customerID) {
       this.edit();
     } else {
       this.create();
     }
   }
   focusMainInput(): void {
-
+    
   }
   create(): void {
-    this.store.dispatch(CustomerPageActions.verifyAndCreateCustomer({ customer: this.customerForm.value }));
+    this.store.dispatch(CustomerPageActions.createContact({ contact: this.contactForm.value }));
   }
   edit(): void {
-    const dataToSend = this.customerForm.value;
-    dataToSend.email = this.selectedCustomer.email;
-    this.store.dispatch(CustomerPageActions.updateCustomer({ customer: dataToSend }));
+    const dataToSend = this.contactForm.value;
+    dataToSend.email = this.selectedContact.email;
+    this.store.dispatch(CustomerPageActions.updateContact({ contact: dataToSend }));
   }
 }

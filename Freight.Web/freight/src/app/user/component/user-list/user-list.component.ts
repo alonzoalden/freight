@@ -39,7 +39,7 @@ export class UserListComponent implements OnInit, OnDestroy {
   @Output() deleteUser = new EventEmitter<any>();
   files: any;
   dataSource: any = new MatTableDataSource();
-  displayedColumns = ['userName', 'firstName', 'lastName', 'actions'];
+  displayedColumns = ['userLastName', 'userEmail', 'isOwner', 'isAdmin', 'isActive', 'createdOn', 'actions'];
   isLeadRole: boolean;
   filteredCourses: any[];
   currentCategory: string;

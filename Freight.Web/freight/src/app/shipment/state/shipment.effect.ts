@@ -206,7 +206,7 @@ export class ShipmentEffects {
           .pipe(
             map(contacts => ShipmentApiActions.loadContactsListSuccess({ contacts })),
             catchError(error => {
-              //this.notifyService.error('Error', `${error}`, { clickToClose: true });
+              this.notifyService.error('Error', `${error}`, { clickToClose: true });
               return of(ShipmentApiActions.loadContactsListFailure({ error }))
             })
           )
@@ -222,8 +222,69 @@ export class ShipmentEffects {
           .pipe(
             map(items => ShipmentApiActions.loadItemsListSuccess({ items })),
             catchError(error => {
-              //this.notifyService.error('Error', `${error}`, { clickToClose: true });
+              this.notifyService.error('Error', `${error}`, { clickToClose: true });
               return of(ShipmentApiActions.loadItemsListFailure({ error }))
+            })
+          )
+        )
+      );
+  });
+
+  load3plLists$ = createEffect(() => {
+    return this.actions$
+      .pipe(
+        ofType(ShipmentPageActions.get3pl),
+        mergeMap(action => this.shipmentService.get3plList()
+          .pipe(
+            map(threePL => ShipmentApiActions.get3plSuccess({ threePL })),
+            catchError(error => {
+              this.notifyService.error('Error', `${error}`, { clickToClose: true });
+              return of(ShipmentApiActions.get3plFailure({ error }))
+            })
+          )
+        )
+      );
+  });
+  loadFFWLists$ = createEffect(() => {
+    return this.actions$
+      .pipe(
+        ofType(ShipmentPageActions.getFfw),
+        mergeMap(action => this.shipmentService.getFFWList()
+          .pipe(
+            map(ffw => ShipmentApiActions.getFfwSuccess({ ffw })),
+            catchError(error => {
+              this.notifyService.error('Error', `${error}`, { clickToClose: true });
+              return of(ShipmentApiActions.getFfwFailure({ error }))
+            })
+          )
+        )
+      );
+  });
+  loadShipperLists$ = createEffect(() => {
+    return this.actions$
+      .pipe(
+        ofType(ShipmentPageActions.getShippers),
+        mergeMap(action => this.shipmentService.getShipperList()
+          .pipe(
+            map(shippers => ShipmentApiActions.getShippersSuccess({ shippers })),
+            catchError(error => {
+              this.notifyService.error('Error', `${error}`, { clickToClose: true });
+              return of(ShipmentApiActions.getShipperFailure({ error }))
+            })
+          )
+        )
+      );
+  });
+  loadCustomersList$ = createEffect(() => {
+    return this.actions$
+      .pipe(
+        ofType(ShipmentPageActions.getCustomers),
+        mergeMap(action => this.shipmentService.getCustomerList(action.businessID)
+          .pipe(
+            map(customers => ShipmentApiActions.getCustomersSuccess({ customers })),
+            catchError(error => {
+              this.notifyService.error('Error', `${error}`, { clickToClose: true });
+              return of(ShipmentApiActions.getCustomersFailure({ error }))
             })
           )
         )

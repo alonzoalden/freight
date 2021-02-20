@@ -17,8 +17,8 @@ export class UserEffects {
   loadUserList$ = createEffect(() => {
     return this.actions$
       .pipe(
-        ofType(UserPageActions.loadUserList),
-        concatMap(action => this.userService.getAllUserList()
+        ofType(UserPageActions.loadUsersList),
+        concatMap(action => this.userService.getUserList(action.businessid)
           .pipe(
             map(users => UserApiActions.loadUsersListSuccess({ users })),
             catchError(error => {

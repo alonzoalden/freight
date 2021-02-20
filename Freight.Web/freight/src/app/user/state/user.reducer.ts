@@ -1,9 +1,9 @@
 import { createReducer, on } from '@ngrx/store';
 import { UserApiActions, UserPageActions } from './actions';
-import { User } from 'app/_shared/model/user';
+import { BusinessUser, User } from 'app/_shared/model/user';
 
 export interface UserState {
-  allUsers: User[];
+  allUsers: BusinessUser[] | any[];
   selectedUser: User;
   isSaving: boolean;
   isLoading: boolean,

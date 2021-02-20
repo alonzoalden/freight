@@ -25,6 +25,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { CustomerShellComponent } from './container/customer-shell.component';
 import { EditCustomerDialogComponent } from './component/edit-customer/edit-customer-dialog.component';
+import { EditContactDialogComponent } from './component/edit-contact/edit-contact-dialog.component';
 import { CustomerRoutingModule } from './customer-routing.module';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
@@ -38,7 +39,8 @@ const routes: Routes = [];
   declarations: [
     CustomerShellComponent,
     CustomerListComponent,
-    EditCustomerDialogComponent
+    EditCustomerDialogComponent,
+    EditContactDialogComponent
   ],
   imports: [
     RouterModule.forChild(routes),

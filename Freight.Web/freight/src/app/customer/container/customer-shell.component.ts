@@ -43,8 +43,8 @@ export class CustomerShellComponent implements OnDestroy {
   selectCustomer(customer: Customer): void {
     this.store.dispatch(CustomerPageActions.setCurrentCustomer({ currentCustomer: customer }));
   }
-  deleteCustomer(customerid: any): void {
-    this.store.dispatch(CustomerPageActions.deleteCustomer({ customerid }));
+  deleteCustomer(customer: Customer): void {
+    this.store.dispatch(CustomerPageActions.deleteCustomer({ customer }));
   }
   ngOnDestroy(): void {
     this._unsubscribeAll.next();

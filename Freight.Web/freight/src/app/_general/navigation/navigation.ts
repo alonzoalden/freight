@@ -68,34 +68,34 @@ export const navigation: FuseNavigation[] = [
           }
         ]
       },
-      {
-        id: 'Billing',
-        title: 'Billing',
-        translate: 'Billing',
-        type: 'collapsable',
-        icon: '',
-        url: '/billing',
-        children: [
-          {
-            id: 'openinvoices',
-            title: 'Open Invoices',
-            type: 'item',
-            url: '/billing/open',
-          },
-          {
-            id: 'pastdueinvoices',
-            title: 'Paid Invoices',
-            type: 'item',
-            url: '/billing/paid',
-          },
-          {
-            id: 'pastdueinvoices',
-            title: 'Past Due Invoices',
-            type: 'item',
-            url: '/billing/pastdue',
-          },
-        ]
-      },
+      // {
+      //   id: 'Billing',
+      //   title: 'Billing',
+      //   translate: 'Billing',
+      //   type: 'collapsable',
+      //   icon: '',
+      //   url: '/billing',
+      //   children: [
+      //     {
+      //       id: 'openinvoices',
+      //       title: 'Open Invoices',
+      //       type: 'item',
+      //       url: '/billing/open',
+      //     },
+      //     {
+      //       id: 'pastdueinvoices',
+      //       title: 'Paid Invoices',
+      //       type: 'item',
+      //       url: '/billing/paid',
+      //     },
+      //     {
+      //       id: 'pastdueinvoices',
+      //       title: 'Past Due Invoices',
+      //       type: 'item',
+      //       url: '/billing/pastdue',
+      //     },
+      //   ]
+      // },
       {
         id: 'Customers',
         title: 'Customers',
@@ -160,34 +160,34 @@ export const navigation: FuseNavigation[] = [
           },
         ]
       },
-      {
-        id: 'Settings',
-        title: 'Settings',
-        translate: 'Settings',
-        type: 'collapsable',
-        icon: '',
-        url: '/settings',
-        children: [
-          {
-            id: 'accoutinfo',
-            title: 'Account Info',
-            type: 'item',
-            url: '/accountinfo',
-          },
-          {
-            id: 'userprofile',
-            title: 'User Profile',
-            type: 'item',
-            url: '/userprofile',
-          },
-          {
-            id: 'notificationpreferences',
-            title: 'Notification Preferences',
-            type: 'item',
-            url: '/notificationpreferences',
-          },
-        ]
-      }
+      // {
+      //   id: 'Settings',
+      //   title: 'Settings',
+      //   translate: 'Settings',
+      //   type: 'collapsable',
+      //   icon: '',
+      //   url: '/settings',
+      //   children: [
+      //     {
+      //       id: 'accoutinfo',
+      //       title: 'Account Info',
+      //       type: 'item',
+      //       url: '/accountinfo',
+      //     },
+      //     {
+      //       id: 'userprofile',
+      //       title: 'User Profile',
+      //       type: 'item',
+      //       url: '/userprofile',
+      //     },
+      //     {
+      //       id: 'notificationpreferences',
+      //       title: 'Notification Preferences',
+      //       type: 'item',
+      //       url: '/notificationpreferences',
+      //     },
+      //   ]
+      // }
     ]
   }
 ];

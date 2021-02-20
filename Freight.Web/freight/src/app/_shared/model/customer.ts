@@ -5,6 +5,19 @@ export class Customer {
     public companyName: string,
     public email: string,
     public apEmail: string,
-    public updatedBy: string,
+    public updatedBy: any,
+    public createdBy: any,
+  ) { }
+}
+export class Contact {
+  constructor(
+    public contactID: number,
+    public customerID: number,
+    public businessID: number,
+    public fullName: string,
+    public email: string,
+    public title: string,
+    public updatedBy: any,
+    public createdBy: any,
   ) { }
 }

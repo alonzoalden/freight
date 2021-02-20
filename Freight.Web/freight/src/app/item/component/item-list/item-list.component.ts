@@ -109,8 +109,6 @@ export class ItemListComponent implements OnInit, OnDestroy {
     this.toggleSearch();
     this.searchTerm = "";
   }
-
-
   applyFilter(filterValue: string) {
     if (this.dataSource) {
       this.dataSource.filter = filterValue.trim().toLowerCase();

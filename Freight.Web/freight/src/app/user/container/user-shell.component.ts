@@ -5,9 +5,9 @@ import { UserPageActions } from '../state/actions';
 import { Observable, Subject } from 'rxjs';
 import { fuseAnimations } from '@fuse/animations';
 import { MatDialog } from '@angular/material/dialog';
-import { User } from 'app/_shared/model/user';
+import { BusinessUser, User } from 'app/_shared/model/user';
 import * as fromApp from 'app/_state';
-import { takeUntil } from 'rxjs/internal/operators/takeUntil';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'user-shell',
@@ -17,7 +17,7 @@ import { takeUntil } from 'rxjs/internal/operators/takeUntil';
   animations: fuseAnimations
 })
 export class UserShellComponent implements OnDestroy {
-  userEntities$: Observable<User[]>;
+  userEntities$: Observable<BusinessUser[]>;
   selectedUser$: Observable<User>;
   isLoading$: Observable<boolean>;
 
@@ -35,12 +35,12 @@ export class UserShellComponent implements OnDestroy {
     this.userEntities$ = this.store.select(fromUser.getAlluserList);
     this.selectedUser$ = this.store.select(fromUser.getSelecteduser);
     this.isLoading$ = this.store.select(fromUser.getIsLoading);
-    // this.appStore.select(fromApp.getCurrentBusinessEntityId)
-    //   .pipe(takeUntil(this._unsubscribeAll))
-    //   .subscribe(businessid => {
-    //     this.store.dispatch(UserPageActions.loadUsersList({ businessid }));
-    //   });
-    this.store.dispatch(UserPageActions.loadUserList());
+    this.appStore.select(fromApp.getCurrentBusinessEntityId)
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe(businessid => {
+        this.store.dispatch(UserPageActions.loadUsersList({ businessid }));
+      });
+    // this.store.dispatch(UserPageActions.loadUserList());
   }
   selectUser(user: User): void {
     this.store.dispatch(UserPageActions.setCurrentUser({ currentUser: user }));
