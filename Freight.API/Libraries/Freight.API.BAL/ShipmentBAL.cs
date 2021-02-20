@@ -13,32 +13,47 @@ namespace Freight.API.BAL
         {
             ShipmentDAL = new DAL.ShipmentDAL(connection, setting);
         }
-
         public List<Shipment> GetShipments()
         {
             return ShipmentDAL.GetShipments();
         }
-
         public ShipmentDetail GetShipmentDetail(int shipmentid)
         {
             ShipmentDetail shipmentDetail = new ShipmentDetail();
 
             shipmentDetail.Shipment = GetShipment(shipmentid);
-            shipmentDetail.ShipmentLines = ShipmentDAL.GetShipmentLines(shipmentid);
-            shipmentDetail.ShipmentPackages = ShipmentDAL.GetShipmentPackages(shipmentid);
-            shipmentDetail.ShipmentFees = ShipmentDAL.GetShipmentFees(shipmentid);
-            shipmentDetail.ShipmentContacts = ShipmentDAL.GetShipmentContacts(shipmentid);
+            shipmentDetail.ShipmentLines = ShipmentDAL.GetShipmentLineByShipmentID(shipmentid);
+            shipmentDetail.ShipmentPackages = ShipmentDAL.GetShipmentPackageByShipmentID(shipmentid);
+            shipmentDetail.ShipmentFees = ShipmentDAL.GetShipmentFeeByShipmentID(shipmentid);
+            shipmentDetail.ShipmentContacts = ShipmentDAL.GetShipmentContactByShipmentID(shipmentid);
+            shipmentDetail.ShipmentComments = ShipmentDAL.GetShipmentCommentByShipmentID(shipmentid);
 
             return shipmentDetail;
         }
-
         public Shipment GetShipment(int id)
-        {
-            Shipment shipment = ShipmentDAL.GetShipment(id);
-           
+        {           
             return ShipmentDAL.GetShipment(id);
         }
-
+        public List<ShipmentLine> GetShipmentLineByShipmentID(int shipmentid)
+        {            
+            return ShipmentDAL.GetShipmentLineByShipmentID(shipmentid);
+        }
+        public List<ShipmentPackage> GetShipmentPackageByShipmentID(int shipmentid)
+        {
+            return ShipmentDAL.GetShipmentPackageByShipmentID(shipmentid);
+        }
+        public List<ShipmentFee> GetShipmentFeeByShipmentID(int shipmentid)
+        {
+            return ShipmentDAL.GetShipmentFeeByShipmentID(shipmentid);
+        }
+        public List<ShipmentContact> GetShipmentContactByShipmentID(int shipmentid)
+        {
+            return ShipmentDAL.GetShipmentContactByShipmentID(shipmentid);
+        }
+        public List<ShipmentComment> GetShipmentCommentByShipmentID(int shipmentid)
+        {
+            return ShipmentDAL.GetShipmentCommentByShipmentID(shipmentid);
+        }
         public Shipment UpdateShipment(ShipmentUpdate shipment)
         {
             return ShipmentDAL.UpdateShipment(shipment);
@@ -59,7 +74,10 @@ namespace Freight.API.BAL
         {
             return ShipmentDAL.UpdateShipmentContact(shipmentcontact);
         }
-
+        public ShipmentComment UpdateShipmentComment(ShipmentCommentUpdate shipmentcomment)
+        {
+            return ShipmentDAL.UpdateShipmentComment(shipmentcomment);
+        }
         public Shipment CreateShipment(ShipmentInsert shipment)
         {
             return ShipmentDAL.CreateShipment(shipment);
@@ -80,7 +98,10 @@ namespace Freight.API.BAL
         {
             return ShipmentDAL.CreateShipmentContact(shipmentcontact);
         }
-
+        public ShipmentComment CreateShipmentComment(ShipmentCommentInsert shipmentcomment)
+        {
+            return ShipmentDAL.CreateShipmentComment(shipmentcomment);
+        }
         public ShipmentDetail CreateShipmentDetail(ShipmentDetailInsert shipmentdetail)
         {
             return ShipmentDAL.CreateShipmentDetail(shipmentdetail);
@@ -105,6 +126,10 @@ namespace Freight.API.BAL
         public void DeleteShipmentContact(int id)
         {
             ShipmentDAL.DeleteShipmentContact(id);
+        }
+        public void DeleteShipmentComment(int id)
+        {
+            ShipmentDAL.DeleteShipmentComment(id);
         }
     }
 }

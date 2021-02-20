@@ -106,11 +106,6 @@ namespace Freight.API.Controllers
         protected string GetClaimUserID()
         {
             return User.Claims.First(x => x.Type == "fbasimplifyuserid").Value;
-
-            //ClaimsIdentity objClaimsIdentity = HttpContext.User.Identity as ClaimsIdentity;
-            //Claim objClaim = objClaimsIdentity.Claims.FirstOrDefault(x => x.Type == "fbasimplifyuserid");
-
-            //return string.IsNullOrEmpty(objClaim.Value) ? string.Empty : objClaim.Value;
         }
     }
 }

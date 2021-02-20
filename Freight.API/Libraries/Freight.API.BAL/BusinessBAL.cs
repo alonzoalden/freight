@@ -18,6 +18,18 @@ namespace Freight.API.BAL
         {
             return BusinessDAL.GetBusinesses();
         }
+        public List<Business> GetBusinessShipper()
+        {
+            return BusinessDAL.GetBusinessShipper();
+        }
+        public List<Business> GetBusiness3PL()
+        {
+            return BusinessDAL.GetBusiness3PL();
+        }
+        public List<Business> GetBusinessFFW()
+        {
+            return BusinessDAL.GetBusinessFFW();
+        }
         public Business GetBusiness(int id)
         {
             return BusinessDAL.GetBusiness(id);

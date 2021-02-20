@@ -38,7 +38,7 @@ namespace Freight.API.DAL
             }
         }
 
-        public List<ShipmentLine> GetShipmentLines(int shipmentid)
+        public List<ShipmentLine> GetShipmentLineByShipmentID(int shipmentid)
         {
             using (SqlConnection connection = new SqlConnection(DefaultConnection))
             {
@@ -50,7 +50,7 @@ namespace Freight.API.DAL
             }
         }
 
-        public List<ShipmentPackage> GetShipmentPackages(int shipmentid)
+        public List<ShipmentPackage> GetShipmentPackageByShipmentID(int shipmentid)
         {
             using (SqlConnection connection = new SqlConnection(DefaultConnection))
             {
@@ -62,7 +62,7 @@ namespace Freight.API.DAL
             }
         }
 
-        public List<ShipmentFee> GetShipmentFees(int shipmentid)
+        public List<ShipmentFee> GetShipmentFeeByShipmentID(int shipmentid)
         {
             using (SqlConnection connection = new SqlConnection(DefaultConnection))
             {
@@ -74,7 +74,7 @@ namespace Freight.API.DAL
             }
         }
 
-        public List<ShipmentContact> GetShipmentContacts(int shipmentid)
+        public List<ShipmentContact> GetShipmentContactByShipmentID(int shipmentid)
         {
             using (SqlConnection connection = new SqlConnection(DefaultConnection))
             {
@@ -85,7 +85,17 @@ namespace Freight.API.DAL
                 return results;
             }
         }
+        public List<ShipmentComment> GetShipmentCommentByShipmentID(int shipmentid)
+        {
+            using (SqlConnection connection = new SqlConnection(DefaultConnection))
+            {
+                DynamicParameters p = new DynamicParameters();
+                p.Add("shipmentid", shipmentid);
+                List<ShipmentComment> results = connection.Query<ShipmentComment>("spGetShipmentCommentByShipmentID", p, commandType: CommandType.StoredProcedure).ToList();
 
+                return results;
+            }
+        }
         public Shipment UpdateShipment(ShipmentUpdate shipment)
         {
             using (SqlConnection connection = new SqlConnection(DefaultConnection))
@@ -194,6 +204,19 @@ namespace Freight.API.DAL
                 return result;
             }
         }
+        public ShipmentComment UpdateShipmentComment(ShipmentCommentUpdate shipmentcomment)
+        {
+            using (SqlConnection connection = new SqlConnection(DefaultConnection))
+            {
+                DynamicParameters p = new DynamicParameters();
+                p.Add("shipmentcommentid", shipmentcomment.ShipmentCommentID);
+                p.Add("comment", shipmentcomment.Comment);
+
+                ShipmentComment result = connection.Query<ShipmentComment>("spUpdateShipmentComment", p, commandType: CommandType.StoredProcedure).Single();
+
+                return result;
+            }
+        }
         public Shipment CreateShipment(ShipmentInsert shipment)
         {
             using (SqlConnection connection = new SqlConnection(DefaultConnection))
@@ -240,7 +263,6 @@ namespace Freight.API.DAL
                 return result;
             }
         }
-
         public ShipmentPackage CreateShipmentPackage(ShipmentPackageInsert shipmentpackage)
         {
             using (SqlConnection connection = new SqlConnection(DefaultConnection))
@@ -271,7 +293,6 @@ namespace Freight.API.DAL
                 return result;
             }
         }
-
         public ShipmentFee CreateShipmentFee(ShipmentFeeInsert shipmentfee)
         {
             using (SqlConnection connection = new SqlConnection(DefaultConnection))
@@ -286,7 +307,6 @@ namespace Freight.API.DAL
                 return result;
             }
         }
-
         public ShipmentContact CreateShipmentContact(ShipmentContactInsert shipmentcontact)
         {
             using (SqlConnection connection = new SqlConnection(DefaultConnection))
@@ -297,6 +317,20 @@ namespace Freight.API.DAL
                 p.Add("createdby", shipmentcontact.CreatedBy);
 
                 ShipmentContact result = connection.Query<ShipmentContact>("spCreateShipmentContact", p, commandType: CommandType.StoredProcedure).Single();
+
+                return result;
+            }
+        }
+        public ShipmentComment CreateShipmentComment(ShipmentCommentInsert shipmentcomment)
+        {
+            using (SqlConnection connection = new SqlConnection(DefaultConnection))
+            {
+                DynamicParameters p = new DynamicParameters();
+                p.Add("shipmentid", shipmentcomment.ShipmentID);
+                p.Add("comment", shipmentcomment.Comment);
+                p.Add("createdby", shipmentcomment.CreatedBy);
+
+                ShipmentComment result = connection.Query<ShipmentComment>("spCreateShipmentComment", p, commandType: CommandType.StoredProcedure).Single();
 
                 return result;
             }
@@ -412,7 +446,16 @@ namespace Freight.API.DAL
             {
                 DynamicParameters p = new DynamicParameters();
                 p.Add("shipmentcontactid", id);
-                connection.Query<Shipment>("spDeleteShipmentFee", p, commandType: CommandType.StoredProcedure);
+                connection.Query<Shipment>("spDeleteShipmentContact", p, commandType: CommandType.StoredProcedure);
+            }
+        }
+        public void DeleteShipmentComment(int id)
+        {
+            using (SqlConnection connection = new SqlConnection(DefaultConnection))
+            {
+                DynamicParameters p = new DynamicParameters();
+                p.Add("shipmentcommentid", id);
+                connection.Query<Shipment>("spDeleteShipmentComment", p, commandType: CommandType.StoredProcedure);
             }
         }
     }

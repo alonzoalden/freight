@@ -33,7 +33,6 @@ namespace Freight.API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Failed to get Shipments");
             }
         }
-
         [HttpGet]
         [Route("{id}")]
         public IActionResult GetShipment(int id)
@@ -47,7 +46,71 @@ namespace Freight.API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Failed to get Shipment");
             }
         }
-
+        [HttpGet]
+        [Route("{shipmentid}/shipmentline")]
+        public IActionResult GetShipmentLineByShipmentID(int shipmentid)
+        {
+            try
+            {
+                return new JsonResult(ShipmentBAL.GetShipmentLineByShipmentID(shipmentid));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Failed to get Shipment Line");
+            }
+        }
+        [HttpGet]
+        [Route("{shipmentid}/shipmentpackage")]
+        public IActionResult GetShipmentPackageByShipmentID(int shipmentid)
+        {
+            try
+            {
+                return new JsonResult(ShipmentBAL.GetShipmentPackageByShipmentID(shipmentid));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Failed to get Shipment Package");
+            }
+        }
+        [HttpGet]
+        [Route("{shipmentid}/shipmentfee")]
+        public IActionResult GetShipmentFeeByShipmentID(int shipmentid)
+        {
+            try
+            {
+                return new JsonResult(ShipmentBAL.GetShipmentFeeByShipmentID(shipmentid));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Failed to get Shipment Fee");
+            }
+        }
+        [HttpGet]
+        [Route("{shipmentid}/shipmentcontact")]
+        public IActionResult GetShipmentContactByShipmentID(int shipmentid)
+        {
+            try
+            {
+                return new JsonResult(ShipmentBAL.GetShipmentContactByShipmentID(shipmentid));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Failed to get Shipment Fee");
+            }
+        }
+        [HttpGet]
+        [Route("{shipmentid}/shipmentcomment")]
+        public IActionResult GetShipmentCommentByShipmentID(int shipmentid)
+        {
+            try
+            {
+                return new JsonResult(ShipmentBAL.GetShipmentCommentByShipmentID(shipmentid));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Failed to get Shipment Fee");
+            }
+        }
         [HttpPut]
         public IActionResult UpdateShipment(ShipmentUpdate shipment)
         {
@@ -61,7 +124,7 @@ namespace Freight.API.Controllers
             }
         }
         [HttpPut]
-        [Route("line")]
+        [Route("shipmentline")]
         public IActionResult UpdateShipmentLine(ShipmentLineUpdate shipmentline)
         {
             try
@@ -74,7 +137,7 @@ namespace Freight.API.Controllers
             }
         }
         [HttpPut]
-        [Route("package")]
+        [Route("shipmentpackage")]
         public IActionResult UpdateShipmentPackage(ShipmentPackageUpdate shipmentpackage)
         {
             try
@@ -87,7 +150,7 @@ namespace Freight.API.Controllers
             }
         }
         [HttpPut]
-        [Route("fee")]
+        [Route("shipmentfee")]
         public IActionResult UpdateShipmentFee(ShipmentFeeUpdate shipmentfee)
         {
             try
@@ -100,7 +163,7 @@ namespace Freight.API.Controllers
             }
         }
         [HttpPut]
-        [Route("contact")]
+        [Route("shipmentcontact")]
         public IActionResult UpdateShipmentContact(ShipmentContactUpdate shipmentcontact)
         {
             try
@@ -112,7 +175,19 @@ namespace Freight.API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Failed to update Shipment Contact");
             }
         }
-
+        [HttpPut]
+        [Route("shipmentcomment")]
+        public IActionResult UpdateShipmentComment(ShipmentCommentUpdate shipmentcomment)
+        {
+            try
+            {
+                return new JsonResult(ShipmentBAL.UpdateShipmentComment(shipmentcomment));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Failed to update Shipment Comment");
+            }
+        }
         [HttpPost]
         public IActionResult CreateShipment(ShipmentInsert shipment)
         {
@@ -126,7 +201,7 @@ namespace Freight.API.Controllers
             }
         }
         [HttpPost]
-        [Route("line")]
+        [Route("shipmentline")]
         public IActionResult CreateShipmentLine(ShipmentLineInsert shipmentline)
         {
             try
@@ -139,7 +214,7 @@ namespace Freight.API.Controllers
             }
         }
         [HttpPost]
-        [Route("package")]
+        [Route("shipmentpackage")]
         public IActionResult CreateShipmentPackage(ShipmentPackageInsert shipmentpackage)
         {
             try
@@ -152,7 +227,7 @@ namespace Freight.API.Controllers
             }
         }
         [HttpPost]
-        [Route("fee")]
+        [Route("shipmentfee")]
         public IActionResult CreateShipmentFee(ShipmentFeeInsert shipmentfee)
         {
             try
@@ -165,7 +240,7 @@ namespace Freight.API.Controllers
             }
         }
         [HttpPost]
-        [Route("contact")]
+        [Route("shipmentcontact")]
         public IActionResult CreateShipmentContact(ShipmentContactInsert shipmentcontact)
         {
             try
@@ -177,7 +252,19 @@ namespace Freight.API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Failed to create Shipment Contact");
             }
         }
-
+        [HttpPost]
+        [Route("shipmentcomment")]
+        public IActionResult CreateShipmentComment(ShipmentCommentInsert shipmentcomment)
+        {
+            try
+            {
+                return new JsonResult(ShipmentBAL.CreateShipmentComment(shipmentcomment));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Failed to create Shipment Comment");
+            }
+        }
         [HttpPost]
         [Route("shipmentdetail")]
         public IActionResult CreateShipmentDetail(ShipmentDetailInsert shipmentdetail)
@@ -207,7 +294,7 @@ namespace Freight.API.Controllers
             }
         }
         [HttpDelete]
-        [Route("line/{id}")]
+        [Route("shipmentline/{id}")]
         public IActionResult DeleteShipmentLine(int id)
         {
             try
@@ -221,7 +308,7 @@ namespace Freight.API.Controllers
             }
         }
         [HttpDelete]
-        [Route("package/{id}")]
+        [Route("shipmentpackage/{id}")]
         public IActionResult DeleteShipmentPackage(int id)
         {
             try
@@ -235,7 +322,7 @@ namespace Freight.API.Controllers
             }
         }
         [HttpDelete]
-        [Route("fee/{id}")]
+        [Route("shipmentfee/{id}")]
         public IActionResult DeleteShipmentFee(int id)
         {
             try
@@ -249,7 +336,7 @@ namespace Freight.API.Controllers
             }
         }
         [HttpDelete]
-        [Route("contact/{id}")]
+        [Route("shipmentcontact/{id}")]
         public IActionResult DeleteShipmentContact(int id)
         {
             try
@@ -260,6 +347,20 @@ namespace Freight.API.Controllers
             catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "Failed to delete Shipment Contact");
+            }
+        }
+        [HttpDelete]
+        [Route("shipmentcomment/{id}")]
+        public IActionResult DeleteShipmentComment(int id)
+        {
+            try
+            {
+                ShipmentBAL.DeleteShipmentComment(id);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Failed to delete Shipment Comment");
             }
         }
     }
