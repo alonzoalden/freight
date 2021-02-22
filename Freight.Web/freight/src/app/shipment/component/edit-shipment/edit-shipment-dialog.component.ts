@@ -27,6 +27,7 @@ import { EditShipmentLinesDialogComponent } from '../edit-shipment-lines/edit-sh
 import { EditShipmentFeesDialogComponent } from '../edit-shipment-fees/edit-shipment-fees-dialog.component';
 import { EditShipmentContactsDialogComponent } from '../edit-shipment-contacts/edit-shipment-contacts-dialog.component';
 import * as fromApp from 'app/_state';
+import { User } from 'app/_shared/model/user';
 @Component({
   selector: 'edit-shipment-dialog',
   templateUrl: './edit-shipment-dialog.component.html',
@@ -44,6 +45,7 @@ export class EditShipmentDialogComponent implements OnInit, OnDestroy {
   displayedFeeColumns = ['index', 'feeType', 'description', 'feeAmount', 'actions'];
   displayedContactsColumns = ['index', 'from', 'lastName', 'email', 'updates', 'actions'];
 
+  userInfo: User;
   shipmentForm: FormGroup;
   selectedShipment: Shipment;
   selectedShipmentDetail: ShipmentDetail;
@@ -52,7 +54,7 @@ export class EditShipmentDialogComponent implements OnInit, OnDestroy {
   selectedShipmentFeeRow: ShipmentFee;
   selectedShipmentContactRow: ShipmentContact;
   isSaving: boolean;
-  elected: any;
+  selected: any;
   fileDetailManifest: any;
   fileDetailManifest64: any;
   fileDetailManifest64Original: any;
@@ -76,6 +78,8 @@ export class EditShipmentDialogComponent implements OnInit, OnDestroy {
   ffwList: any;
   shippersList: any;
   customersList: any;
+  commentsList: any;
+  close: boolean = false;
 
   private _unsubscribeAll: Subject<any>;
   objectKeys = Object.keys;
@@ -97,29 +101,57 @@ export class EditShipmentDialogComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) private inputData: any,
   ) {
     this._unsubscribeAll = new Subject();
+    //this.shipmentForm = this.createShipmentForm();
   }
 
   ngOnInit(): void {
-    this.selectedShipment = this.inputData;
+    //this.selectedShipment = this.inputData.data;
+    // this.dataSourceLines = new MatTableDataSource<any>(this.selectedShipmentDetail?.shipmentLines || []);
+    // this.dataSourcePackages = new MatTableDataSource<any>(this.selectedShipmentDetail?.shipmentPackages || []);
+    // this.dataSourceFees = new MatTableDataSource<any>(this.selectedShipmentDetail?.shipmentFees || []);
+    // this.dataSourceContacts = new MatTableDataSource<any>(this.selectedShipmentDetail?.shipmentContacts || []);
 
 
-    this.dataSourceLines = new MatTableDataSource<any>(this.selectedShipmentDetail?.shipmentLines || []);
-    this.dataSourcePackages = new MatTableDataSource<any>(this.selectedShipmentDetail?.shipmentPackages || []);
-    this.dataSourceFees = new MatTableDataSource<any>(this.selectedShipmentDetail?.shipmentFees || []);
-    this.dataSourceContacts = new MatTableDataSource<any>(this.selectedShipmentDetail?.shipmentContacts || []);
     this.appStore.select(fromApp.getCurrentBusinessEntityId)
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe(businessid => {
         this.businessID = businessid;
-        this.store.dispatch(ShipmentPageActions.getCustomers({businessID: businessid}));
-        this.shipmentForm = this.createShipmentForm();
+        this.store.dispatch(ShipmentPageActions.getCustomers({ businessID: businessid }));
+
+        this.appStore.select(fromApp.getCurrentUser)
+          .pipe(takeUntil(this._unsubscribeAll))
+          .subscribe(user => {
+            this.userInfo = user;
+            //this.shipmentForm = this.createShipmentForm();
+          });
       });
+
     this.store.select(fromShipment.getIsSaving)
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe(loading => {
         this.isSaving = loading
       });
 
+    this.store.select(fromShipment.getSelectedShipment)
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe(data => {
+        this.selectedShipment = data;
+
+        if (!this.shipmentForm) {
+
+          this.shipmentForm = this.createShipmentForm();
+        }
+
+
+        if (!this.dataSourceLines?.data) {
+          this.store.dispatch(ShipmentPageActions.loadShipmentLineList({shipmentID: this.selectedShipment.shipmentID}));
+          this.store.dispatch(ShipmentPageActions.loadShipmentPackageList({shipmentID: this.selectedShipment.shipmentID}));
+          this.store.dispatch(ShipmentPageActions.loadShipmentContactList({shipmentID: this.selectedShipment.shipmentID}));
+          this.store.dispatch(ShipmentPageActions.loadShipmentFeeList({shipmentID: this.selectedShipment.shipmentID}));
+          this.store.dispatch(ShipmentPageActions.loadShipmentCommentList({shipmentID: this.selectedShipment.shipmentID}));
+        }
+
+      });
     this.store.select(fromShipment.getSelectedShipmentPackageRow)
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe(row => {
@@ -165,18 +197,45 @@ export class EditShipmentDialogComponent implements OnInit, OnDestroy {
       .subscribe(data => {
         this.shippersList = data;
       });
+    
     this.actions$
       .pipe(
         takeUntil(this._unsubscribeAll),
         ofType(ShipmentApiActions.updateShipmentSuccess))
       .subscribe((data) => {
-        this.matDialogRef.close(data);
+        //this.shipmentForm = this.createShipmentForm();
+        if (this.close) {
+          this.matDialogRef.close(data);
+        }
+      });
+
+    this.store.select(fromShipment.getShipmentLineList)
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe(data => {
+        this.dataSourceLines = new MatTableDataSource<any>(data || []);
+      });
+    this.store.select(fromShipment.getShipmentPackageList)
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe(data => {
+        this.dataSourcePackages = new MatTableDataSource<any>(data || []);
+      });
+    this.store.select(fromShipment.getShipmentFeeList)
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe(data => {
+        this.dataSourceFees = new MatTableDataSource<any>(data || []);
+      });
+    this.store.select(fromShipment.getShipmentContactList)
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe(data => {
+        this.dataSourceContacts = new MatTableDataSource<any>(data || []);
+      });
+    this.store.select(fromShipment.getShipmentCommentList)
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe(data => {
+        this.commentsList = data;
       });
 
 
-    this.store.dispatch(ShipmentPageActions.get3pl());
-    this.store.dispatch(ShipmentPageActions.getFfw());
-    this.store.dispatch(ShipmentPageActions.getShippers());
     if (this.router.url.includes('all')) {
     }
     if (this.router.url.includes('open')) {
@@ -195,53 +254,57 @@ export class EditShipmentDialogComponent implements OnInit, OnDestroy {
 
   createShipmentForm(): FormGroup {
     return this._formBuilder.group({
-      shipmentID: [Number(this.selectedShipment.shipmentID) || 0],
+      shipmentID: [this.selectedShipment?.shipmentID],
       businessID: [this.businessID],
-      shipperID: [Number(this.selectedShipment.shipperID || 1)],
-      customerID: [Number(this.selectedShipment.customerID)],
+      shipperID: [this.selectedShipment?.shipperID],
+      customerID: [this.selectedShipment?.customerID],
       customer: [''],
-      originFFW: [Number(this.selectedShipment.originFFW) || 0],
-      origin3PL: [Number(this.selectedShipment.origin3PL) || 0],
-      destinationFFW: [Number(this.selectedShipment.destinationFFW) || 0],
-      destination3PL: [Number(this.selectedShipment.destination3PL) || 0],
-      hblNumber: [this.selectedShipment.hblNumber],
-      mblNumber: [this.selectedShipment.mblNumber],
-      containerNumber: [this.selectedShipment.containerNumber],
-      etd: [this.selectedShipment.etd],
-      eta: [this.selectedShipment.eta],
-      txl: [this.selectedShipment.txl],
-      isfFiled: [this.selectedShipment.isfFiled],
-      deliveryLocationID: [this.selectedShipment.deliveryLocationID],
-      status: [this.selectedShipment.status],
-      memo: [this.selectedShipment.memo],
-      shipperReference: [this.selectedShipment.shipperReference],
-      updatedBy: [this.selectedShipment.updatedBy],
-      updatedOn: [this.selectedShipment.updatedOn],
-      createdBy: [this.selectedShipment.createdBy],
-      createdOn: [this.selectedShipment.createdOn],
+      originFFW: [this.selectedShipment?.originFFW],
+      origin3PL: [this.selectedShipment?.origin3PL],
+      destinationFFW: [this.selectedShipment?.destinationFFW],
+      destination3PL: [this.selectedShipment?.destination3PL],
+      hblNumber: [this.selectedShipment?.hblNumber],
+      mblNumber: [this.selectedShipment?.mblNumber],
+      containerNumber: [this.selectedShipment?.containerNumber],
+      etd: [this.selectedShipment?.etd],
+      eta: [this.selectedShipment?.eta],
+      txl: [this.selectedShipment?.txl],
+      isfFiled: [this.selectedShipment?.isfFiled],
+      deliveryLocationID: [this.selectedShipment?.deliveryLocationID],
+      status: [this.selectedShipment?.status],
+      memo: [this.selectedShipment?.memo],
+      shipperReference: [this.selectedShipment?.shipperReference],
+      updatedBy: [this.selectedShipment?.updatedBy],
+      updatedOn: [this.selectedShipment?.updatedOn],
+      createdBy: [this.userInfo?.userID],
       Date: [''],
       Date2: [''],
       Date3: [''],
+      // shipmentLines: [this.selectedShipment?.shipmentLines],
+      // shipmentPackages: [this.selectedShipment?.shipmentPackages],
+      // shipmentFees: [this.selectedShipment?.shipmentFees],
+      // shipmentContacts: [this.selectedShipment?.shipmentContacts],
     });
   }
-  save(): void {
-    if (this.selectedShipment.shipmentID) {
-      this.edit();
+  save(close): void {
+    if (this.selectedShipment?.shipmentID) {
+      this.edit(close);
     } else {
-      this.create();
+      this.create(close);
     }
   }
 
-  create(): void {
-
-    // to do: include all data in Shipment to save.
-
+  create(close): void {
+    //const dataToSend = new ShipmentDetail({ ...this.shipmentForm.value }, this.dataSourceLines.data, this.dataSourcePackages.data, this.dataSourceFees.data, this.dataSourceContacts.data);
     this.isSaving = true;
     this.shipmentService.createShipment(this.shipmentForm.value)
       .subscribe(
         (data: Shipment) => {
-          this.matDialogRef.close(data);
-          this.notifyService.success('Success', `${data.shipmentID} has been created.`, { timeOut: 3500, clickToClose: true });
+          if (close) {
+            this.notifyService.success('Success', `${data.shipmentID} has been created.`, { timeOut: 2000, clickToClose: true });
+            this.matDialogRef.close(data);
+          }
+          // this.notifyService.success('Success', `${data.shipmentID} has been created.`, { timeOut: 2000, clickToClose: true });
         },
         error => {
           this.notifyService.error('Error', `${error}`, { clickToClose: true });
@@ -249,7 +312,10 @@ export class EditShipmentDialogComponent implements OnInit, OnDestroy {
         }
       );
   }
-  edit(): void {
+  edit(close): void {
+    if (close) {
+      this.close = true;
+    }
     this.store.dispatch(ShipmentPageActions.updateShipment({ shipment: this.shipmentForm.value }));
   }
 
@@ -328,7 +394,7 @@ export class EditShipmentDialogComponent implements OnInit, OnDestroy {
   }
 
   onSelectedTabChange() {
-    //
+    this.save(null);
   }
   onDialogClose() {
     //

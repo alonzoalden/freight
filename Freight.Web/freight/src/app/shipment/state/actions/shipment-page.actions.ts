@@ -1,6 +1,5 @@
 import { createAction, props } from '@ngrx/store';
 import { Shipment, ShipmentContact, ShipmentFee, ShipmentLine, ShipmentPackage } from '../../../_shared/model/shipment';
-// import { Item } from '../../component/edit-shipment/node_modules/app/_shared/model/item';
 
 export const loadShipmentList = createAction(
   '[Shipment Page] Load Shipment List',
@@ -88,15 +87,41 @@ export const loadContactList = createAction(
 );
 
 export const getShippers = createAction(
-  '[User Page] Get Shippers',
+  '[Shipment Page] Get Shippers',
 );
 export const get3pl = createAction(
-  '[User Page] Get 3PL',
+  '[Shipment Page] Get 3PL',
 );
 export const getFfw = createAction(
-  '[User Page] Get FFW',
+  '[Shipment Page] Get FFW',
 );
 export const getCustomers = createAction(
-  '[User Page] Get Customer',
+  '[Shipment Page] Get Customer',
   props<{ businessID: any }>()
 ); 
+
+
+export const loadShipmentLineList = createAction(
+  '[Shipment Page] Shipment Line List',
+  props<{ shipmentID: any }>()
+);
+
+export const loadShipmentPackageList = createAction(
+  '[Shipment Page] Load Shipment Package List',
+  props<{ shipmentID: any }>()
+);
+
+export const loadShipmentFeeList = createAction(
+  '[Shipment Page] Load Shipment Fee List',
+  props<{ shipmentID: any }>()
+);
+
+export const loadShipmentContactList = createAction(
+  '[Shipment Page] Load Shipment Contact List',
+  props<{ shipmentID: any }>()
+);
+
+export const loadShipmentCommentList = createAction(
+  '[Shipment Page] Load Shipment Comment List',
+  props<{ shipmentID: any }>()
+);

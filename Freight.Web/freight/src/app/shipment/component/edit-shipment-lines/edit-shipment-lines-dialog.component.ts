@@ -70,6 +70,11 @@ export class EditShipmentLinesDialogComponent implements OnInit, OnDestroy {
       .subscribe(businessID => {
         this.store.dispatch(ShipmentPageActions.loadItemList({ businessID }));
       });
+    this.store.select(fromShipment.getSelectedShipment)
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe(data => {
+        this.selectedShipment = data
+      });
 
     this.store.select(fromShipment.getItemList)
       .pipe(takeUntil(this._unsubscribeAll))
@@ -114,9 +119,9 @@ export class EditShipmentLinesDialogComponent implements OnInit, OnDestroy {
 
   createShipmentLineForm(): FormGroup {
     return this._formBuilder.group({
-      shipmentLineID: [Number(this.selectedShipmentLine.shipmentLineID) || 0],
-      shipmentID: [Number(this.selectedShipmentLine.shipmentID || 1)],
-      itemID: [Number(this.selectedShipmentLine.itemID) || 0],
+      shipmentLineID: [this.selectedShipmentLine.shipmentLineID],
+      shipmentID: [this.selectedShipment.shipmentID],
+      itemID: [this.selectedShipmentLine.itemID],
       quantity: [this.selectedShipmentLine.quantity],
       unitPrice: [],
       itemName: [],
@@ -145,10 +150,43 @@ export class EditShipmentLinesDialogComponent implements OnInit, OnDestroy {
   }
 
   save(): void {
-    this.matDialogRef.close(this.shipmentLineForm.value);
+    this.updateForm()
+    this.isSaving = true;
+    this.shipmentService.createShipment(this.shipmentLineForm.value)
+      .subscribe(
+        (data: ShipmentLine) => {
+          this.isSaving = false;
+          if (close) {
+            this.matDialogRef.close(data);
+          }
+          this.notifyService.success('Success', `${data.shipmentLineID} has been updated.`, { timeOut: 2000, clickToClose: true });
+        },
+        error => {
+          this.notifyService.error('Error', `${error}`, { clickToClose: true });
+          this.isSaving = false;
+        }
+      );
   }
   edit(): void {
-    this.store.dispatch(ShipmentPageActions.updateShipment({ shipment: this.shipmentLineForm.value }));
+    
+    // this.store.dispatch(ShipmentPageActions.editShipmentLine({ shipmentLine: this.shipmentLineForm.value }));
+
+    this.isSaving = true;
+
+    this.shipmentService.editShipmentLine(this.shipmentLineForm.value)
+      .subscribe(
+        (data: ShipmentLine) => {
+          if (close) {
+            this.matDialogRef.close(data);
+          }
+          this.notifyService.success('Success', `${data.shipmentLineID} has been updated.`, { timeOut: 2000, clickToClose: true });
+        },
+        error => {
+          this.notifyService.error('Error', `${error}`, { clickToClose: true });
+          this.isSaving = false;
+        }
+      );
+
   }
 
   onFileSelected(event, type) {

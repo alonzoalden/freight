@@ -37,7 +37,7 @@ export class CustomerService implements OnDestroy {
   }
   getCustomerList(businessid): Observable<any> {
     return this.http
-      .get(this.apiURL + `/location/business/${businessid}`)
+      .get(this.apiURL + `/customer/business/${businessid}`)
       .pipe(
         catchError(this.handleError)
       );

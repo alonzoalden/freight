@@ -18,6 +18,10 @@ export const getSelectedcustomer = createSelector(
   getcustomerFeatureState,
   state => state.selectedCustomer
 );
+export const getContactList = createSelector(
+  getcustomerFeatureState,
+  state => state.currentContacts
+);
 export const getIsSaving = createSelector(
   getcustomerFeatureState,
   state => state.isSaving

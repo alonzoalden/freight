@@ -36,20 +36,20 @@
   </div>
 
   <mat-table class="item-list" matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}" *ngIf="!isLoading && dataSource?.data?.length">
-    <!-- customerName Column -->
-    <ng-container matColumnDef="customerName">
-      <mat-header-cell *matHeaderCellDef>Customer Name</mat-header-cell>
+    <!-- companyName Column -->
+    <ng-container matColumnDef="companyName">
+      <mat-header-cell *matHeaderCellDef>Company Name</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{row.companyName}}</mat-cell>
+    </ng-container>
+    <!-- firstName Column -->email', 'apEmail', 'companyName', 'actions
+    <ng-container matColumnDef="email">
+      <mat-header-cell *matHeaderCellDef>email</mat-header-cell>
       <mat-cell *matCellDef="let row">{{row.email}}</mat-cell>
     </ng-container>
-    <!-- firstName Column -->
-    <ng-container matColumnDef="firstName">
-      <mat-header-cell *matHeaderCellDef>First Name</mat-header-cell>
-      <mat-cell *matCellDef="let row">{{row.firstName}}</mat-cell>
-    </ng-container>
     <!-- lastName Column -->
-    <ng-container matColumnDef="lastName">
-      <mat-header-cell *matHeaderCellDef>Last Name</mat-header-cell>
-      <mat-cell *matCellDef="let row">{{row.lastName}}</mat-cell>
+    <ng-container matColumnDef="apEmail">
+      <mat-header-cell *matHeaderCellDef>AP Email</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{row.apEmail}}</mat-cell>
     </ng-container>
     <!-- Actions Column -->
     <ng-container matColumnDef="actions">

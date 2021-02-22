@@ -25,13 +25,56 @@
         </mat-form-field>
       </div>
     </form>
+    <div style="padding: 0 24px 24px 24px">
+      <mat-table class="item-list" matSort [dataSource]="dataSource" >
+        <!-- email Column -->
+        <ng-container matColumnDef="email">
+          <mat-header-cell *matHeaderCellDef>E-mail</mat-header-cell>
+          <mat-cell *matCellDef="let row">{{row.email}}</mat-cell>
+        </ng-container>
+        <!-- fullName Column -->
+        <ng-container matColumnDef="fullName">
+          <mat-header-cell *matHeaderCellDef>Full Name</mat-header-cell>
+          <mat-cell *matCellDef="let row">{{row.fullName}}</mat-cell>
+        </ng-container>
+        <!-- title Column -->
+        <ng-container matColumnDef="title">
+          <mat-header-cell *matHeaderCellDef>Title</mat-header-cell>
+          <mat-cell *matCellDef="let row">{{row.title}}</mat-cell>
+        </ng-container>
+        <!-- Actions Column -->
+        <ng-container matColumnDef="actions">
+          <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+          <mat-cell *matCellDef="let row">
+            <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="more">
+              <mat-icon>more_horiz</mat-icon>
+            </button>
+            <mat-menu #moreMenu="matMenu">
+              <button mat-menu-item (click)="onDelete(row)"><mat-icon>delete</mat-icon> Delete</button>
+            </mat-menu>
+          </mat-cell>
+        </ng-container>
+
+    
+        <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="onSelect(row)"
+          [ngClass]="{'selected' : row.contactID == selectedContact?.contactID}" [@animate]="{value:'*',params:{y:'100%'}}" matRipple>
+        </mat-row>
+      </mat-table>
+    </div>
+    
   </div>
   <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="space-between center">
     <button mat-raised-button color="accent" (click)="save()" class="dialog-button" [disabled]="contactForm.invalid"
       aria-label="SAVE">
       <div fxLayoutAlign="center">
-        <span *ngIf="!isSaving">INVITE</span>
+        <span *ngIf="!isSaving">Add</span>
         <mat-spinner diameter="20" *ngIf="isSaving"></mat-spinner>
+      </div>
+    </button>
+    <button mat-raised-button color="primary" (click)="save()" class="dialog-button" [disabled]="isSaving">
+      <div fxLayoutAlign="center">
+        <span>Close</span>
       </div>
     </button>
   </div>

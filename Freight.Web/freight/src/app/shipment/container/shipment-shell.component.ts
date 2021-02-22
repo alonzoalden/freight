@@ -38,8 +38,13 @@ export class ShipmentShellComponent implements OnDestroy {
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe(businessID => {
         this.store.dispatch(ShipmentPageActions.loadShipmentList({ businessID }));
+        this.store.dispatch(ShipmentPageActions.get3pl());
+        this.store.dispatch(ShipmentPageActions.getFfw());
+        this.store.dispatch(ShipmentPageActions.getShippers());
+        this.store.dispatch(ShipmentPageActions.getCustomers({businessID}));
+        this.store.dispatch(ShipmentPageActions.loadContactList({businessID}));
       });
-    //this.store.dispatch(ShipmentPageActions.loadShipmentList());
+
   }
   selectItem(shipment: Shipment): void {
     this.store.dispatch(ShipmentPageActions.setCurrentShipment({ currentShipment: shipment }));

@@ -148,7 +148,7 @@ export class CustomerEffects {
   updateContact$ = createEffect(() => {
     return this.actions$
       .pipe(
-        ofType(CustomerPageActions.createContact),
+        ofType(CustomerPageActions.updateContact),
         concatMap(action => this.customerService.updateContact(action.contact)
           .pipe(
             map((contact) => {

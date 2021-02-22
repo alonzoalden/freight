@@ -157,11 +157,11 @@ export const get3plFailure = createAction(
   props<{ error: string }>()
 );
 export const getFfwSuccess = createAction(
-  '[Shipment API] Get 3PL Success',
+  '[Shipment API] Get FFW Success',
   props<{ ffw: any[] }>()
 );
 export const getFfwFailure = createAction(
-  '[Shipment API] Get 3PL Fail',
+  '[Shipment API] Get FFW Fail',
   props<{ error: string }>()
 );
 
@@ -171,5 +171,50 @@ export const getCustomersSuccess = createAction(
 ); 
 export const getCustomersFailure = createAction(
   '[Shipment Page] Get Business Customers Failure',
+  props<{ error: string }>()
+); 
+
+
+
+export const loadShipmentLineListSuccess = createAction(
+  '[Shipment Page] Get Shipment Line List Success',
+  props<{ shipmentLines: any[] }>()
+); 
+export const loadShipmentLineListFailure = createAction(
+  '[Shipment Page] Get Shipment Line List Failure',
+  props<{ error: string }>()
+); 
+
+export const loadShipmentPackageListSuccess = createAction(
+  '[Shipment Page] Get Shipment Package List Success',
+  props<{ shipmentPackages: any[] }>()
+); 
+export const loadShipmentPackageListFailure = createAction(
+  '[Shipment Page] Get Shipment Package List Failure',
+  props<{ error: string }>()
+); 
+
+export const loadShipmentFeeListSuccess = createAction(
+  '[Shipment Page] Get Shipment Fee List Success',
+  props<{ shipmentFee: any[] }>()
+); 
+export const loadShipmentFeeListFailure = createAction(
+  '[Shipment Page] Get Shipment Fee List Failure',
+  props<{ error: string }>()
+); 
+export const loadShipmentContactListSuccess = createAction(
+  '[Shipment Page] Get Shipment Contact List Success',
+  props<{ shipmentContacts: any[] }>()
+); 
+export const loadShipmentContactListFailure = createAction(
+  '[Shipment Page] Get Shipment Contact List Failure',
+  props<{ error: string }>()
+); 
+export const loadShipmentCommentListSuccess = createAction(
+  '[Shipment Page] Get Shipment Comment List Success',
+  props<{ shipmentComments: any[] }>()
+); 
+export const loadShipmentCommentListFailure = createAction(
+  '[Shipment Page] Get Shipment Comment List Failure',
   props<{ error: string }>()
 ); 

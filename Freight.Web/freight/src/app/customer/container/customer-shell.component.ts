@@ -33,11 +33,11 @@ export class CustomerShellComponent implements OnDestroy {
   ngOnInit(): void {
     this.customerEntities$ = this.store.select(fromCustomer.getAllcustomerList);
     this.selectedCustomer$ = this.store.select(fromCustomer.getSelectedcustomer);
-    this.isLoading$ = this.store.select(fromCustomer.getIsLoading);
     this.appStore.select(fromApp.getCurrentBusinessEntityId)
-      .pipe(takeUntil(this._unsubscribeAll))
-      .subscribe(businessid => {
-        this.store.dispatch(CustomerPageActions.loadCustomerList({ businessid }));
+    .pipe(takeUntil(this._unsubscribeAll))
+    .subscribe(businessid => {
+      this.store.dispatch(CustomerPageActions.loadCustomerList({ businessid }));
+      this.isLoading$ = this.store.select(fromCustomer.getIsLoading);
       });
   }
   selectCustomer(customer: Customer): void {

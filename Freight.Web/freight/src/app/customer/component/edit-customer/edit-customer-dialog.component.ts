@@ -96,7 +96,7 @@ export class EditCustomerDialogComponent implements OnInit, OnDestroy {
   inviteCustomerForm(): FormGroup {
     return this._formBuilder.group({
       // customerID: [Number(this.selectedCustomer.customerID) || 0],
-      companyName: [this.business?.companyName],
+      companyName: [this.selectedCustomer?.companyName],
       businessID: [this.user?.businessID],
       email: [this.selectedCustomer.email],
       apEmail: [this.selectedCustomer.apEmail],
@@ -114,7 +114,7 @@ export class EditCustomerDialogComponent implements OnInit, OnDestroy {
 
   }
   create(): void {
-    this.store.dispatch(CustomerPageActions.verifyAndCreateCustomer({ customer: this.customerForm.value }));
+    this.store.dispatch(CustomerPageActions.createCustomer({ customer: this.customerForm.value }));
   }
   edit(): void {
     const dataToSend = this.customerForm.value;

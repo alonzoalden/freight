@@ -4,7 +4,7 @@ import { Observable, BehaviorSubject, throwError, Subject } from "rxjs";
 import { environment } from "../../environments/environment";
 import { catchError, tap, takeUntil } from "rxjs/operators";
 //import { Item } from "./component/edit-shipment/node_modules/app/_shared/model/item";
-import { Shipment, ShipmentContact, ShipmentFee, ShipmentLine, ShipmentPackage } from "../_shared/model/shipment";
+import { Shipment, ShipmentContact, ShipmentDetail, ShipmentFee, ShipmentLine, ShipmentPackage } from "../_shared/model/shipment";
 @Injectable()
 export class ShipmentService implements OnDestroy {
   private apiURL = environment.webapiURL;
@@ -45,15 +45,12 @@ export class ShipmentService implements OnDestroy {
   getAllShipmentsList(): Observable<any> {
     return this.http.get(this.apiURL + '/shipment')
       .pipe(
-        tap((data: any) => {
-          this.allShipments.next(data);
-        }),
         catchError(this.handleError)
       );
   }
   getShipmentList(businessid): Observable<any> {
     return this.http
-      .get(this.apiURL + `/item/business/${businessid}`)
+      .get(this.apiURL + `/shipment/business/${businessid}`)
       .pipe(
         catchError(this.handleError)
       );
@@ -83,7 +80,7 @@ export class ShipmentService implements OnDestroy {
       );
   }
 
-  createShipment(body: Shipment): Observable<any> {
+  createShipment(body: ShipmentDetail): Observable<any> {
     return this.http.post<any>(this.apiURL + '/shipment', body)
       .pipe(
         tap((data: Shipment) => {
@@ -198,6 +195,45 @@ export class ShipmentService implements OnDestroy {
         catchError(this.handleError)
       );
   }
+
+  getShipmentLineList(shipmentid): Observable<any> {
+    return this.http
+      .get(this.apiURL + `/shipment/${shipmentid}/shipmentline`)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+  getShipmentPackageList(shipmentid): Observable<any> {
+    return this.http
+      .get(this.apiURL + `/shipment/${shipmentid}/shipmentpackage`)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+  getShipmentFeeList(shipmentid): Observable<any> {
+    return this.http
+      .get(this.apiURL + `/shipment/${shipmentid}/shipmentfee`)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+  
+  getShipmentContactList(shipmentid): Observable<any> {
+    return this.http
+      .get(this.apiURL + `/shipment/${shipmentid}/shipmentcontact`)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+  getShipmentCommentList(shipmentid): Observable<any> {
+    return this.http
+      .get(this.apiURL + `/shipment/${shipmentid}/shipmentcomment`)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+  
+
   handleError = (err: HttpErrorResponse) => {
     let errorMessage: string;
     if (err.error instanceof Error) {

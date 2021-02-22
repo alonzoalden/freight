@@ -14,6 +14,7 @@ export interface ShipmentState {
   selectedShipmentLines: ShipmentLine[];
   selectedShipmentFees: ShipmentFee[];
   selectedShipmentContacts: ShipmentContact[];
+  selectedShipmentComments: any[];
   currentShipmentPackageRow: ShipmentPackage;
   currentShipmentLineRow: ShipmentLine;
   currentShipmentFeeRow: ShipmentFee;
@@ -38,6 +39,7 @@ const initalState: ShipmentState = {
   selectedShipmentLines: null,
   selectedShipmentFees: null,
   selectedShipmentContacts: null,
+  selectedShipmentComments: null,
   currentShipmentPackageRow: null,
   currentShipmentLineRow: null,
   currentShipmentFeeRow: null,
@@ -122,10 +124,28 @@ export const shipmentReducer = createReducer<ShipmentState>(
     const index = state.allShipments.findIndex((x)=> x.shipmentID == action.shipment.shipmentID);
     const list = [...state.allShipments];
     list.splice(index, 1, action.shipment);
+    
     return Object.assign({
       isSaving: false,
       allShipments: list,
-      selectedShipment: action.shipment
+      selectedShipment: action.shipment,
+      selectedShipmentPackages: state.selectedShipmentPackages,
+      selectedShipmentLines: state.selectedShipmentLines,
+      selectedShipmentFees: state.selectedShipmentFees,
+      selectedShipmentContacts: state.selectedShipmentContacts,
+      currentShipmentPackageRow: state.currentShipmentPackageRow,
+      currentShipmentLineRow: state.currentShipmentLineRow,
+      currentShipmentFeeRow: state.currentShipmentFeeRow,
+      currentShipmentContactRow: state.currentShipmentContactRow,
+      feeList: state.feeList,
+      itemList: state.itemList,
+      contactList: state.contactList,
+      ffwList: state.ffwList,
+      threePLList: state.threePLList,
+      shippersList: state.shippersList,
+      customersList: state.customersList,
+      isLoading: state.isLoading,
+      error: state.error
     });
   }),
   on(ShipmentApiActions.updateShipmentFailure, (state, action): ShipmentState => {
@@ -148,7 +168,7 @@ export const shipmentReducer = createReducer<ShipmentState>(
     return Object.assign({
       isSaving: false,
       allItems: list,
-      selectedShipmentPackageRow: action.shipmentPackage
+      selectedShipmentPackageRow: action.shipmentPackage,
     });
   }),
   on(ShipmentApiActions.editShipmentPackageFailure, (state, action): ShipmentState => {
@@ -466,6 +486,121 @@ export const shipmentReducer = createReducer<ShipmentState>(
     };
   }),
   on(ShipmentApiActions.getCustomersFailure, (state, action): ShipmentState => {
+    return {
+      ...state,
+      isLoading: false,
+      error: action.error
+    };
+  }),
+
+
+  on(ShipmentPageActions.loadShipmentLineList, (state, action): ShipmentState => {
+    return {
+      ...state,
+      isLoading: true,
+      error: ''
+    };
+  }),
+  on(ShipmentApiActions.loadShipmentLineListSuccess, (state, action): ShipmentState => {
+    return {
+      ...state,
+      selectedShipmentLines: action.shipmentLines,
+      isLoading: false,
+      error: ''
+    };
+  }),
+  on(ShipmentApiActions.loadShipmentLineListFailure, (state, action): ShipmentState => {
+    return {
+      ...state,
+      isLoading: false,
+      error: action.error
+    };
+  }),
+  on(ShipmentPageActions.loadShipmentPackageList, (state, action): ShipmentState => {
+    return {
+      ...state,
+      isLoading: true,
+      error: ''
+    };
+  }),
+  on(ShipmentApiActions.loadShipmentPackageListSuccess, (state, action): ShipmentState => {
+    return {
+      ...state,
+      selectedShipmentPackages: action.shipmentPackages,
+      isLoading: false,
+      error: ''
+    };
+  }),
+  on(ShipmentApiActions.loadShipmentPackageListFailure, (state, action): ShipmentState => {
+    return {
+      ...state,
+      isLoading: false,
+      error: action.error
+    };
+  }),
+
+  on(ShipmentPageActions.loadShipmentFeeList, (state, action): ShipmentState => {
+    return {
+      ...state,
+      isLoading: true,
+      error: ''
+    };
+  }),
+  on(ShipmentApiActions.loadShipmentFeeListSuccess, (state, action): ShipmentState => {
+    return {
+      ...state,
+      selectedShipmentFees: action.shipmentFee,
+      isLoading: false,
+      error: ''
+    };
+  }),
+  on(ShipmentApiActions.loadShipmentFeeListFailure, (state, action): ShipmentState => {
+    return {
+      ...state,
+      isLoading: false,
+      error: action.error
+    };
+  }),
+
+  on(ShipmentPageActions.loadShipmentContactList, (state, action): ShipmentState => {
+    return {
+      ...state,
+      isLoading: true,
+      error: ''
+    };
+  }),
+  on(ShipmentApiActions.loadShipmentContactListSuccess, (state, action): ShipmentState => {
+    return {
+      ...state,
+      selectedShipmentContacts: action.shipmentContacts,
+      isLoading: false,
+      error: ''
+    };
+  }),
+  on(ShipmentApiActions.loadShipmentContactListFailure, (state, action): ShipmentState => {
+    return {
+      ...state,
+      isLoading: false,
+      error: action.error
+    };
+  }),
+
+  on(ShipmentPageActions.loadShipmentCommentList, (state, action): ShipmentState => {
+    return {
+      ...state,
+      isLoading: true,
+      error: ''
+    };
+  }),
+  on(ShipmentApiActions.loadShipmentCommentListSuccess, (state, action): ShipmentState => {
+    return {
+      ...state,
+      selectedShipmentComments: action.shipmentComments,
+      isLoading: false,
+      error: ''
+    };
+  }),
+  on(ShipmentApiActions.loadShipmentCommentListFailure, (state, action): ShipmentState => {
     return {
       ...state,
       isLoading: false,

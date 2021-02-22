@@ -16,6 +16,7 @@ import { CustomerEffects } from '../../state/customer.effect';
 import { Actions, ofType } from '@ngrx/effects';
 import { AppService } from 'app/app.service';
 import * as fromApp from 'app/_state';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'edit-contact-dialog',
@@ -31,6 +32,9 @@ export class EditContactDialogComponent implements OnInit, OnDestroy {
   private _unsubscribeAll: Subject<any>;
   isSaving: boolean;
   businessID: any;
+  dataSource: any = new MatTableDataSource();
+
+  displayedColumns = ['fullName', 'email', 'title', 'actions'];
 
   objectKeys = Object.keys;
   @ViewChild('mainInput') mainInput: ElementRef;
@@ -50,14 +54,15 @@ export class EditContactDialogComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    
     this.selectedContact = this.inputData;
     this.focusMainInput();
-
+    
+    this.store.dispatch(CustomerPageActions.loadContactList({ customerid: this.selectedContact.customerID }));
     this.appStore.select(fromApp.getCurrentBusinessEntityId)
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe(businessid => {
         this.businessID = businessid;
-        this.contactForm = this.inviteContactForm();
       });
 
     this.store.select(fromCustomer.getIsSaving)
@@ -70,6 +75,13 @@ export class EditContactDialogComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe(customer => {
         this.selectedCustomer = customer
+        this.contactForm = this.inviteContactForm();
+      });
+
+    this.store.select(fromCustomer.getContactList)
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe(data => {
+        this.dataSource = new MatTableDataSource<any>(data);
       });
 
     this.actions$
@@ -85,8 +97,9 @@ export class EditContactDialogComponent implements OnInit, OnDestroy {
         takeUntil(this._unsubscribeAll),
         ofType(CustomerApiActions.createCustomerSuccess))
       .subscribe((data) => {
-        this.matDialogRef.close(data);
+        this.dataSource.data.push(data);
       });
+      
   }
   ngOnDestroy(): void {
     // Unsubscribe from all subscriptions
@@ -96,24 +109,26 @@ export class EditContactDialogComponent implements OnInit, OnDestroy {
 
   inviteContactForm(): FormGroup {
     return this._formBuilder.group({
-      contactID: [Number(this.selectedContact.contactID) || 0],
+      //contactID: [Number(this.selectedContact.contactID)],
       customerID: [this.selectedCustomer.customerID],
       businessID: [this.selectedCustomer.businessID],
-      fullName: [this.selectedContact.fullName],
-      email: [this.selectedContact.email],
-      title: [this.selectedContact.title],
-      updatedBy: [this.selectedContact.updatedBy],
+      fullName: [],
+      email: [],
+      title: [],
+      createdBy: [this.selectedContact.createdBy],
     });
   }
   save(): void {
-    if (this.selectedContact.customerID) {
-      this.edit();
-    } else {
-      this.create();
-    }
+    this.create();
   }
   focusMainInput(): void {
     
+  }
+  onSelect(): void {
+    
+  }
+  onDelete(row): void {
+    this.store.dispatch(CustomerPageActions.deleteContact({ contact: row }));
   }
   create(): void {
     this.store.dispatch(CustomerPageActions.createContact({ contact: this.contactForm.value }));

@@ -40,7 +40,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
   @Output() deleteCustomer = new EventEmitter<any>();
   files: any;
   dataSource: any = new MatTableDataSource();
-  displayedColumns = ['customerName', 'firstName', 'lastName', 'actions'];
+  displayedColumns = ['email', 'apEmail', 'companyName', 'actions'];
   isLeadRole: boolean;
   filteredCourses: any[];
   currentCategory: string;
@@ -134,6 +134,9 @@ export class CustomerListComponent implements OnInit, OnDestroy {
         if (!response) {
           return;
         }
+        else {
+          this.openEditContactDialog(this.selected);
+        }
       });
   }
   openEditContactDialog(data = {}): void {
@@ -149,6 +152,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
         }
       });
   }
+  
   focusMainInput() {
     if (this.inputEnabled) {
       setTimeout(() => this.mainInput.nativeElement.focus(), 10);

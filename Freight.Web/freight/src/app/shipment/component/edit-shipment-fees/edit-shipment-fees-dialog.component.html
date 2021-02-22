@@ -15,7 +15,7 @@
       
       <div fxLayout="column" fxLayoutAlign="start start">
         <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
-          <mat-label> feeID </mat-label>
+          <mat-label> Fee </mat-label>
           <!-- <input matInput placeholder="Fee" name="feeID" formControlName="feeID"required> -->
           <mat-select (selectionChange)="updateForm()" placeholder="Fees" name="fee" formControlName="fee" required>
             <mat-option *ngFor="let fee of fees" [value]=fee>{{ fee.feeType }}

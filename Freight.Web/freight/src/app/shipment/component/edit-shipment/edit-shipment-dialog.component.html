@@ -1,14 +1,14 @@
 <div class="dialog-content-wrapper">
   <mat-toolbar class="mat-accent m-0">
     <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
-      <span class="title dialog-title">{{selectedShipment.shipmentID ? 'Edit' : 'Create' }} Shipment</span>
+      <span class="title dialog-title">{{selectedShipment?.shipmentID ? 'Edit' : 'Create' }} Shipment <span *ngIf="selectedShipment?.shipmentID"> - {{selectedShipment?.shipmentID}}</span> </span>
       <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
         <mat-icon>close</mat-icon>
       </button>
     </mat-toolbar-row>
   </mat-toolbar>
   <div mat-dialog-content style="margin: 0; padding: 0; width: 100%; overflow: hidden;">
-    <form name="itemForm" [formGroup]="shipmentForm" class="compose-form w-100-p" fxLayout="column" fxFlex>
+    <form *ngIf="shipmentForm" name="itemForm" [formGroup]="shipmentForm" class="compose-form w-100-p" fxLayout="column" fxFlex>
       <mat-tab-group style="overflow: auto; position: relative; height: 100%;" fxFlex
         (selectedTabChange)="onSelectedTabChange()" [selectedIndex]="selectedTabIndex" #tabGroup class="accent white">
         <mat-tab [disabled]="isLoading" label="General">
@@ -20,24 +20,48 @@
             <div class="body-container m-0">
               <div fxLayout="column" fxLayoutAlign="start center">
                 <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                  <mat-label> Shipper </mat-label>
+                  <mat-select (selectionChange)="save(null)" placeholder="Select Shipper" name="shipperID" formControlName="shipperID" required>
+                    <mat-option *ngFor="let shipper of shippersList" [value]=shipper.businessID>{{ shipper.companyName }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
                   <mat-label> Customer </mat-label>
-                  <input matInput placeholder="Customer" name="customer" formControlName="customer" required>
+                  <mat-select placeholder="Select Customer" name="customerID" formControlName="customerID" required>
+                    <mat-option *ngFor="let customer of customersList" [value]=customer.customerID>{{ customer.companyName + ' - ' + customer.email }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                  <mat-label> Origin FFW </mat-label>
+                  <mat-select placeholder="Select Origin FFW" name="fee" formControlName="originFFW" required>
+                    <mat-option *ngFor="let ffw of ffwList" [value]=ffw.businessID>{{ ffw.companyName }}</mat-option>
+                  </mat-select>
                 </mat-form-field>
                 <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
                   <mat-label> Origin 3PL </mat-label>
-                  <input matInput placeholder="Origin 3PL / Shipper" type="number" name="origin3PL"
-                    formControlName="origin3PL" required>
+                  <mat-select placeholder="Select Origin 3PL" name="origin3PL" formControlName="origin3PL" required>
+                    <mat-option *ngFor="let threepl of threePLList" [value]=threepl.businessID>{{ threepl.companyName }}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                  <mat-label> Destination FFW </mat-label>
+                  <mat-select placeholder="Select Destination FFW" name="destinationFFW" formControlName="destinationFFW" required>
+                    <mat-option *ngFor="let ffw of ffwList" [value]=ffw.businessID>{{ ffw.companyName }}</mat-option>
+                  </mat-select>
                 </mat-form-field>
                 <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
                   <mat-label> Destination 3PL </mat-label>
-                  <input matInput placeholder="Destination 3PL" type="number" name="destination3PL"
-                    formControlName="destination3PL" required>
+                  <mat-select placeholder="Select Destination 3PL" name="destination3PL" formControlName="destination3PL" required>
+                    <mat-option *ngFor="let threepl of threePLList" [value]=threepl.businessID>{{ threepl.companyName }}</mat-option>
+                  </mat-select>
                 </mat-form-field>
               </div>
             </div>
           </div>
         </mat-tab>
-        <mat-tab [disabled]="isLoading" label="Shipment">
+        <mat-tab [disabled]="isLoading || !selectedShipment?.shipmentID" label="Shipment">
           <ng-template mat-tab-label>
             <span class="mr-8">Shipment Info</span>
             <mat-icon style="color: red;">error_outline</mat-icon>
@@ -103,7 +127,7 @@
             </div>
           </div>
         </mat-tab>
-        <mat-tab [disabled]="isLoading" label="Items">
+        <mat-tab [disabled]="isLoading || !selectedShipment?.shipmentID" label="Items">
           <ng-template mat-tab-label>
             <span class="mr-8">Items</span>
           </ng-template>
@@ -180,7 +204,7 @@
           </div>
         </mat-tab>
 
-        <mat-tab [disabled]="isLoading" label="Packages">
+        <mat-tab [disabled]="isLoading || !selectedShipment?.shipmentID" label="Packages">
           <ng-template mat-tab-label>
             <span class="mr-8">Packages</span>
           </ng-template>
@@ -257,7 +281,7 @@
             </div>
           </div>
         </mat-tab>
-        <mat-tab [disabled]="isLoading" label="Fees">
+        <mat-tab [disabled]="isLoading || !selectedShipment?.shipmentID" label="Fees">
           <ng-template mat-tab-label>
             <span class="mr-8">Fees</span>
           </ng-template>
@@ -278,7 +302,7 @@
                   </ng-container>
                   <!-- description Column -->
                   <ng-container matColumnDef="description">
-                    <mat-header-cell *matHeaderCellDef>description</mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef>Description</mat-header-cell>
                     <mat-cell *matCellDef="let row">{{row.description}}</mat-cell>
                   </ng-container>
                   <!-- feeAmount Column -->
@@ -317,7 +341,7 @@
             </div>
           </div>
         </mat-tab>
-        <mat-tab [disabled]="isLoading" label="Documents">
+        <mat-tab [disabled]="isLoading || !selectedShipment?.shipmentID" label="Documents">
           <ng-template mat-tab-label>
             <span class="mr-8">Documents</span>
           </ng-template>
@@ -602,7 +626,7 @@
             </div>
           </div>
         </mat-tab>
-        <mat-tab [disabled]="isLoading" label="Contacts">
+        <mat-tab [disabled]="isLoading || !selectedShipment?.shipmentID" label="Contacts">
           <ng-template mat-tab-label>
             <span class="mr-8">Contacts</span>
           </ng-template>
@@ -645,7 +669,7 @@
                         <mat-icon>more_horiz</mat-icon>
                       </button>
                       <mat-menu #moreMenu="matMenu">
-                        <button mat-menu-item (click)="openEditShipmentContactDialog(row, 'edit')"><mat-icon>build</mat-icon> Edit</button>
+                        <button mat-menu-item (click)="openEditShipmentContactDialog({}, 'edit')"><mat-icon>build</mat-icon> Edit</button>
                         <hr>
                         <button mat-menu-item (click)="onDeleteContact(row)"><mat-icon>delete</mat-icon> Delete</button>
                       </mat-menu>
@@ -686,7 +710,7 @@
 
   </div>
   <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="space-between center">
-    <button mat-raised-button color="accent" (click)="save()" class="dialog-button" [disabled]="shipmentForm.invalid"
+    <button mat-raised-button color="accent" (click)="save(true)" class="dialog-button" 
       aria-label="SAVE">
       <div fxLayoutAlign="center">
         <span *ngIf="!isSaving">SAVE</span>

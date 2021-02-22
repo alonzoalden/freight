@@ -35,6 +35,27 @@ export const getSelectedShipmentContactRow = createSelector(
   state => state.currentShipmentContactRow
 );
 
+export const getShipmentLineList = createSelector(
+  getShipmentFeatureState,
+  state => state.selectedShipmentLines
+);
+export const getShipmentPackageList = createSelector(
+  getShipmentFeatureState,
+  state => state.selectedShipmentPackages
+);
+export const getShipmentFeeList = createSelector(
+  getShipmentFeatureState,
+  state => state.selectedShipmentFees
+);
+export const getShipmentContactList = createSelector(
+  getShipmentFeatureState,
+  state => state.selectedShipmentContacts
+);
+export const getShipmentCommentList = createSelector(
+  getShipmentFeatureState,
+  state => state.selectedShipmentComments
+);
+
 export const getFeeList = createSelector(
   getShipmentFeatureState,
   state => state.feeList

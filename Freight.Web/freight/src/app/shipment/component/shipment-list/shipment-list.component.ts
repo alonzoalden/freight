@@ -39,7 +39,7 @@ export class ShipmentListComponent implements OnInit, OnDestroy {
   @Output() select = new EventEmitter<Item>();
   files: any;
   dataSource: any = new MatTableDataSource();
-  displayedColumns = ['itemNumber', 'itemName', 'htsCode', 'fnsku', 'unitPrice', 'actions'];
+  displayedColumns = ['shipmentID','hblNumber', 'mblNumber', 'containerNumber', 'etd', 'eta', 'txl', 'status', 'createdOn', 'actions'];
   isLeadRole: boolean;
   filteredCourses: any[];
   currentCategory: string;
@@ -66,7 +66,7 @@ export class ShipmentListComponent implements OnInit, OnDestroy {
     this.inputEnabled = true;
   }
   ngOnChanges(changes): void {
-    if (changes.items) {
+    if (changes.shipments) {
       this.dataSource = new MatTableDataSource<any>(this.shipments);
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;

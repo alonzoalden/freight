@@ -36,40 +36,51 @@
   </div>
 
   <mat-table class="item-list" matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}" *ngIf="!isLoading && dataSource?.data?.length">
+    <ng-template #none><span style="opacity: 0.5;">?</span></ng-template>
+    <!-- shipmentID Column -->
+    <ng-container matColumnDef="shipmentID">
+      <mat-header-cell *matHeaderCellDef>ID</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{row.shipmentID}}</mat-cell>
+    </ng-container>
     <!-- hblNumber Column -->
     <ng-container matColumnDef="hblNumber">
-      <mat-header-cell *matHeaderCellDef>HBL Number</mat-header-cell>
-      <mat-cell *matCellDef="let row">{{row.hblNumber}}</mat-cell>
+      <mat-header-cell *matHeaderCellDef>HBL</mat-header-cell>
+      <mat-cell *matCellDef="let row"><span *ngIf="row.hblNumber; else none">{{row.hblNumber}}</span></mat-cell>
     </ng-container>
     <!-- mblNumber Column -->
     <ng-container matColumnDef="mblNumber">
       <mat-header-cell *matHeaderCellDef>MBL</mat-header-cell>
-      <mat-cell *matCellDef="let row">{{row.mblNumber}}</mat-cell>
+      <mat-cell *matCellDef="let row"><span *ngIf="row.mblNumber; else none">{{row.mblNumber}}</span></mat-cell>
     </ng-container>
     <!-- containerNumber Column -->
     <ng-container matColumnDef="containerNumber">
       <mat-header-cell *matHeaderCellDef>Container #</mat-header-cell>
-      <mat-cell *matCellDef="let row">{{row.containerNumber}}</mat-cell>
+      <mat-cell *matCellDef="let row"><span *ngIf="row.containerNumber; else none">{{row.containerNumber}}</span></mat-cell>
     </ng-container>
     <!-- etd Column -->
     <ng-container matColumnDef="etd">
       <mat-header-cell *matHeaderCellDef>ETD</mat-header-cell>
-      <mat-cell *matCellDef="let row">{{row.etd | date}}</mat-cell>
+      <mat-cell *matCellDef="let row"><span *ngIf="row.etd; else none">{{row.etd | date}}</span></mat-cell>
     </ng-container>
     <!-- eta Column -->
     <ng-container matColumnDef="eta">
       <mat-header-cell *matHeaderCellDef>ETA</mat-header-cell>
-      <mat-cell *matCellDef="let row">{{row.eta | date}}</mat-cell>
+      <mat-cell *matCellDef="let row"><span *ngIf="row.eta; else none">{{row.eta | date}}</span></mat-cell>
     </ng-container>
     <!-- txl Column -->
     <ng-container matColumnDef="txl">
       <mat-header-cell *matHeaderCellDef>TXL</mat-header-cell>
-      <mat-cell *matCellDef="let row">{{row.txl | date}}</mat-cell>
+      <mat-cell *matCellDef="let row"><span *ngIf="row.txl; else none">{{row.txl | date}}</span></mat-cell>
+    </ng-container>
+    <!-- createdOn Column -->
+    <ng-container matColumnDef="createdOn">
+      <mat-header-cell *matHeaderCellDef>Created On</mat-header-cell>
+      <mat-cell *matCellDef="let row"><span *ngIf="row.createdOn; else none">{{row.createdOn | date}}</span></mat-cell>
     </ng-container>
     <!-- status Column -->
     <ng-container matColumnDef="status">
       <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
-      <mat-cell *matCellDef="let row">{{row.status}}</mat-cell>
+      <mat-cell *matCellDef="let row"><span *ngIf="row.status; else none">{{row.status}}</span></mat-cell>
     </ng-container>
     <!-- Actions Column -->
     <ng-container matColumnDef="actions">
@@ -99,7 +110,7 @@
 
     <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="onSelect(row)"
-      [ngClass]="{'selected' : row.itemID == selected?.shipmentID}" [@animate]="{value:'*',params:{y:'100%'}}" matRipple>
+      [ngClass]="{'selected' : row.shipmentID == selected?.shipmentID}" [@animate]="{value:'*',params:{y:'100%'}}" matRipple>
     </mat-row>
   </mat-table>
   <!-- <div *ngIf="!isLoading && dataSource?.filteredData.length === dataSource?.data.length"

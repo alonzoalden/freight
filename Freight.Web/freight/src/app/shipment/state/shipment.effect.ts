@@ -19,7 +19,8 @@ export class ShipmentEffects {
     return this.actions$
       .pipe(
         ofType(ShipmentPageActions.loadShipmentList),
-        concatMap(action => this.shipmentService.getShipmentList(action.businessID)
+        // concatMap(action => this.shipmentService.getShipmentList(action.businessID)
+        concatMap(action => this.shipmentService.getAllShipmentsList()
           .pipe(
             map(shipments => ShipmentApiActions.loadShipmentsListSuccess({ shipments })),
             catchError(error => {
@@ -39,7 +40,7 @@ export class ShipmentEffects {
         concatMap(action => this.shipmentService.updateShipment(action.shipment)
           .pipe(
             map((shipment) => {
-              this.notifyService.success('Success', `${shipment.shipmentID} has been updated.`, { timeOut:3500, clickToClose: true });
+              // this.notifyService.success('Success', `${shipment.shipmentID} has been updated.`, { timeOut:3500, clickToClose: true });
               return ShipmentApiActions.updateShipmentSuccess({ shipment });
             }),
             catchError(error => {
@@ -123,7 +124,6 @@ export class ShipmentEffects {
         )
       );
   });
-
   deleteShipmentPackage$ = createEffect(() => {
     return this.actions$
       .pipe(
@@ -135,7 +135,6 @@ export class ShipmentEffects {
               return ShipmentApiActions.deleteShipmentPackageSuccess({ shipmentPackageID: action.shipmentPackageID });
             }),
             catchError(error => {
-              console.log(error)
               this.notifyService.error('Error', `${error}`, { clickToClose: true });
               return of(ShipmentApiActions.deleteShipmentPackageFailure({ error }))
             })
@@ -154,7 +153,6 @@ export class ShipmentEffects {
               return ShipmentApiActions.deleteShipmentLineSuccess({ shipmentLineID: action.shipmentLineID });
             }),
             catchError(error => {
-              console.log(error)
               this.notifyService.error('Error', `${error}`, { clickToClose: true });
               return of(ShipmentApiActions.deleteShipmentLineFailure({ error }))
             })
@@ -173,7 +171,6 @@ export class ShipmentEffects {
               return ShipmentApiActions.deleteShipmentFeeSuccess({ shipmentFeeID: action.shipmentFeeID });
             }),
             catchError(error => {
-              console.log(error)
               this.notifyService.error('Error', `${error}`, { clickToClose: true });
               return of(ShipmentApiActions.deleteShipmentFeeFailure({ error }))
             })
@@ -236,7 +233,9 @@ export class ShipmentEffects {
         ofType(ShipmentPageActions.get3pl),
         mergeMap(action => this.shipmentService.get3plList()
           .pipe(
-            map(threePL => ShipmentApiActions.get3plSuccess({ threePL })),
+            map(threePL => {
+              return ShipmentApiActions.get3plSuccess({ threePL })
+            }),
             catchError(error => {
               this.notifyService.error('Error', `${error}`, { clickToClose: true });
               return of(ShipmentApiActions.get3plFailure({ error }))
@@ -290,5 +289,87 @@ export class ShipmentEffects {
         )
       );
   });
+
+  loadShipmentLineList$ = createEffect(() => {
+    return this.actions$
+      .pipe(
+        ofType(ShipmentPageActions.loadShipmentLineList),
+        mergeMap(action => this.shipmentService.getShipmentLineList(action.shipmentID)
+          .pipe(
+            map(shipmentLines => ShipmentApiActions.loadShipmentLineListSuccess({ shipmentLines })),
+            catchError(error => {
+              this.notifyService.error('Error', `${error}`, { clickToClose: true });
+              return of(ShipmentApiActions.loadShipmentLineListFailure({ error }))
+            })
+          )
+        )
+      );
+  });
+
+  loadShipmentPackagesList$ = createEffect(() => {
+    return this.actions$
+      .pipe(
+        ofType(ShipmentPageActions.loadShipmentPackageList),
+        mergeMap(action => this.shipmentService.getShipmentLineList(action.shipmentID)
+          .pipe(
+            map(shipmentPackages => ShipmentApiActions.loadShipmentPackageListSuccess({ shipmentPackages })),
+            catchError(error => {
+              this.notifyService.error('Error', `${error}`, { clickToClose: true });
+              return of(ShipmentApiActions.loadShipmentPackageListFailure({ error }))
+            })
+          )
+        )
+      );
+  });
+  loadShipmentFeeList$ = createEffect(() => {
+    return this.actions$
+      .pipe(
+        ofType(ShipmentPageActions.loadShipmentFeeList),
+        mergeMap(action => this.shipmentService.getShipmentFeeList(action.shipmentID)
+          .pipe(
+            map(shipmentFee => ShipmentApiActions.loadShipmentFeeListSuccess({ shipmentFee })),
+            catchError(error => {
+              this.notifyService.error('Error', `${error}`, { clickToClose: true });
+              return of(ShipmentApiActions.loadShipmentFeeListFailure({ error }))
+            })
+          )
+        )
+      );
+  });
+  loadShipmentContactList$ = createEffect(() => {
+    return this.actions$
+      .pipe(
+        ofType(ShipmentPageActions.loadShipmentContactList),
+        mergeMap(action => this.shipmentService.getShipmentContactList(action.shipmentID)
+          .pipe(
+            map(shipmentContacts => ShipmentApiActions.loadShipmentContactListSuccess({ shipmentContacts })),
+            catchError(error => {
+              this.notifyService.error('Error', `${error}`, { clickToClose: true });
+              return of(ShipmentApiActions.loadShipmentContactListFailure({ error }))
+            })
+          )
+        )
+      );
+  });
+  loadShipmentCommentList$ = createEffect(() => {
+    return this.actions$
+      .pipe(
+        ofType(ShipmentPageActions.loadShipmentCommentList),
+        mergeMap(action => this.shipmentService.getShipmentCommentList(action.shipmentID)
+          .pipe(
+            map(shipmentComments => ShipmentApiActions.loadShipmentCommentListSuccess({ shipmentComments })),
+            catchError(error => {
+              this.notifyService.error('Error', `${error}`, { clickToClose: true });
+              return of(ShipmentApiActions.loadShipmentCommentListFailure({ error }))
+            })
+          )
+        )
+      );
+  });
   
 }
+
+
+
+
+
