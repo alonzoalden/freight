@@ -79,6 +79,7 @@ export class EditShipmentDialogComponent implements OnInit, OnDestroy {
   shippersList: any;
   customersList: any;
   commentsList: any;
+  chatComment: any;
   close: boolean = false;
 
   private _unsubscribeAll: Subject<any>;
@@ -203,10 +204,17 @@ export class EditShipmentDialogComponent implements OnInit, OnDestroy {
         takeUntil(this._unsubscribeAll),
         ofType(ShipmentApiActions.updateShipmentSuccess))
       .subscribe((data) => {
-        //this.shipmentForm = this.createShipmentForm();
         if (this.close) {
           this.matDialogRef.close(data);
         }
+      });
+
+    this.actions$
+      .pipe(
+        takeUntil(this._unsubscribeAll),
+        ofType(ShipmentApiActions.createShipmentCommentSuccess))
+      .subscribe((data) => {
+        this.chatComment = null;
       });
 
     this.store.select(fromShipment.getShipmentLineList)
@@ -238,6 +246,7 @@ export class EditShipmentDialogComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy(): void {
     // Unsubscribe from all subscriptions
+    this.commentsList = null;
     this._unsubscribeAll.next();
     this._unsubscribeAll.complete();
   }
@@ -633,5 +642,17 @@ export class EditShipmentDialogComponent implements OnInit, OnDestroy {
         // }
         // this.dataSourceContacts.data = this.dataSourceContacts.data;
       });
+  }
+  addMessage() {
+    if (!this.chatComment) {
+      return;
+    }
+    const data = {
+      comment: this.chatComment,
+      shipmentID: this.selectedShipment.shipmentID,
+      createdBy: this.userInfo.userID
+    }
+    
+    this.store.dispatch(ShipmentPageActions.createShipmentComment({ shipmentComment: data }));
   }
 }

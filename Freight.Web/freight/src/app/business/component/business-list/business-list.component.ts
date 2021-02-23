@@ -178,7 +178,7 @@ export class BusinessListComponent implements OnInit, OnDestroy {
         // this.currentBusiness = this.companies.find(c => c.businessID == company.businessID);
         // this.store.dispatch(AppPageActions.setCurrentBusiness({ currentBusinessId: company.businessID }));
         this.store.dispatch(AppPageActions.setCurrentUser({ user }));
-        this.notifyService.success('Success', `Company has been updated to ${user.companyName}`, {timeOut: 4000, clickToClose: true });
+        this.notifyService.success('Success', `Company has been updated to ${row.businessCompanyName}`, {timeOut: 4000, clickToClose: true });
       });
 
     this.store.dispatch(AppPageActions.setCurrentUser({ user: this.userInfo }));

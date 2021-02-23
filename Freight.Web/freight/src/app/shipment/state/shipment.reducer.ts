@@ -277,7 +277,7 @@ export const shipmentReducer = createReducer<ShipmentState>(
     return {
       ...state,
       isSaving: false,
-      selectedShipmentComments: [action.shipmentComment, ...state.selectedShipmentComments]
+      selectedShipmentComments: [...state.selectedShipmentComments, action.shipmentComment]
     };
   }),
   on(ShipmentApiActions.createShipmentCommentFailure, (state, action): ShipmentState => {

@@ -1,7 +1,8 @@
 <div class="dialog-content-wrapper">
   <mat-toolbar class="mat-accent m-0">
     <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
-      <span class="title dialog-title">{{selectedShipment?.shipmentID ? 'Edit' : 'Create' }} Shipment <span *ngIf="selectedShipment?.shipmentID"> - {{selectedShipment?.shipmentID}}</span> </span>
+      <span class="title dialog-title">{{selectedShipment?.shipmentID ? 'Edit' : 'Create' }} Shipment <span
+          *ngIf="selectedShipment?.shipmentID"> - {{selectedShipment?.shipmentID}}</span> </span>
       <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
         <mat-icon>close</mat-icon>
       </button>
@@ -21,40 +22,46 @@
               <div fxLayout="column" fxLayoutAlign="start center">
                 <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
                   <mat-label> Shipper </mat-label>
-                  <mat-select  placeholder="Select Shipper" name="shipperID" formControlName="shipperID">
-                    <mat-option *ngFor="let shipper of shippersList" [value]=shipper.businessID>{{ shipper.companyName }}
+                  <mat-select placeholder="Select Shipper" name="shipperID" formControlName="shipperID">
+                    <mat-option *ngFor="let shipper of shippersList" [value]=shipper.businessID>{{ shipper.companyName
+                      }}
                     </mat-option>
                   </mat-select>
                 </mat-form-field>
                 <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
                   <mat-label> Customer </mat-label>
-                  <mat-select placeholder="Select Customer" name="customerID" formControlName="customerID" >
-                    <mat-option *ngFor="let customer of customersList" [value]=customer.customerID>{{ customer.companyName + ' - ' + customer.email }}
+                  <mat-select placeholder="Select Customer" name="customerID" formControlName="customerID">
+                    <mat-option *ngFor="let customer of customersList" [value]=customer.customerID>{{
+                      customer.companyName + ' - ' + customer.email }}
                     </mat-option>
                   </mat-select>
                 </mat-form-field>
                 <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
                   <mat-label> Origin FFW </mat-label>
-                  <mat-select placeholder="Select Origin FFW" name="fee" formControlName="originFFW" >
+                  <mat-select placeholder="Select Origin FFW" name="fee" formControlName="originFFW">
                     <mat-option *ngFor="let ffw of ffwList" [value]=ffw.businessID>{{ ffw.companyName }}</mat-option>
                   </mat-select>
                 </mat-form-field>
                 <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
                   <mat-label> Origin 3PL </mat-label>
-                  <mat-select placeholder="Select Origin 3PL" name="origin3PL" formControlName="origin3PL" >
-                    <mat-option *ngFor="let threepl of threePLList" [value]=threepl.businessID>{{ threepl.companyName }}</mat-option>
+                  <mat-select placeholder="Select Origin 3PL" name="origin3PL" formControlName="origin3PL">
+                    <mat-option *ngFor="let threepl of threePLList" [value]=threepl.businessID>{{ threepl.companyName }}
+                    </mat-option>
                   </mat-select>
                 </mat-form-field>
                 <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
                   <mat-label> Destination FFW </mat-label>
-                  <mat-select placeholder="Select Destination FFW" name="destinationFFW" formControlName="destinationFFW" >
+                  <mat-select placeholder="Select Destination FFW" name="destinationFFW"
+                    formControlName="destinationFFW">
                     <mat-option *ngFor="let ffw of ffwList" [value]=ffw.businessID>{{ ffw.companyName }}</mat-option>
                   </mat-select>
                 </mat-form-field>
                 <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
                   <mat-label> Destination 3PL </mat-label>
-                  <mat-select placeholder="Select Destination 3PL" name="destination3PL" formControlName="destination3PL" >
-                    <mat-option *ngFor="let threepl of threePLList" [value]=threepl.businessID>{{ threepl.companyName }}</mat-option>
+                  <mat-select placeholder="Select Destination 3PL" name="destination3PL"
+                    formControlName="destination3PL">
+                    <mat-option *ngFor="let threepl of threePLList" [value]=threepl.businessID>{{ threepl.companyName }}
+                    </mat-option>
                   </mat-select>
                 </mat-form-field>
               </div>
@@ -78,11 +85,11 @@
                 </mat-form-field>
                 <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
                   <mat-label> HBL </mat-label>
-                  <input matInput placeholder="HBL" name="hblNumber" formControlName="hblNumber" >
+                  <input matInput placeholder="HBL" name="hblNumber" formControlName="hblNumber">
                 </mat-form-field>
                 <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
                   <mat-label> MBL </mat-label>
-                  <input matInput placeholder="MBL" name="mblNumber" formControlName="mblNumber" >
+                  <input matInput placeholder="MBL" name="mblNumber" formControlName="mblNumber">
                 </mat-form-field>
                 <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
                   <mat-label> Container Number </mat-label>
@@ -135,7 +142,8 @@
           <div class="content p-24 bottom-actions" [@animate]="{value:'*',params:{x:'100%'}}">
             <div class="main-list-layout body-container m-0 top">
               <div fxLayout="column" fxLayoutAlign="start center">
-                <mat-table class="item-list w-100-p" matSort [dataSource]="dataSourceLines" [@animateStagger]="{value:'50'}" *ngIf="!isLoading && dataSourceLines">
+                <mat-table class="item-list w-100-p" matSort [dataSource]="dataSourceLines"
+                  [@animateStagger]="{value:'50'}" *ngIf="!isLoading && dataSourceLines">
                   <!-- index Column -->
                   <ng-container matColumnDef="index">
                     <mat-header-cell *matHeaderCellDef></mat-header-cell>
@@ -174,22 +182,28 @@
                         <mat-icon>more_horiz</mat-icon>
                       </button>
                       <mat-menu #moreMenu="matMenu">
-                        <button mat-menu-item (click)="openEditShipmentLineDialog(row, 'edit')"><mat-icon>build</mat-icon> Edit</button>
+                        <button mat-menu-item (click)="openEditShipmentLineDialog(row, 'edit')">
+                          <mat-icon>build</mat-icon> Edit
+                        </button>
                         <hr>
-                        <button mat-menu-item (click)="onDeleteLine(row)"><mat-icon>delete</mat-icon> Delete</button>
+                        <button mat-menu-item (click)="onDeleteLine(row)">
+                          <mat-icon>delete</mat-icon> Delete
+                        </button>
                       </mat-menu>
                     </mat-cell>
                   </ng-container>
                   <mat-header-row *matHeaderRowDef="displayedLinesColumns; sticky: true"></mat-header-row>
                   <mat-row *matRowDef="let row; columns: displayedLinesColumns;" (click)="onSelectLine(row)"
-                    [ngClass]="{'selected' : row.shipmentLineID == selectedShipmentLineRow?.shipmentLineID}" [@animate]="{value:'*',params:{y:'100%'}}" matRipple>
+                    [ngClass]="{'selected' : row.shipmentLineID == selectedShipmentLineRow?.shipmentLineID}"
+                    [@animate]="{value:'*',params:{y:'100%'}}" matRipple>
                   </mat-row>
                 </mat-table>
               </div>
             </div>
             <div class="body-container m-0">
               <div fxLayout="row" fxLayoutAlign="start start">
-                <button mat-raised-button color="primary" [disabled]="isLoading" fxLayoutAlign="center center" class="mr-32" (click)="openEditShipmentLineDialog({}, 'create')">
+                <button mat-raised-button color="primary" [disabled]="isLoading" fxLayoutAlign="center center"
+                  class="mr-32" (click)="openEditShipmentLineDialog({}, 'create')">
                   <mat-icon class="mr-8">add_circle_outline</mat-icon>
                   Add Item
                 </button>
@@ -212,8 +226,9 @@
 
             <div class="main-list-layout body-container m-0 top">
               <div fxLayout="column" fxLayoutAlign="start center">
-                <mat-table class="item-list w-100-p" matSort [dataSource]="dataSourcePackages" [@animateStagger]="{value:'50'}" *ngIf="!isLoading && dataSourcePackages">
-                  
+                <mat-table class="item-list w-100-p" matSort [dataSource]="dataSourcePackages"
+                  [@animateStagger]="{value:'50'}" *ngIf="!isLoading && dataSourcePackages">
+
                   <!-- index Column -->
                   <ng-container matColumnDef="index">
                     <mat-header-cell *matHeaderCellDef></mat-header-cell>
@@ -251,7 +266,7 @@
                     <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
                     <mat-cell *matCellDef="let row">{{row.status}}</mat-cell>
                   </ng-container>
-                  
+
                   <!-- Actions Column -->
                   <ng-container matColumnDef="actions">
                     <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
@@ -260,22 +275,28 @@
                         <mat-icon>more_horiz</mat-icon>
                       </button>
                       <mat-menu #moreMenu="matMenu">
-                        <button mat-menu-item (click)="openEditShipmentPackageDialog(row, 'edit')"><mat-icon>build</mat-icon> Edit</button>
+                        <button mat-menu-item (click)="openEditShipmentPackageDialog(row, 'edit')">
+                          <mat-icon>build</mat-icon> Edit
+                        </button>
                         <hr>
-                        <button mat-menu-item (click)="onDeletePackage(row)"><mat-icon>delete</mat-icon> Delete</button>
+                        <button mat-menu-item (click)="onDeletePackage(row)">
+                          <mat-icon>delete</mat-icon> Delete
+                        </button>
                       </mat-menu>
                     </mat-cell>
                   </ng-container>
                   <mat-header-row *matHeaderRowDef="displayedPackageColumns; sticky: true"></mat-header-row>
                   <mat-row *matRowDef="let row; columns: displayedPackageColumns;" (click)="onSelectPackage(row)"
-                    [ngClass]="{'selected' : row.shipmentPackageID == selectedShipmentPackageRow?.shipmentPackageID}" [@animate]="{value:'*',params:{y:'100%'}}" matRipple>
+                    [ngClass]="{'selected' : row.shipmentPackageID == selectedShipmentPackageRow?.shipmentPackageID}"
+                    [@animate]="{value:'*',params:{y:'100%'}}" matRipple>
                   </mat-row>
                 </mat-table>
               </div>
             </div>
             <div class="body-container m-0">
               <div fxLayout="row" fxLayoutAlign="start start">
-                <button mat-raised-button color="primary" [disabled]="isLoading" fxLayoutAlign="center center" class="mr-32" (click)="openEditShipmentPackageDialog({}, 'create')">
+                <button mat-raised-button color="primary" [disabled]="isLoading" fxLayoutAlign="center center"
+                  class="mr-32" (click)="openEditShipmentPackageDialog({}, 'create')">
                   <mat-icon class="mr-8">add_circle_outline</mat-icon>
                   Add Package
                 </button>
@@ -291,7 +312,8 @@
 
             <div class="main-list-layout body-container m-0 top">
               <div fxLayout="column" fxLayoutAlign="start center">
-                <mat-table class="item-list w-100-p" matSort [dataSource]="dataSourceFees" [@animateStagger]="{value:'50'}" *ngIf="!isLoading && dataSourceFees">
+                <mat-table class="item-list w-100-p" matSort [dataSource]="dataSourceFees"
+                  [@animateStagger]="{value:'50'}" *ngIf="!isLoading && dataSourceFees">
                   <!-- index Column -->
                   <ng-container matColumnDef="index">
                     <mat-header-cell *matHeaderCellDef></mat-header-cell>
@@ -320,22 +342,28 @@
                         <mat-icon>more_horiz</mat-icon>
                       </button>
                       <mat-menu #moreMenu="matMenu">
-                        <button mat-menu-item (click)="openEditShipmentFeeDialog(row, 'edit')"><mat-icon>build</mat-icon> Edit</button>
+                        <button mat-menu-item (click)="openEditShipmentFeeDialog(row, 'edit')">
+                          <mat-icon>build</mat-icon> Edit
+                        </button>
                         <hr>
-                        <button mat-menu-item (click)="onDeleteFee(row)"><mat-icon>delete</mat-icon> Delete</button>
+                        <button mat-menu-item (click)="onDeleteFee(row)">
+                          <mat-icon>delete</mat-icon> Delete
+                        </button>
                       </mat-menu>
                     </mat-cell>
                   </ng-container>
                   <mat-header-row *matHeaderRowDef="displayedFeeColumns; sticky: true"></mat-header-row>
                   <mat-row *matRowDef="let row; columns: displayedFeeColumns;" (click)="onSelectFee(row)"
-                    [ngClass]="{'selected' : row.shipmentFeeID == selectedShipmentFeeRow?.shipmentFeeID}" [@animate]="{value:'*',params:{y:'100%'}}" matRipple>
+                    [ngClass]="{'selected' : row.shipmentFeeID == selectedShipmentFeeRow?.shipmentFeeID}"
+                    [@animate]="{value:'*',params:{y:'100%'}}" matRipple>
                   </mat-row>
                 </mat-table>
               </div>
             </div>
             <div class="body-container m-0">
               <div fxLayout="row" fxLayoutAlign="start start">
-                <button mat-raised-button color="primary" [disabled]="isLoading" fxLayoutAlign="center center" class="mr-32" (click)="openEditShipmentFeeDialog({}, 'create')">
+                <button mat-raised-button color="primary" [disabled]="isLoading" fxLayoutAlign="center center"
+                  class="mr-32" (click)="openEditShipmentFeeDialog({}, 'create')">
                   <mat-icon class="mr-8">add_circle_outline</mat-icon>
                   Add Fee
                 </button>
@@ -636,14 +664,15 @@
 
             <div class="main-list-layout body-container m-0 top">
               <div fxLayout="column" fxLayoutAlign="start center">
-                <mat-table class="item-list w-100-p" matSort [dataSource]="dataSourceContacts" [@animateStagger]="{value:'50'}" *ngIf="!isLoading && dataSourceContacts">
+                <mat-table class="item-list w-100-p" matSort [dataSource]="dataSourceContacts"
+                  [@animateStagger]="{value:'50'}" *ngIf="!isLoading && dataSourceContacts">
                   <!-- index Column -->
                   <ng-container matColumnDef="index">
                     <mat-header-cell *matHeaderCellDef></mat-header-cell>
                     <mat-cell *matCellDef="let row; let i = index" class="text-muted">{{i + 1}}</mat-cell>
                   </ng-container>
 
-                  
+
                   <!-- contactFullName Column -->
                   <ng-container matColumnDef="contactFullName">
                     <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
@@ -669,20 +698,24 @@
                       <mat-menu #moreMenu="matMenu">
                         <!-- <button mat-menu-item (click)="openEditShipmentContactDialog({}, 'edit')"><mat-icon>build</mat-icon> Edit</button>
                         <hr> -->
-                        <button mat-menu-item (click)="onDeleteContact(row)"><mat-icon>delete</mat-icon> Delete</button>
+                        <button mat-menu-item (click)="onDeleteContact(row)">
+                          <mat-icon>delete</mat-icon> Delete
+                        </button>
                       </mat-menu>
                     </mat-cell>
                   </ng-container>
                   <mat-header-row *matHeaderRowDef="displayedContactsColumns; sticky: true"></mat-header-row>
                   <mat-row *matRowDef="let row; columns: displayedContactsColumns;" (click)="onSelectContact(row)"
-                    [ngClass]="{'selected' : row.shipmentContactID == selectedShipmentContactRow?.shipmentContactID}" [@animate]="{value:'*',params:{y:'100%'}}" matRipple>
+                    [ngClass]="{'selected' : row.shipmentContactID == selectedShipmentContactRow?.shipmentContactID}"
+                    [@animate]="{value:'*',params:{y:'100%'}}" matRipple>
                   </mat-row>
                 </mat-table>
               </div>
             </div>
             <div class="body-container m-0">
               <div fxLayout="row" fxLayoutAlign="start start">
-                <button mat-raised-button color="primary" [disabled]="isLoading" fxLayoutAlign="center center" class="mr-32" (click)="openEditShipmentContactDialog({}, 'create')">
+                <button mat-raised-button color="primary" [disabled]="isLoading" fxLayoutAlign="center center"
+                  class="mr-32" (click)="openEditShipmentContactDialog({}, 'create')">
                   <mat-icon class="mr-8">add_circle_outline</mat-icon>
                   Add Contact
                 </button>
@@ -692,24 +725,51 @@
         </mat-tab>
         <mat-tab *ngIf="media.isActive('lt-md')" [disabled]="isLoading" label="Messages" class="accent">
           <ng-template mat-tab-label>
-              <span class="mr-8">Messages</span>
-              <span style="font-weight: 400;">(4)</span>
+            <span class="mr-8">Messages</span>
+            <span style="font-weight: 400;">(4)</span>
           </ng-template>
           <div style="height: 100%; position: relative;">
-              <chat-panel-shipments style="height: 100%; position: relative; background-color: #fff !important; color: rgba(0, 0, 0, .78) !important"></chat-panel-shipments>
+            <chat-panel-shipments
+              style="height: 100%; position: relative; background-color: #fff !important; color: rgba(0, 0, 0, .78) !important">
+            </chat-panel-shipments>
           </div>
-      </mat-tab>
+        </mat-tab>
       </mat-tab-group>
     </form>
 
-    <div fxHide fxShow.gt-md style="position: relative;">
-      <chat-panel-shipments style="height: 100%; position: relative;"></chat-panel-shipments>
+
+    <div fxHide fxShow.gt-md fxLayout="column" style="width: 280px; min-width: 280px; max-width: 280px;">
+
+      <div class="title accent" fxLayout="row" fxLayoutAlign="center center" style="height: 65px;">
+        <mat-icon class="fuse-white-fg">chat</mat-icon>
+        <div class="chat-dialog-title" style="padding-left: 8px;">Messages</div>
+      </div>
+      <div fxFlex style="padding: 12px 12px 0 12px; overflow: auto; border-left: 1px solid #ddd">
+        <div *ngFor="let comment of commentsList" style="border-bottom: 1px solid #ddd; padding: 12px 0;">
+          {{comment.comment}}
+        </div>
+        
+      </div>
+      <div class="reply-form" fxFlex="0 0 auto" fxLayout="row" fxLayoutAlign="center center" style="padding: 6px 12px 0 12px; border-left: 1px solid #ddd">
+
+        <mat-form-field class="message-text" fxFlex floatLabel="never" appearance="standard">
+          <input matInput [(ngModel)]="chatComment" name="message" placeholder="Type your message">
+        </mat-form-field>
+
+        <button class="send-message-button" mat-icon-button (click)="addMessage()" aria-label="Send message" style="background-color: #f6f6f6; border-radius: 100%;">
+          <mat-icon class="secondary-text">send</mat-icon>
+        </button>
+
+
+      </div>
+      <!-- <chat-panel-shipments style="height: 100%; position: relative;"></chat-panel-shipments> -->
     </div>
+
+
 
   </div>
   <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="space-between center">
-    <button mat-raised-button color="accent" (click)="save(true)" class="dialog-button" 
-      aria-label="SAVE">
+    <button mat-raised-button color="accent" (click)="save(true)" class="dialog-button" aria-label="SAVE">
       <div fxLayoutAlign="center">
         <span *ngIf="!isSaving">SAVE</span>
         <mat-spinner diameter="20" *ngIf="isSaving"></mat-spinner>
