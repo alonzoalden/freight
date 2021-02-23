@@ -8,6 +8,7 @@ namespace Freight.API.Common.Model.Business
     {
         public int BusinessUserID { get; set; }
         public int BusinessID { get; set; }
+        public string BusinessCompanyName { get; set; }
 
         public int UserID { get; set; }
         public string UserEmail { get; set; }

@@ -34,6 +34,10 @@ namespace Freight.API.BAL
         {           
             return ShipmentDAL.GetShipment(id);
         }
+        public List<Shipment> GetShipmentByBusinessID(int businessid)
+        {
+            return ShipmentDAL.GetShipmentByBusinessID(businessid);
+        }
         public List<ShipmentLine> GetShipmentLineByShipmentID(int shipmentid)
         {            
             return ShipmentDAL.GetShipmentLineByShipmentID(shipmentid);

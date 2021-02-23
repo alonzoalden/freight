@@ -37,7 +37,17 @@ namespace Freight.API.DAL
                 return result;
             }
         }
+        public List<Shipment> GetShipmentByBusinessID(int businessid)
+        {
+            using (SqlConnection connection = new SqlConnection(DefaultConnection))
+            {
+                DynamicParameters p = new DynamicParameters();
+                p.Add("businessid", businessid);
+                List<Shipment> results = connection.Query<Shipment>("spGetShipmentByBusinessID", p, commandType: CommandType.StoredProcedure).ToList();
 
+                return results;
+            }
+        }
         public List<ShipmentLine> GetShipmentLineByShipmentID(int shipmentid)
         {
             using (SqlConnection connection = new SqlConnection(DefaultConnection))
