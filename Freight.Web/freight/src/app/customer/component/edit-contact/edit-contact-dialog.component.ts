@@ -17,11 +17,13 @@ import { Actions, ofType } from '@ngrx/effects';
 import { AppService } from 'app/app.service';
 import * as fromApp from 'app/_state';
 import { MatTableDataSource } from '@angular/material/table';
+import { fuseAnimations } from '@fuse/animations';
 
 @Component({
   selector: 'edit-contact-dialog',
   templateUrl: './edit-contact-dialog.component.html',
   styleUrls: ['./edit-contact-dialog.component.scss'],
+  animations: [fuseAnimations],
 })
 export class EditContactDialogComponent implements OnInit, OnDestroy {
   //imageURL = environment.imageURL;
@@ -87,17 +89,11 @@ export class EditContactDialogComponent implements OnInit, OnDestroy {
     this.actions$
       .pipe(
         takeUntil(this._unsubscribeAll),
-        ofType(CustomerApiActions.updateCustomerSuccess))
+        ofType(CustomerApiActions.createContactSuccess))
       .subscribe((data) => {
-        this.matDialogRef.close(data);
-      });
-
-    this.actions$
-      .pipe(
-        takeUntil(this._unsubscribeAll),
-        ofType(CustomerApiActions.createCustomerSuccess))
-      .subscribe((data) => {
-        this.dataSource.data.push(data);
+        this.contactForm.get('fullName').setValue('');
+        this.contactForm.get('email').setValue('');
+        this.contactForm.get('title').setValue('');
       });
       
   }
@@ -131,6 +127,7 @@ export class EditContactDialogComponent implements OnInit, OnDestroy {
     this.store.dispatch(CustomerPageActions.deleteContact({ contact: row }));
   }
   create(): void {
+
     this.store.dispatch(CustomerPageActions.createContact({ contact: this.contactForm.value }));
   }
   edit(): void {

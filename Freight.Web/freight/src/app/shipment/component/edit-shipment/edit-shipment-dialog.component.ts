@@ -79,6 +79,7 @@ export class EditShipmentDialogComponent implements OnInit, OnDestroy {
   shippersList: any;
   customersList: any;
   commentsList: any;
+  locationsList: any;
   chatComment: any;
   close: boolean = false;
 
@@ -197,6 +198,11 @@ export class EditShipmentDialogComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe(data => {
         this.shippersList = data;
+      });
+    this.store.select(fromShipment.getLocationList)
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe(data => {
+        this.locationsList = data;
       });
     
     this.actions$
