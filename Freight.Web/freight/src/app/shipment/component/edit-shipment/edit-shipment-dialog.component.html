@@ -9,7 +9,7 @@
     </mat-toolbar-row>
   </mat-toolbar>
   <div mat-dialog-content style="margin: 0; padding: 0; width: 100%; overflow: hidden;" fxLayout="row">
-    <form *ngIf="shipmentForm" name="itemForm" [formGroup]="shipmentForm" class="compose-form w-100-p">
+    <form *ngIf="shipmentForm" name="itemForm" [formGroup]="shipmentForm" class="compose-form w-100-p" style="overflow: auto">
       <mat-tab-group style="overflow: auto; position: relative; height: 100%;" fxFlex
         (selectedTabChange)="onSelectedTabChange()" [selectedIndex]="selectedTabIndex" #tabGroup class="accent white">
         <mat-tab [disabled]="isLoading" label="General">
@@ -738,7 +738,7 @@
     </form>
 
 
-    <div fxHide fxShow.gt-md fxLayout="column" style="width: 280px; min-width: 280px; max-width: 280px;">
+    <div fxHide fxShow.gt-sm fxLayout="column" style="width: 280px; min-width: 280px; max-width: 280px;">
 
       <div class="title accent" fxLayout="row" fxLayoutAlign="center center" style="height: 65px;">
         <mat-icon class="fuse-white-fg">chat</mat-icon>

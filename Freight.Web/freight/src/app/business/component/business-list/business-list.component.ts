@@ -169,6 +169,7 @@ export class BusinessListComponent implements OnInit, OnDestroy {
     this.oidcSecurityService.logoff();
   }
   selectBusiness(row): void {
+    this.onSelect(row);
     const userData = {...this.userInfo};
     userData.businessID = row.businessID;
     this.isLoading = true;
