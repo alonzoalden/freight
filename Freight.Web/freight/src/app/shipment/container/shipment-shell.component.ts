@@ -19,6 +19,7 @@ export class ShipmentShellComponent implements OnDestroy {
   shipmentEntities$: Observable<Shipment[]>;
   selectedShipment$: Observable<Shipment>;
   isLoading$: Observable<boolean>;
+  isShipmentListLoading$: Observable<boolean>;
 
   private _unsubscribeAll: Subject<any>;
 
@@ -31,23 +32,27 @@ export class ShipmentShellComponent implements OnDestroy {
   }
 
   ngOnInit(): void {
-    this.shipmentEntities$ = this.store.select(fromShipment.getAllShipmentList);
-    this.selectedShipment$ = this.store.select(fromShipment.getSelectedShipment);
-    setTimeout(() => this.isLoading$ = this.store.select(fromShipment.getIsLoading), 1);
-    this.appStore.select(fromApp.getCurrentBusinessEntityId)
-      .pipe(takeUntil(this._unsubscribeAll))
-      .subscribe(businessID => {
-        this.store.dispatch(ShipmentPageActions.loadShipmentList({ businessID }));
-        this.store.dispatch(ShipmentPageActions.get3pl());
-        this.store.dispatch(ShipmentPageActions.getFfw());
-        this.store.dispatch(ShipmentPageActions.getShippers());
-        this.store.dispatch(ShipmentPageActions.getCustomers({businessID}));
-        this.store.dispatch(ShipmentPageActions.loadContactList({businessID}));
-      });
-
+    setTimeout(() => {
+      this.isLoading$ = this.store.select(fromShipment.getIsLoading)
+      this.shipmentEntities$ = this.store.select(fromShipment.getAllShipmentList);
+      this.selectedShipment$ = this.store.select(fromShipment.getSelectedShipment);
+      this.isShipmentListLoading$ = this.store.select(fromShipment.getIsShipmentListLoading);
+      this.appStore.select(fromApp.getCurrentBusinessEntityId)
+        .pipe(takeUntil(this._unsubscribeAll))
+        .subscribe(businessID => {
+          this.store.dispatch(ShipmentPageActions.loadShipmentList({ businessID }));
+          this.store.dispatch(ShipmentPageActions.get3pl());
+          this.store.dispatch(ShipmentPageActions.getFfw());
+          this.store.dispatch(ShipmentPageActions.getShippers());
+          this.store.dispatch(ShipmentPageActions.getCustomers({ businessID }));
+        });
+    }, 10);
   }
   selectItem(shipment: Shipment): void {
     this.store.dispatch(ShipmentPageActions.setCurrentShipment({ currentShipment: shipment }));
+  }
+  deleteShipment(shipmentID: Shipment): void {
+    this.store.dispatch(ShipmentPageActions.deleteShipment({ shipmentID }));
   }
   ngOnDestroy(): void {
     this._unsubscribeAll.next();

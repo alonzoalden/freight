@@ -145,6 +145,22 @@ export const navigation: FuseNavigation[] = [
         ]
       },
       {
+        id: 'Locations',
+        title: 'Locations',
+        translate: 'Locations',
+        type: 'collapsable',
+        icon: '',
+        url: '/location',
+        children: [
+          {
+            id: 'All Locations',
+            title: 'All Locations',
+            type: 'item',
+            url: '/location',
+          },
+        ]
+      },
+      {
         id: 'Fees',
         title: 'Fees',
         translate: 'Fees',

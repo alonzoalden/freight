@@ -29,6 +29,9 @@ import { FuseConfig } from "@fuse/types";
 import { FuseConfigService } from "@fuse/services/config.service";
 import { User } from "app/_shared/model/user";
 import { BusinessPageActions } from '../../state/actions';
+import { OidcSecurityService } from "angular-auth-oidc-client";
+import * as fromAppState from 'app/_state';
+import { AppPageActions } from 'app/_state/actions';
 @Component({
   selector: 'business-list',
   templateUrl: './business-list.component.html',
@@ -44,7 +47,7 @@ export class BusinessListComponent implements OnInit, OnDestroy {
   @Output() deleteBusiness = new EventEmitter<any>();
   files: any;
   dataSource: any = new MatTableDataSource();
-  displayedColumns = ['companyName', 'isShipper', 'is3PL', 'isFFW'];
+  displayedColumns = ['businessCompanyName', 'actions'];
   isLeadRole: boolean;
   filteredCourses: any[];
   currentCategory: string;
@@ -65,6 +68,7 @@ export class BusinessListComponent implements OnInit, OnDestroy {
     private store: Store<fromBusiness.State>,
     private notifyService: NotificationsService,
     private _fuseConfigService: FuseConfigService,
+    private oidcSecurityService: OidcSecurityService,
   ) {
     this._unsubscribeAll = new Subject();
     this.searchTerm = "";
@@ -160,6 +164,25 @@ export class BusinessListComponent implements OnInit, OnDestroy {
     this.searchTerm = '';
     this.applyFilter(this.searchTerm);
     this.focusMainInput();
-
   }
+  logout() {
+    this.oidcSecurityService.logoff();
+  }
+  selectBusiness(row): void {
+    const userData = {...this.userInfo};
+    userData.businessID = row.businessID;
+    this.isLoading = true;
+    this.appService.updateUser(userData)
+      .subscribe((user)=> {
+        this.isLoading = false;
+        // this.currentBusiness = this.companies.find(c => c.businessID == company.businessID);
+        // this.store.dispatch(AppPageActions.setCurrentBusiness({ currentBusinessId: company.businessID }));
+        this.store.dispatch(AppPageActions.setCurrentUser({ user }));
+        this.notifyService.success('Success', `Company has been updated to ${user.companyName}`, {timeOut: 4000, clickToClose: true });
+      });
+
+    this.store.dispatch(AppPageActions.setCurrentUser({ user: this.userInfo }));
+    //this.store.dispatch(AppPageActions.setCurrentBusiness({ currentBusinessId: this.userInfo.businessID }));
+  }
+
 }

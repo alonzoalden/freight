@@ -19,19 +19,36 @@ export class ShipmentEffects {
     return this.actions$
       .pipe(
         ofType(ShipmentPageActions.loadShipmentList),
-        // concatMap(action => this.shipmentService.getShipmentList(action.businessID)
-        concatMap(action => this.shipmentService.getAllShipmentsList()
+        concatMap(action => this.shipmentService.getShipmentList(action.businessID)
           .pipe(
             map(shipments => ShipmentApiActions.loadShipmentsListSuccess({ shipments })),
             catchError(error => {
               this.notifyService.error('Error', `${error}`, { clickToClose: true });
-              return of(ShipmentApiActions.loadShipmentsListFailure({ error }))
+              return of(ShipmentApiActions.loadShipmentsListFailure({ error }));
             })
           )
         )
       );
   });
-  
+
+  createShipment$ = createEffect(() => {
+    return this.actions$
+      .pipe(
+        ofType(ShipmentPageActions.createShipment),
+        concatMap(action => this.shipmentService.createShipment(action.shipment)
+          .pipe(
+            map((shipment) => {
+              this.notifyService.success('Success', `${shipment.shipmentID} has been created.`, { timeOut:3500, clickToClose: true });
+              return ShipmentApiActions.createShipmentSuccess({ shipment });
+            }),
+            catchError(error => {
+              this.notifyService.error('Error', `${error}`, { clickToClose: true });
+              return of(ShipmentApiActions.createShipmentFailure({ error }))
+            })
+          )
+        )
+      );
+  });
 
   updateShipment$ = createEffect(() => {
     return this.actions$
@@ -52,6 +69,115 @@ export class ShipmentEffects {
       );
   });
 
+  deleteShipment$ = createEffect(() => {
+    return this.actions$
+      .pipe(
+        ofType(ShipmentPageActions.deleteShipment),
+        concatMap(action => this.shipmentService.deleteShipment(action.shipmentID)
+          .pipe(
+            map(() => {
+              this.notifyService.success('Success', `${action.shipmentID} has been removed.`, { timeOut:3500, clickToClose: true });
+              return ShipmentApiActions.deleteShipmentSuccess({ shipmentID: action.shipmentID });
+            }),
+            catchError(error => {
+              this.notifyService.error('Error', `${error}`, { clickToClose: true });
+              return of(ShipmentApiActions.deleteShipmentFailure({ error }))
+            })
+          )
+        )
+      );
+  });
+
+  createShipmentLine$ = createEffect(() => {
+    return this.actions$
+      .pipe(
+        ofType(ShipmentPageActions.createShipmentLine),
+        concatMap(action => this.shipmentService.createShipmentLine(action.shipmentLine)
+          .pipe(
+            map((shipmentLine: ShipmentLine) => {
+              this.notifyService.success('Success', `Line has been created.`, { timeOut:3500, clickToClose: true });
+              return ShipmentApiActions.createShipmentLineSuccess({ shipmentLine });
+            }),
+            catchError(error => {
+              this.notifyService.error('Error', `${error}`, { clickToClose: true });
+              return of(ShipmentApiActions.createShipmentLineFailure({ error }))
+            })
+          )
+        )
+      );
+  });
+  createShipmentPackage$ = createEffect(() => {
+    return this.actions$
+      .pipe(
+        ofType(ShipmentPageActions.createShipmentPackage),
+        concatMap(action => this.shipmentService.createShipmentPackage(action.shipmentPackage)
+          .pipe(
+            map((shipmentPackage: ShipmentPackage) => {
+              this.notifyService.success('Success', `Package has been created.`, { timeOut:3500, clickToClose: true });
+              return ShipmentApiActions.createShipmentPackageSuccess({ shipmentPackage });
+            }),
+            catchError(error => {
+              this.notifyService.error('Error', `${error}`, { clickToClose: true });
+              return of(ShipmentApiActions.createShipmentPackageFailure({ error }))
+            })
+          )
+        )
+      );
+  });
+  createShipmentFee$ = createEffect(() => {
+    return this.actions$
+      .pipe(
+        ofType(ShipmentPageActions.createShipmentFee),
+        concatMap(action => this.shipmentService.createShipmentFee(action.shipmentFee)
+          .pipe(
+            map((shipmentFee: ShipmentFee) => {
+              this.notifyService.success('Success', `Fee has been created.`, { timeOut:3500, clickToClose: true });
+              return ShipmentApiActions.createShipmentFeeSuccess({ shipmentFee });
+            }),
+            catchError(error => {
+              this.notifyService.error('Error', `${error}`, { clickToClose: true });
+              return of(ShipmentApiActions.createShipmentFeeFailure({ error }))
+            })
+          )
+        )
+      );
+  });
+  createShipmentContact$ = createEffect(() => {
+    return this.actions$
+      .pipe(
+        ofType(ShipmentPageActions.createShipmentContact),
+        concatMap(action => this.shipmentService.createShipmentContact(action.shipmentContact)
+          .pipe(
+            map((shipmentContact: ShipmentContact) => {
+              this.notifyService.success('Success', `Contact has been created.`, { timeOut:3500, clickToClose: true });
+              return ShipmentApiActions.createShipmentContactSuccess({ shipmentContact });
+            }),
+            catchError(error => {
+              this.notifyService.error('Error', `${error}`, { clickToClose: true });
+              return of(ShipmentApiActions.createShipmentContactFailure({ error }))
+            })
+          )
+        )
+      );
+  });
+  createShipmentComment$ = createEffect(() => {
+    return this.actions$
+      .pipe(
+        ofType(ShipmentPageActions.createShipmentComment),
+        concatMap(action => this.shipmentService.createShipmentComment(action.shipmentComment)
+          .pipe(
+            map((shipmentComment: any) => {
+              this.notifyService.success('Success', `Comment has been created.`, { timeOut:3500, clickToClose: true });
+              return ShipmentApiActions.createShipmentCommentSuccess({ shipmentComment });
+            }),
+            catchError(error => {
+              this.notifyService.error('Error', `${error}`, { clickToClose: true });
+              return of(ShipmentApiActions.createShipmentCommentFailure({ error }))
+            })
+          )
+        )
+      );
+  });
   editShipmentPackage$ = createEffect(() => {
     return this.actions$
       .pipe(
@@ -77,7 +203,7 @@ export class ShipmentEffects {
         concatMap(action => this.shipmentService.editShipmentLine(action.shipmentLine)
           .pipe(
             map((shipmentLine: ShipmentLine) => {
-              this.notifyService.success('Success', `${shipmentLine.shipmentLineID} has been updated.`, { timeOut:3500, clickToClose: true });
+              this.notifyService.success('Success', `${shipmentLine.itemItemName} has been updated.`, { timeOut:3500, clickToClose: true });
               return ShipmentApiActions.editShipmentLineSuccess({ shipmentLine });
             }),
             catchError(error => {
@@ -95,7 +221,7 @@ export class ShipmentEffects {
         concatMap(action => this.shipmentService.editShipmentFee(action.shipmentFee)
           .pipe(
             map((shipmentFee: ShipmentFee) => {
-              this.notifyService.success('Success', `${shipmentFee.shipmentFeeID} has been updated.`, { timeOut:3500, clickToClose: true });
+              this.notifyService.success('Success', `${shipmentFee.feeFeeType} has been updated.`, { timeOut:3500, clickToClose: true });
               return ShipmentApiActions.editShipmentFeeSuccess({ shipmentFee });
             }),
             catchError(error => {
@@ -113,12 +239,30 @@ export class ShipmentEffects {
         concatMap(action => this.shipmentService.editShipmentContact(action.shipmentContact)
           .pipe(
             map((shipmentContact: ShipmentContact) => {
-              this.notifyService.success('Success', `${shipmentContact.shipmentContactID} has been updated.`, { timeOut:3500, clickToClose: true });
+              this.notifyService.success('Success', `${shipmentContact.contactEmail} has been updated.`, { timeOut:3500, clickToClose: true });
               return ShipmentApiActions.editShipmentContactSuccess({ shipmentContact });
             }),
             catchError(error => {
               this.notifyService.error('Error', `${error}`, { clickToClose: true });
               return of(ShipmentApiActions.editShipmentContactFailure({ error }))
+            })
+          )
+        )
+      );
+  });
+  editShipmentComment$ = createEffect(() => {
+    return this.actions$
+      .pipe(
+        ofType(ShipmentPageActions.editShipmentComment),
+        concatMap(action => this.shipmentService.editShipmentComment(action.shipmentComment)
+          .pipe(
+            map((shipmentComment: any) => {
+              this.notifyService.success('Success', `Comment has been updated.`, { timeOut:3500, clickToClose: true });
+              return ShipmentApiActions.editShipmentCommentSuccess({ shipmentComment });
+            }),
+            catchError(error => {
+              this.notifyService.error('Error', `${error}`, { clickToClose: true });
+              return of(ShipmentApiActions.editShipmentCommentFailure({ error }))
             })
           )
         )
@@ -178,6 +322,24 @@ export class ShipmentEffects {
         )
       );
   });
+  deleteShipmentContact$ = createEffect(() => {
+    return this.actions$
+      .pipe(
+        ofType(ShipmentPageActions.deleteShipmentContact),
+        concatMap(action => this.shipmentService.deleteShipmentContact(action.shipmentContactID)
+          .pipe(
+            map((ShipmentPackage) => {
+              this.notifyService.success('Success', `Shipment Contact has been removed.`, { timeOut:3500, clickToClose: true });
+              return ShipmentApiActions.deleteShipmentContactSuccess({ shipmentContactID: action.shipmentContactID });
+            }),
+            catchError(error => {
+              this.notifyService.error('Error', `${error}`, { clickToClose: true });
+              return of(ShipmentApiActions.deleteShipmentContactFailure({ error }))
+            })
+          )
+        )
+      );
+  });
 
   loadFeeList$ = createEffect(() => {
     return this.actions$
@@ -199,7 +361,7 @@ export class ShipmentEffects {
     return this.actions$
       .pipe(
         ofType(ShipmentPageActions.loadContactList),
-        mergeMap(action => this.shipmentService.getContactList(action.businessID)
+        mergeMap(action => this.shipmentService.getContactList(action.customerID)
           .pipe(
             map(contacts => ShipmentApiActions.loadContactsListSuccess({ contacts })),
             catchError(error => {
@@ -310,7 +472,7 @@ export class ShipmentEffects {
     return this.actions$
       .pipe(
         ofType(ShipmentPageActions.loadShipmentPackageList),
-        mergeMap(action => this.shipmentService.getShipmentLineList(action.shipmentID)
+        mergeMap(action => this.shipmentService.getShipmentPackageList(action.shipmentID)
           .pipe(
             map(shipmentPackages => ShipmentApiActions.loadShipmentPackageListSuccess({ shipmentPackages })),
             catchError(error => {
@@ -361,6 +523,21 @@ export class ShipmentEffects {
             catchError(error => {
               this.notifyService.error('Error', `${error}`, { clickToClose: true });
               return of(ShipmentApiActions.loadShipmentCommentListFailure({ error }))
+            })
+          )
+        )
+      );
+  });
+  loadLocationsSuccess$ = createEffect(() => {
+    return this.actions$
+      .pipe(
+        ofType(ShipmentPageActions.getLocations),
+        mergeMap(action => this.shipmentService.getLocationsList(action.businessID)
+          .pipe(
+            map(locations => ShipmentApiActions.getLocationsSuccess({ locations })),
+            catchError(error => {
+              this.notifyService.error('Error', `${error}`, { clickToClose: true });
+              return of(ShipmentApiActions.getLocationsFailure({ error }))
             })
           )
         )

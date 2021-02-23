@@ -10,7 +10,9 @@
         [shipments]="shipmentEntities$ | async"
         [selected]="selectedShipment$ | async"
         [isLoading]="isLoading$ | async"
+        [isShipmentListLoading]="isShipmentListLoading$ | async"
         (select)="selectItem($event)"
+        (deleteShipment)="deleteShipment($event)"
       ></shipment-list>
     </div>
     <!-- / CONTENT -->

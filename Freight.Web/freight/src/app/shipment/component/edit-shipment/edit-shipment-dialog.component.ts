@@ -40,10 +40,10 @@ export class EditShipmentDialogComponent implements OnInit, OnDestroy {
   dataSourcePackages: any;
   dataSourceFees: any;
   dataSourceContacts: any;
-  displayedLinesColumns = ['index', 'itemNumber', 'itemName', 'htsCode', 'unitPrice', 'quantity', 'actions'];
+  displayedLinesColumns = ['index', 'itemItemName', 'itemItemNumber', 'unitPrice', 'quantity', 'actions'];
   displayedPackageColumns = ['index', 'shippingCarrierID', 'dimension', 'weight', 'shippingServiceID', 'trackingNumber', 'status', 'actions'];
-  displayedFeeColumns = ['index', 'feeType', 'description', 'feeAmount', 'actions'];
-  displayedContactsColumns = ['index', 'from', 'lastName', 'email', 'updates', 'actions'];
+  displayedFeeColumns = ['index', 'feeFeeType', 'feeAmount', 'actions'];
+  displayedContactsColumns = ['index', 'contactFullName', 'contactEmail', 'actions'];
 
   userInfo: User;
   shipmentForm: FormGroup;
@@ -235,16 +235,6 @@ export class EditShipmentDialogComponent implements OnInit, OnDestroy {
         this.commentsList = data;
       });
 
-
-    if (this.router.url.includes('all')) {
-    }
-    if (this.router.url.includes('open')) {
-    }
-    if (this.router.url.includes('closed')) {
-    }
-    if (this.router.url.includes('cancelled')) {
-    }
-
   }
   ngOnDestroy(): void {
     // Unsubscribe from all subscriptions
@@ -256,7 +246,7 @@ export class EditShipmentDialogComponent implements OnInit, OnDestroy {
     return this._formBuilder.group({
       shipmentID: [this.selectedShipment?.shipmentID],
       businessID: [this.businessID],
-      shipperID: [this.selectedShipment?.shipperID],
+      shipperID: [{value:this.selectedShipment?.shipperID, disabled: true}],
       customerID: [this.selectedShipment?.customerID],
       customer: [''],
       originFFW: [this.selectedShipment?.originFFW],
@@ -316,7 +306,9 @@ export class EditShipmentDialogComponent implements OnInit, OnDestroy {
     if (close) {
       this.close = true;
     }
-    this.store.dispatch(ShipmentPageActions.updateShipment({ shipment: this.shipmentForm.value }));
+    const data = {...this.shipmentForm.value};
+    data.shipperID = this.selectedShipment?.shipperID;
+    this.store.dispatch(ShipmentPageActions.updateShipment({ shipment: data }));
   }
 
   onSelectPackage(currentShipmentPackageRow: ShipmentPackage): void {
@@ -515,26 +507,26 @@ export class EditShipmentDialogComponent implements OnInit, OnDestroy {
         if (!data) {
           return;
         }
-        if (updateType == 'edit') {
-          if (data.shippingPackageID) {
-            // if editing a saved package
-            const index = this.dataSourcePackages.data.findIndex(item => item.shippingPackageID == data.shippingPackageID);
-            this.dataSourcePackages.data.splice(index, 1, data);
-            this.onSelectPackage(this.dataSourcePackages.data[index]);
-          }
-          else if (!data.shippingPackageID) {
-            // if editing a package that is not saved yet
-            const index = this.dataSourcePackages.data.findIndex(item => item == this.selectedShipmentPackageRow);
-            this.dataSourcePackages.data.splice(index, 1, data);
-            this.onSelectPackage(this.dataSourcePackages.data[index]);
-          }
-        }
-        else {
-          // if creating
-          this.dataSourcePackages.data.unshift(data);
-          this.onSelectPackage(this.dataSourcePackages.data[0]);
-        }
-        this.dataSourcePackages.data = this.dataSourcePackages.data;
+        // if (updateType == 'edit') {
+        //   if (data.shippingPackageID) {
+        //     // if editing a saved package
+        //     const index = this.dataSourcePackages.data.findIndex(item => item.shippingPackageID == data.shippingPackageID);
+        //     this.dataSourcePackages.data.splice(index, 1, data);
+        //     this.onSelectPackage(this.dataSourcePackages.data[index]);
+        //   }
+        //   else if (!data.shippingPackageID) {
+        //     // if editing a package that is not saved yet
+        //     const index = this.dataSourcePackages.data.findIndex(item => item == this.selectedShipmentPackageRow);
+        //     this.dataSourcePackages.data.splice(index, 1, data);
+        //     this.onSelectPackage(this.dataSourcePackages.data[index]);
+        //   }
+        // }
+        // else {
+        //   // if creating
+        //   this.dataSourcePackages.data.unshift(data);
+        //   this.onSelectPackage(this.dataSourcePackages.data[0]);
+        // }
+        // this.dataSourcePackages.data = this.dataSourcePackages.data;
 
       });
   }
@@ -550,26 +542,26 @@ export class EditShipmentDialogComponent implements OnInit, OnDestroy {
         if (!data) {
           return;
         }
-        if (updateType == 'edit') {
-          if (data.shipmentLineID) {
-            // if editing a saved package
-            const index = this.dataSourceLines.data.findIndex(item => item.shipmentLineID == data.shipmentLineID);
-            this.dataSourceLines.data.splice(index, 1, data);
-            this.onSelectPackage(this.dataSourceLines.data[index]);
-          }
-          else if (!data.shipmentLineID) {
-            // if editing a package that is not saved yet
-            const index = this.dataSourceLines.data.findIndex(item => item == this.selectedShipmentPackageRow);
-            this.dataSourceLines.data.splice(index, 1, data);
-            this.onSelectPackage(this.dataSourceLines.data[index]);
-          }
-        }
-        else {
-          // if creating
-          this.dataSourceLines.data.unshift(data);
-          this.onSelectPackage(this.dataSourceLines.data[0]);
-        }
-        this.dataSourceLines.data = this.dataSourceLines.data;
+        // if (updateType == 'edit') {
+        //   if (data.shipmentLineID) {
+        //     // if editing a saved package
+        //     const index = this.dataSourceLines.data.findIndex(item => item.shipmentLineID == data.shipmentLineID);
+        //     this.dataSourceLines.data.splice(index, 1, data);
+        //     this.onSelectPackage(this.dataSourceLines.data[index]);
+        //   }
+        //   else if (!data.shipmentLineID) {
+        //     // if editing a package that is not saved yet
+        //     const index = this.dataSourceLines.data.findIndex(item => item == this.selectedShipmentPackageRow);
+        //     this.dataSourceLines.data.splice(index, 1, data);
+        //     this.onSelectPackage(this.dataSourceLines.data[index]);
+        //   }
+        // }
+        // else {
+        //   // if creating
+        //   this.dataSourceLines.data.unshift(data);
+        //   this.onSelectPackage(this.dataSourceLines.data[0]);
+        // }
+        // this.dataSourceLines.data = this.dataSourceLines.data;
 
       });
   }
@@ -585,26 +577,26 @@ export class EditShipmentDialogComponent implements OnInit, OnDestroy {
         if (!data) {
           return;
         }
-        if (updateType == 'edit') {
-          if (data.shipmentFeeID) {
-            // if editing a saved package
-            const index = this.dataSourceFees.data.findIndex(item => item.shipmentFeeID == data.shipmentFeeID);
-            this.dataSourceFees.data.splice(index, 1, data);
-            this.onSelectPackage(this.dataSourceFees.data[index]);
-          }
-          else if (!data.shipmentFeeID) {
-            // if editing a package that is not saved yet
-            const index = this.dataSourceFees.data.findIndex(item => item == this.selectedShipmentPackageRow);
-            this.dataSourceFees.data.splice(index, 1, data);
-            this.onSelectPackage(this.dataSourceFees.data[index]);
-          }
-        }
-        else {
-          // if creating
-          this.dataSourceFees.data.unshift(data);
-          this.onSelectPackage(this.dataSourceFees.data[0]);
-        }
-        this.dataSourceFees.data = this.dataSourceFees.data;
+        // if (updateType == 'edit') {
+        //   if (data.shipmentFeeID) {
+        //     // if editing a saved package
+        //     const index = this.dataSourceFees.data.findIndex(item => item.shipmentFeeID == data.shipmentFeeID);
+        //     this.dataSourceFees.data.splice(index, 1, data);
+        //     this.onSelectPackage(this.dataSourceFees.data[index]);
+        //   }
+        //   else if (!data.shipmentFeeID) {
+        //     // if editing a package that is not saved yet
+        //     const index = this.dataSourceFees.data.findIndex(item => item == this.selectedShipmentPackageRow);
+        //     this.dataSourceFees.data.splice(index, 1, data);
+        //     this.onSelectPackage(this.dataSourceFees.data[index]);
+        //   }
+        // }
+        // else {
+        //   // if creating
+        //   this.dataSourceFees.data.unshift(data);
+        //   this.onSelectPackage(this.dataSourceFees.data[0]);
+        // }
+        // this.dataSourceFees.data = this.dataSourceFees.data;
 
       });
   }
@@ -620,26 +612,26 @@ export class EditShipmentDialogComponent implements OnInit, OnDestroy {
         if (!data) {
           return;
         }
-        if (updateType == 'edit') {
-          if (data.shipmentContactID) {
-            // if editing a saved package
-            const index = this.dataSourceContacts.data.findIndex(item => item.shipmentContactID == data.shipmentContactID);
-            this.dataSourceContacts.data.splice(index, 1, data);
-            this.onSelectPackage(this.dataSourceContacts.data[index]);
-          }
-          else if (!data.shipmentContactID) {
-            // if editing a package that is not saved yet
-            const index = this.dataSourceContacts.data.findIndex(item => item == this.selectedShipmentPackageRow);
-            this.dataSourceContacts.data.splice(index, 1, data);
-            this.onSelectPackage(this.dataSourceContacts.data[index]);
-          }
-        }
-        else {
-          // if creating
-          this.dataSourceContacts.data.unshift(data);
-          this.onSelectPackage(this.dataSourceContacts.data[0]);
-        }
-        this.dataSourceContacts.data = this.dataSourceContacts.data;
+        // if (updateType == 'edit') {
+        //   if (data.shipmentContactID) {
+        //     // if editing a saved package
+        //     const index = this.dataSourceContacts.data.findIndex(item => item.shipmentContactID == data.shipmentContactID);
+        //     this.dataSourceContacts.data.splice(index, 1, data);
+        //     this.onSelectPackage(this.dataSourceContacts.data[index]);
+        //   }
+        //   else if (!data.shipmentContactID) {
+        //     // if editing a package that is not saved yet
+        //     const index = this.dataSourceContacts.data.findIndex(item => item == this.selectedShipmentPackageRow);
+        //     this.dataSourceContacts.data.splice(index, 1, data);
+        //     this.onSelectPackage(this.dataSourceContacts.data[index]);
+        //   }
+        // }
+        // else {
+        //   // if creating
+        //   this.dataSourceContacts.data.unshift(data);
+        //   this.onSelectPackage(this.dataSourceContacts.data[0]);
+        // }
+        // this.dataSourceContacts.data = this.dataSourceContacts.data;
       });
   }
 }

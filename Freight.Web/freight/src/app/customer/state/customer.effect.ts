@@ -168,11 +168,11 @@ export class CustomerEffects {
     return this.actions$
       .pipe(
         ofType(CustomerPageActions.deleteContact),
-        concatMap(action => this.customerService.deleteContact(action.contact.contactid)
+        concatMap(action => this.customerService.deleteContact(action.contact.contactID)
           .pipe(
             map(() => {
               this.notifyService.success('Success', `Contact ${action.contact.email} has been deleted.`, { timeOut:3500, clickToClose: true });
-              return CustomerApiActions.deleteContactSuccess({ contactid: action.contact.contactid });
+              return CustomerApiActions.deleteContactSuccess({ contactid: action.contact.contactID });
             }),
             catchError(error => {
               this.notifyService.error('Error', `${error}`, { clickToClose: true });

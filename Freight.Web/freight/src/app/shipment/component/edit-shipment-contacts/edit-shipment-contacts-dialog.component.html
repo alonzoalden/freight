@@ -16,8 +16,8 @@
         <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
           <mat-label> Contact </mat-label>
           <!-- <input matInput placeholder="Contact" name="contactID" formControlName="contactID"required> -->
-          <mat-select (selectionChange)="updateForm()" placeholder="Contacts" name="contact" formControlName="contact" required>
-            <mat-option *ngFor="let contact of contacts" [value]=contact>{{ contact.contactType }}
+          <mat-select placeholder="Contacts" name="contact" formControlName="contactID" required>
+            <mat-option *ngFor="let contact of contacts" [value]=contact.contactID>{{ contact.email + ' - ' + contact.fullName }}
             </mat-option>
           </mat-select>
         </mat-form-field>

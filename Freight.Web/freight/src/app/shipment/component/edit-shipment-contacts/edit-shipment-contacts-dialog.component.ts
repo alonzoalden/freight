@@ -1,27 +1,18 @@
 import { Component, Inject, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-// import { WarehouseItemManagerService } from '../../warehouse-item-manager.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { environment } from 'environments/environment';
-import { NotificationsService } from 'angular2-notifications';
-//import { Item } from 'app/_shared/model/item';
 import { Store } from '@ngrx/store';
 import * as fromShipment from '../../state';
 import { ShipmentApiActions, ShipmentPageActions } from '../../state/actions';
-import { ShipmentEffects } from '../../state/shipment.effect';
 import { Actions, ofType } from '@ngrx/effects';
 import { Shipment, ShipmentContact } from '../../../_shared/model/shipment';
-import { ShipmentService } from '../../shipment.service';
 import { AppService } from 'app/app.service';
-import { Router } from '@angular/router';
-import { MatTabGroup } from '@angular/material/tabs';
-import { DomSanitizer } from '@angular/platform-browser';
 import { MediaObserver } from '@angular/flex-layout';
 import { fuseAnimations } from '@fuse/animations';
 import * as fromApp from 'app/_state';
-import { Customer } from 'app/_shared/model/customer';
+import { Contact } from 'app/_shared/model/customer';
 
 @Component({
   selector: 'edit-shipment-contacts-dialog',
@@ -45,12 +36,7 @@ export class EditShipmentContactsDialogComponent implements OnInit, OnDestroy {
     private _formBuilder: FormBuilder,
     public matDialogRef: MatDialogRef<EditShipmentContactsDialogComponent>,
     public appService: AppService,
-    private shipmentService: ShipmentService,
-    private notifyService: NotificationsService,
-    private shipmentEffects: ShipmentEffects,
     private readonly actions$: Actions,
-    private router: Router,
-    private dom: DomSanitizer,
     public media: MediaObserver,
     private appStore: Store<fromApp.State>,
     @Inject(MAT_DIALOG_DATA) private inputData: any,
@@ -60,18 +46,24 @@ export class EditShipmentContactsDialogComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.selectedShipmentContact = this.inputData;
-    
+
     this.appStore.select(fromApp.getCurrentBusinessEntityId)
-    .pipe(takeUntil(this._unsubscribeAll))
-    .subscribe(businessID => {
-      this.store.dispatch(ShipmentPageActions.loadContactList({ businessID }));
-    });
-    
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe(businessID => {
+      });
+    this.store.select(fromShipment.getSelectedShipment)
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe(data => {
+        this.selectedShipment = data
+        if (data.customerID) {
+          this.store.dispatch(ShipmentPageActions.loadContactList({ customerID: this.selectedShipment.customerID }));
+        }
+      });
     this.store.select(fromShipment.getContactList)
-    .pipe(takeUntil(this._unsubscribeAll))
-    .subscribe((contacts: Customer[]) => {
-      this.contacts = contacts
-      this.shipmentContactForm = this.createShipmentContactForm();
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe((contacts: Contact[]) => {
+        this.contacts = contacts;
+        this.shipmentContactForm = this.createShipmentContactForm();
       });
     this.store.select(fromShipment.getIsLoading)
       .pipe(takeUntil(this._unsubscribeAll))
@@ -93,19 +85,17 @@ export class EditShipmentContactsDialogComponent implements OnInit, OnDestroy {
     this.actions$
       .pipe(
         takeUntil(this._unsubscribeAll),
-        ofType(ShipmentApiActions.updateShipmentSuccess))
+        ofType(ShipmentApiActions.editShipmentContactSuccess))
       .subscribe((data) => {
         this.matDialogRef.close(data);
       });
-
-    if (this.router.url.includes('all')) {
-    }
-    if (this.router.url.includes('open')) {
-    }
-    if (this.router.url.includes('closed')) {
-    }
-    if (this.router.url.includes('cancelled')) {
-    }
+    this.actions$
+      .pipe(
+        takeUntil(this._unsubscribeAll),
+        ofType(ShipmentApiActions.createShipmentContactSuccess))
+      .subscribe((data) => {
+        this.matDialogRef.close(data);
+      });
 
   }
   ngOnDestroy(): void {
@@ -117,23 +107,16 @@ export class EditShipmentContactsDialogComponent implements OnInit, OnDestroy {
   createShipmentContactForm(): FormGroup {
     return this._formBuilder.group({
       shipmentContactID: [Number(this.selectedShipmentContact.shipmentContactID)],
-      businessID: [this.selectedShipmentContact.businessID],
-      shipmentID: [this.selectedShipmentContact.shipmentID],
-      contactID: [this.selectedShipmentContact.contactID],
+      businessID: [this.selectedShipment.businessID],
+      shipmentID: [this.selectedShipment.shipmentID],
+      contactID: [],
+      createdBy: [this.selectedShipment.createdBy],
       email: [],
       firstName: [],
       lastName: [],
       contact: [this.contacts?.find(i => i.shipmentContactID == this.selectedShipmentContact.shipmentContactID)]
     });
   }
-  updateForm(): void {
-    const line = this.shipmentContactForm.controls['contact'].value;
-    this.shipmentContactForm.controls.contactID.setValue(line.contactID);
-    this.shipmentContactForm.controls.email.setValue(line.email);
-    this.shipmentContactForm.controls.firstName.setValue(line.firstName);
-    this.shipmentContactForm.controls.lastName.setValue(line.lastName);
-  }
-
   onSave(): void {
     if (this.selectedShipmentContact.shipmentContactID) {
       this.edit();
@@ -141,98 +124,11 @@ export class EditShipmentContactsDialogComponent implements OnInit, OnDestroy {
       this.save();
     }
   }
-
   save(): void {
-    this.matDialogRef.close(this.shipmentContactForm.value);
+    this.store.dispatch(ShipmentPageActions.createShipmentContact({ shipmentContact: this.shipmentContactForm.value }));
   }
   edit(): void {
-    this.store.dispatch(ShipmentPageActions.updateShipment({ shipment: this.shipmentContactForm.value }));
-  }
-
-  onFileSelected(event, type) {
-
-    this[type] = event.target.files[0];
-    if (!this[type]) {
-      return;
-    }
-
-    // save the selectedFile 
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      this[type + '64'] = this.dom.bypassSecurityTrustResourceUrl(e.target.result.toString());
-      this[type + '64Original'] = e.target.result;
-
-      //this.selectedFile64 = e.target.result;
-      //this.refreshPhotoDataSource(this.selectedFile64, this.selectedFile.name);
-      // const image = new Image();
-      // image.src = this[type + '64'];
-    };
-    reader.readAsDataURL(this[type]);
-
-    // setTimeout(()=> {
-    //     const output: any = document.getElementById(this.selectedFile.name);
-    //     console.log(output);
-    //     output.src = URL.createObjectURL(event.target.files[0]);
-    // }, 100);
-
-    //this.selectedFile = null;
-    this[type] = null;
-    // const formData: FormData = new FormData();
-    // formData.append('uploadedFiles', this.selectedFile, this.selectedFile.name);
-    // this.warehouseOutboundService.uploadMarkShipImage(formData)
-    //     .pipe(takeUntil(this._unsubscribeAll))
-    //     .subscribe(
-    //         (filepath)=> {
-    //             this.refreshPhotoDataSource(filepath);
-    //             this.isImageLoading = false;
-    //             // this.fileInput.nativeElement.value = '';
-    //             this.onSelectPhoto(this.dataSourcePhotos.data[0]);
-
-    //             // save the selectedFile 
-    //             const reader = new FileReader();
-    //             reader.onload = (e) => {
-    //                 this.selectedFile64 = e.target.result;
-    //                 const image = new Image();
-    //                 image.src = this.selectedFile64;
-    //                 image.onload = () => {
-    //                     this.selectedFile64Width = image.width;
-    //                     this.selectedFile64Height = image.height;
-    //                 };
-    //             };
-    //             const file = this.selectedFile;
-    //             reader.readAsDataURL(file);
-    //             this.selectedFile = null;
-    //         },
-    //         (err) => {
-    //             this.notifyService.error('Error', `${err}`, { clickToClose: true });
-    //             this.isImageLoading = false;
-    //             this.selectedFile = null;
-    //             // this.fileInput.nativeElement.value = '';
-    //         }
-    //     );
-  }
-  onRemovePdf(type) {
-    const confirmation = confirm(`Are you sure you want to remove this file?`);
-    if (!confirmation) {
-      return;
-    }
-    this[type] = null;
-  }
-  viewPDF(type) {
-    let win = window.open();
-    win.document.write('<iframe src="data:application/pdf;' + this[type] + '" frameborder="0" style="border:0; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%;" allowfullscreen></iframe>');
-
-  }
-  downloadPDF(type) {
-    const linkSource = 'data:application/pdf;' + this[type];
-    window.open(linkSource);
-    const downloadLink = document.createElement("a");
-    downloadLink.setAttribute('target', '_blank');
-    const fileName = "sample.pdf";
-
-    downloadLink.href = linkSource;
-    downloadLink.download = fileName;
-    downloadLink.click();
+    this.store.dispatch(ShipmentPageActions.editShipmentContact({ shipmentContact: this.shipmentContactForm.value }));
   }
 
 }

@@ -133,8 +133,8 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     this.appService.updateUser(userData)
       .subscribe((user)=> {
         this.isLoading = false;
-        this.currentBusiness = this.companies.find(c => c.businessID == company.businessID)
-        this.store.dispatch(AppPageActions.setCurrentBusiness({ currentBusinessId: company.businessID }));
+        this.currentBusiness = this.companies.find(c => c.businessID == company.businessID);
+        // this.store.dispatch(AppPageActions.setCurrentBusiness({ currentBusinessId: company.businessID }));
         this.store.dispatch(AppPageActions.setCurrentUser({ user }));
         this.notifyService.success('Success', `Company has been updated to ${this.currentBusiness.companyName}`, {timeOut: 4000, clickToClose: true });
       });

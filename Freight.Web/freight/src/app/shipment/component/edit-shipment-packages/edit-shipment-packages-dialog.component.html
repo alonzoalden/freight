@@ -12,8 +12,12 @@
 
       <div fxLayout="column" fxLayoutAlign="start start">
         <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+          <mat-label> Package Number </mat-label>
+          <input matInput placeholder="Package Number" name="packageNumber" formControlName="packageNumber" required>
+        </mat-form-field>
+        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
           <mat-label> Dimension </mat-label>
-          <input matInput placeholder="Dimension" name="Dimension" formControlName="dimension"required>
+          <input matInput placeholder="Dimension" name="Dimension" formControlName="dimension" required>
         </mat-form-field>
         <div fxLayout="row" fxLayoutAlign="start center" class="w-100-p">
           <mat-form-field fxFlex="67%" appearance="outline" floatLabel="always" class="mr-16">
@@ -31,22 +35,25 @@
         <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
           <mat-label>Shipping Carrier</mat-label>
           <mat-select placeholder="Shipping Carrier" name="shippingCarrierID" formControlName="shippingCarrierID" required>
-            <mat-option *ngFor="let item of appService.shippingCarriers" value="{{item.id}}">{{ item.name }}</mat-option>
+            <mat-option *ngFor="let item of appService.shippingCarriers" [value]="item.id">{{ item.name }}</mat-option>
           </mat-select>
         </mat-form-field>
         <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
           <mat-label>Shipping Service</mat-label>
           <mat-select placeholder="Shipping Service" name="shippingServiceID" formControlName="shippingServiceID" required>
-            <mat-option *ngFor="let item of appService.shippingServices" value="{{item.id}}">{{ item.name }}</mat-option>
+            <mat-option *ngFor="let item of appService.shippingServices" [value]="item.id">{{ item.name }}</mat-option>
           </mat-select>
         </mat-form-field>
         <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
           <mat-label> Tracking Number </mat-label>
           <input matInput placeholder="Tracking Number" name="trackingNumber" formControlName="trackingNumber" required>
         </mat-form-field>
-        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
-          <mat-label> Status </mat-label>
-          <input matInput placeholder="Status" name="Status" formControlName="status" required>
+        <mat-form-field appearance="outline" floatLabel="always" >
+          <mat-label>Status</mat-label>
+          <mat-select placeholder="Choose Status" name="status" formControlName="status">
+            <mat-option *ngFor="let item of appService.dropDownTypes.status" [value]="item">{{ item }}
+            </mat-option>
+          </mat-select>
         </mat-form-field>
         <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
           <mat-label> Shipping Rate </mat-label>

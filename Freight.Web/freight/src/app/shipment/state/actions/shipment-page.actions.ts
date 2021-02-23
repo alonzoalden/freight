@@ -17,6 +17,33 @@ export const createShipment = createAction(
   '[Shipment Page] Create Shipment',
   props<{ shipment: Shipment }>()
 );
+export const deleteShipment = createAction(
+  '[Shipment Page] Delete Shipment',
+  props<{ shipmentID: any }>()
+);
+
+export const createShipmentLine = createAction(
+  '[Shipment Page] Create Shipment Line',
+  props<{ shipmentLine: ShipmentLine }>()
+);
+export const createShipmentPackage = createAction(
+  '[Shipment Page] Create Shipment Package',
+  props<{ shipmentPackage: ShipmentPackage }>()
+);
+export const createShipmentFee = createAction(
+  '[Shipment Page] Create Shipment Fee',
+  props<{ shipmentFee: ShipmentFee }>()
+);
+export const createShipmentContact = createAction(
+  '[Shipment Page] Create Shipment Contact',
+  props<{ shipmentContact: ShipmentContact }>()
+);
+export const createShipmentComment = createAction(
+  '[Shipment Page] Create Shipment Comment',
+  props<{ shipmentComment: any }>()
+);
+
+
 export const setCurrentShipment = createAction(
   '[Shipment Page] Set Current Shipment',
   props<{ currentShipment: Shipment }>()
@@ -40,19 +67,23 @@ export const setCurrentShipmentContactRow = createAction(
 
 export const editShipmentPackage = createAction(
   '[Shipment Page] Edit Shipment Package',
-  props<{ shipmentPackage: any }>()
+  props<{ shipmentPackage: ShipmentPackage }>()
 );
 export const editShipmentLine = createAction(
   '[Shipment Page] Edit Shipment Line',
-  props<{ shipmentLine: any }>()
+  props<{ shipmentLine: ShipmentLine }>()
 );
 export const editShipmentFee = createAction(
   '[Shipment Page] Edit Shipment Fee',
-  props<{ shipmentFee: any }>()
+  props<{ shipmentFee: ShipmentFee }>()
 );
 export const editShipmentContact = createAction(
   '[Shipment Page] Edit Shipment Contact',
-  props<{ shipmentContact: any }>()
+  props<{ shipmentContact: ShipmentContact }>()
+);
+export const editShipmentComment = createAction(
+  '[Shipment Page] Edit Shipment Comment',
+  props<{ shipmentComment: any }>()
 );
 
 export const deleteShipmentPackage = createAction(
@@ -71,6 +102,10 @@ export const deleteShipmentContact = createAction(
   '[Shipment Page] Delete Shipment Contact',
   props<{ shipmentContactID: any }>()
 );
+export const deleteShipmentComment = createAction(
+  '[Shipment Page] Delete Shipment Contact',
+  props<{ shipmentCommentID: any }>()
+);
 
 export const loadFeeList = createAction(
   '[Shipment Page] Load Fee List',
@@ -83,7 +118,7 @@ export const loadItemList = createAction(
 
 export const loadContactList = createAction(
   '[Shipment Page] Load Contact List',
-  props<{ businessID: any }>()
+  props<{ customerID: any }>()
 );
 
 export const getShippers = createAction(
@@ -99,7 +134,10 @@ export const getCustomers = createAction(
   '[Shipment Page] Get Customer',
   props<{ businessID: any }>()
 ); 
-
+export const getLocations = createAction(
+  '[Shipment Page] Get Customer',
+  props<{ businessID: any }>()
+); 
 
 export const loadShipmentLineList = createAction(
   '[Shipment Page] Shipment Line List',

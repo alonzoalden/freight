@@ -55,8 +55,11 @@ export class ShipmentLine {
     public itemID: number,
     public quantity: string,
     public unitPrice: number,
-    public UpdatedOn: Date,
-    public CreatedOn: Date,
+    public itemItemName: number,
+    public itemItemNumber: number,
+    public itemHTSCode: number,
+    public updatedOn: Date,
+    public createdOn: Date,
   ) { }
 }
 export class ShipmentPackage {
@@ -90,6 +93,7 @@ export class ShipmentFee {
     public shipmentFeeID: number,
     public shipmentID: number,
     public feeID: number,
+    public feeFeeType: string,
     public feeAmount: number,
     public updatedOn: Date,
     public createdOn: Date,
@@ -100,6 +104,9 @@ export class ShipmentContact {
     public shipmentContactID: number,
     public businessID: number,
     public shipmentID: number,
+    public contactFullName: number,
+    public contactEmail: number,
+    public contactTitle: number,
     public contactID: number,
     public updatedBy: number
   ) { }

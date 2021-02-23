@@ -39,6 +39,8 @@ import { EditShipmentPackagesDialogComponent } from './component/edit-shipment-p
 import { EditShipmentFeesDialogComponent } from './component/edit-shipment-fees/edit-shipment-fees-dialog.component';
 import { EditShipmentContactsDialogComponent } from './component/edit-shipment-contacts/edit-shipment-contacts-dialog.component';
 import { EditShipmentLinesDialogComponent } from './component/edit-shipment-lines/edit-shipment-lines-dialog.component';
+import { CreateShipmentDialogComponent } from './component/create-shipment-dialog/create-shipment-dialog.component';
+
 import { ChatPanelShipmentsComponent } from './component/chat-panel/chat-panel.component';
 
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -56,7 +58,8 @@ const routes: Routes = [];
     EditShipmentPackagesDialogComponent,
     EditShipmentFeesDialogComponent,
     EditShipmentContactsDialogComponent,
-    EditShipmentLinesDialogComponent
+    EditShipmentLinesDialogComponent,
+    CreateShipmentDialogComponent
   ],
   imports: [
     RouterModule.forChild(routes),

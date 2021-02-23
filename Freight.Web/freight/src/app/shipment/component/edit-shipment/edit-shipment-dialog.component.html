@@ -7,53 +7,53 @@
       </button>
     </mat-toolbar-row>
   </mat-toolbar>
-  <div mat-dialog-content style="margin: 0; padding: 0; width: 100%; overflow: hidden;">
-    <form *ngIf="shipmentForm" name="itemForm" [formGroup]="shipmentForm" class="compose-form w-100-p" fxLayout="column" fxFlex>
+  <div mat-dialog-content style="margin: 0; padding: 0; width: 100%; overflow: hidden;" fxLayout="row">
+    <form *ngIf="shipmentForm" name="itemForm" [formGroup]="shipmentForm" class="compose-form w-100-p">
       <mat-tab-group style="overflow: auto; position: relative; height: 100%;" fxFlex
         (selectedTabChange)="onSelectedTabChange()" [selectedIndex]="selectedTabIndex" #tabGroup class="accent white">
         <mat-tab [disabled]="isLoading" label="General">
           <ng-template mat-tab-label>
             <span class="mr-8">General Info</span>
-            <mat-icon style="color: red;">error_outline</mat-icon>
+            <!-- <mat-icon style="color: red;">error_outline</mat-icon> -->
           </ng-template>
           <div class="content p-24" [@animate]="{value:'*',params:{x:'100%'}}">
             <div class="body-container m-0">
               <div fxLayout="column" fxLayoutAlign="start center">
                 <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
                   <mat-label> Shipper </mat-label>
-                  <mat-select (selectionChange)="save(null)" placeholder="Select Shipper" name="shipperID" formControlName="shipperID" required>
+                  <mat-select  placeholder="Select Shipper" name="shipperID" formControlName="shipperID">
                     <mat-option *ngFor="let shipper of shippersList" [value]=shipper.businessID>{{ shipper.companyName }}
                     </mat-option>
                   </mat-select>
                 </mat-form-field>
                 <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
                   <mat-label> Customer </mat-label>
-                  <mat-select placeholder="Select Customer" name="customerID" formControlName="customerID" required>
+                  <mat-select placeholder="Select Customer" name="customerID" formControlName="customerID" >
                     <mat-option *ngFor="let customer of customersList" [value]=customer.customerID>{{ customer.companyName + ' - ' + customer.email }}
                     </mat-option>
                   </mat-select>
                 </mat-form-field>
                 <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
                   <mat-label> Origin FFW </mat-label>
-                  <mat-select placeholder="Select Origin FFW" name="fee" formControlName="originFFW" required>
+                  <mat-select placeholder="Select Origin FFW" name="fee" formControlName="originFFW" >
                     <mat-option *ngFor="let ffw of ffwList" [value]=ffw.businessID>{{ ffw.companyName }}</mat-option>
                   </mat-select>
                 </mat-form-field>
                 <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
                   <mat-label> Origin 3PL </mat-label>
-                  <mat-select placeholder="Select Origin 3PL" name="origin3PL" formControlName="origin3PL" required>
+                  <mat-select placeholder="Select Origin 3PL" name="origin3PL" formControlName="origin3PL" >
                     <mat-option *ngFor="let threepl of threePLList" [value]=threepl.businessID>{{ threepl.companyName }}</mat-option>
                   </mat-select>
                 </mat-form-field>
                 <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
                   <mat-label> Destination FFW </mat-label>
-                  <mat-select placeholder="Select Destination FFW" name="destinationFFW" formControlName="destinationFFW" required>
+                  <mat-select placeholder="Select Destination FFW" name="destinationFFW" formControlName="destinationFFW" >
                     <mat-option *ngFor="let ffw of ffwList" [value]=ffw.businessID>{{ ffw.companyName }}</mat-option>
                   </mat-select>
                 </mat-form-field>
                 <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
                   <mat-label> Destination 3PL </mat-label>
-                  <mat-select placeholder="Select Destination 3PL" name="destination3PL" formControlName="destination3PL" required>
+                  <mat-select placeholder="Select Destination 3PL" name="destination3PL" formControlName="destination3PL" >
                     <mat-option *ngFor="let threepl of threePLList" [value]=threepl.businessID>{{ threepl.companyName }}</mat-option>
                   </mat-select>
                 </mat-form-field>
@@ -64,7 +64,7 @@
         <mat-tab [disabled]="isLoading || !selectedShipment?.shipmentID" label="Shipment">
           <ng-template mat-tab-label>
             <span class="mr-8">Shipment Info</span>
-            <mat-icon style="color: red;">error_outline</mat-icon>
+            <!-- <mat-icon style="color: red;">error_outline</mat-icon> -->
           </ng-template>
           <div class="content p-24" [@animate]="{value:'*',params:{x:'100%'}}">
             <div class="body-container m-0">
@@ -78,11 +78,11 @@
                 </mat-form-field>
                 <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
                   <mat-label> HBL </mat-label>
-                  <input matInput placeholder="HBL" name="hblNumber" formControlName="hblNumber" required>
+                  <input matInput placeholder="HBL" name="hblNumber" formControlName="hblNumber" >
                 </mat-form-field>
                 <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
                   <mat-label> MBL </mat-label>
-                  <input matInput placeholder="MBL" name="mblNumber" formControlName="mblNumber" required>
+                  <input matInput placeholder="MBL" name="mblNumber" formControlName="mblNumber" >
                 </mat-form-field>
                 <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
                   <mat-label> Container Number </mat-label>
@@ -142,24 +142,24 @@
                     <mat-cell *matCellDef="let row; let i = index" class="text-muted">{{i + 1}}</mat-cell>
                   </ng-container>
                   <!-- itemNumber Column -->
-                  <ng-container matColumnDef="itemNumber">
+                  <ng-container matColumnDef="itemItemNumber">
                     <mat-header-cell *matHeaderCellDef>Item Number</mat-header-cell>
-                    <mat-cell *matCellDef="let row">{{row.itemNumber}}</mat-cell>
+                    <mat-cell *matCellDef="let row">{{row.itemItemNumber}}</mat-cell>
                   </ng-container>
                   <!-- itemName Column -->
-                  <ng-container matColumnDef="itemName">
+                  <ng-container matColumnDef="itemItemName">
                     <mat-header-cell *matHeaderCellDef>Item Name</mat-header-cell>
-                    <mat-cell *matCellDef="let row">{{row.itemName}}</mat-cell>
+                    <mat-cell *matCellDef="let row">{{row.itemItemName}}</mat-cell>
                   </ng-container>
                   <!-- htsCode Column -->
                   <ng-container matColumnDef="htsCode">
                     <mat-header-cell *matHeaderCellDef>HTSCode</mat-header-cell>
-                    <mat-cell *matCellDef="let row">{{row.htsCode}}</mat-cell>
+                    <mat-cell *matCellDef="let row">{{row.itemHTSCode}}</mat-cell>
                   </ng-container>
                   <!-- unitPrice Column -->
                   <ng-container matColumnDef="unitPrice">
                     <mat-header-cell *matHeaderCellDef>Unit Price</mat-header-cell>
-                    <mat-cell *matCellDef="let row">{{row.unitPrice}}</mat-cell>
+                    <mat-cell *matCellDef="let row">{{row.unitPrice | currency}}</mat-cell>
                   </ng-container>
                   <!-- quantity Column -->
                   <ng-container matColumnDef="quantity">
@@ -182,7 +182,7 @@
                   </ng-container>
                   <mat-header-row *matHeaderRowDef="displayedLinesColumns; sticky: true"></mat-header-row>
                   <mat-row *matRowDef="let row; columns: displayedLinesColumns;" (click)="onSelectLine(row)"
-                    [ngClass]="{'selected' : row == selectedShipmentLineRow}" [@animate]="{value:'*',params:{y:'100%'}}" matRipple>
+                    [ngClass]="{'selected' : row.shipmentLineID == selectedShipmentLineRow?.shipmentLineID}" [@animate]="{value:'*',params:{y:'100%'}}" matRipple>
                   </mat-row>
                 </mat-table>
               </div>
@@ -227,7 +227,8 @@
                   <!-- shippingCarrierID Column -->
                   <ng-container matColumnDef="shippingCarrierID">
                     <mat-header-cell *matHeaderCellDef>Carrier</mat-header-cell>
-                    <mat-cell *matCellDef="let row">{{appService.shippingCarriersMap[row.shippingCarrierID]}}</mat-cell>
+                    <!-- <mat-cell *matCellDef="let row">{{appService.shippingCarriersMap[row.shippingCarrierID]}}</mat-cell> -->
+                    <mat-cell *matCellDef="let row">UPS</mat-cell>
                   </ng-container>
                   <!-- weight Column -->
                   <ng-container matColumnDef="weight">
@@ -237,7 +238,8 @@
                   <!-- shippingServiceID Column -->
                   <ng-container matColumnDef="shippingServiceID">
                     <mat-header-cell *matHeaderCellDef>Shipping Service</mat-header-cell>
-                    <mat-cell *matCellDef="let row">{{appService.shippingServicesMap[row.shippingServiceID]}}</mat-cell>
+                    <!-- <mat-cell *matCellDef="let row">{{appService.shippingServicesMap[row.shippingServiceID]}}</mat-cell> -->
+                    <mat-cell *matCellDef="let row">Ground</mat-cell>
                   </ng-container>
                   <!-- trackingNumber Column -->
                   <ng-container matColumnDef="trackingNumber">
@@ -266,7 +268,7 @@
                   </ng-container>
                   <mat-header-row *matHeaderRowDef="displayedPackageColumns; sticky: true"></mat-header-row>
                   <mat-row *matRowDef="let row; columns: displayedPackageColumns;" (click)="onSelectPackage(row)"
-                    [ngClass]="{'selected' : row == selectedShipmentPackageRow}" [@animate]="{value:'*',params:{y:'100%'}}" matRipple>
+                    [ngClass]="{'selected' : row.shipmentPackageID == selectedShipmentPackageRow?.shipmentPackageID}" [@animate]="{value:'*',params:{y:'100%'}}" matRipple>
                   </mat-row>
                 </mat-table>
               </div>
@@ -296,9 +298,9 @@
                     <mat-cell *matCellDef="let row; let i = index" class="text-muted">{{i + 1}}</mat-cell>
                   </ng-container>
                   <!-- feeType Column -->
-                  <ng-container matColumnDef="feeType">
+                  <ng-container matColumnDef="feeFeeType">
                     <mat-header-cell *matHeaderCellDef>Fee Type</mat-header-cell>
-                    <mat-cell *matCellDef="let row">{{row.feeType}}</mat-cell>
+                    <mat-cell *matCellDef="let row">{{row.feeFeeType}}</mat-cell>
                   </ng-container>
                   <!-- description Column -->
                   <ng-container matColumnDef="description">
@@ -308,7 +310,7 @@
                   <!-- feeAmount Column -->
                   <ng-container matColumnDef="feeAmount">
                     <mat-header-cell *matHeaderCellDef>Fee</mat-header-cell>
-                    <mat-cell *matCellDef="let row">{{row.feeAmount}}</mat-cell>
+                    <mat-cell *matCellDef="let row">{{row.feeAmount | currency}}</mat-cell>
                   </ng-container>
                   <!-- Actions Column -->
                   <ng-container matColumnDef="actions">
@@ -326,7 +328,7 @@
                   </ng-container>
                   <mat-header-row *matHeaderRowDef="displayedFeeColumns; sticky: true"></mat-header-row>
                   <mat-row *matRowDef="let row; columns: displayedFeeColumns;" (click)="onSelectFee(row)"
-                    [ngClass]="{'selected' : row == selectedShipmentFeeRow}" [@animate]="{value:'*',params:{y:'100%'}}" matRipple>
+                    [ngClass]="{'selected' : row.shipmentFeeID == selectedShipmentFeeRow?.shipmentFeeID}" [@animate]="{value:'*',params:{y:'100%'}}" matRipple>
                   </mat-row>
                 </mat-table>
               </div>
@@ -641,20 +643,16 @@
                     <mat-cell *matCellDef="let row; let i = index" class="text-muted">{{i + 1}}</mat-cell>
                   </ng-container>
 
-                  <!-- from Column -->
-                  <ng-container matColumnDef="from">
-                    <mat-header-cell *matHeaderCellDef>From</mat-header-cell>
-                    <mat-cell *matCellDef="let row">{{row.from}}</mat-cell>
-                  </ng-container>
-                  <!-- lastName Column -->
-                  <ng-container matColumnDef="lastName">
-                    <mat-header-cell *matHeaderCellDef>lastName</mat-header-cell>
-                    <mat-cell *matCellDef="let row">{{row.lastName}}</mat-cell>
+                  
+                  <!-- contactFullName Column -->
+                  <ng-container matColumnDef="contactFullName">
+                    <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.contactFullName}}</mat-cell>
                   </ng-container>
                   <!-- email Column -->
-                  <ng-container matColumnDef="email">
-                    <mat-header-cell *matHeaderCellDef>email</mat-header-cell>
-                    <mat-cell *matCellDef="let row">{{row.email}}</mat-cell>
+                  <ng-container matColumnDef="contactEmail">
+                    <mat-header-cell *matHeaderCellDef>Email</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.contactEmail}}</mat-cell>
                   </ng-container>
                   <!-- updates Column -->
                   <ng-container matColumnDef="updates">
@@ -669,15 +667,15 @@
                         <mat-icon>more_horiz</mat-icon>
                       </button>
                       <mat-menu #moreMenu="matMenu">
-                        <button mat-menu-item (click)="openEditShipmentContactDialog({}, 'edit')"><mat-icon>build</mat-icon> Edit</button>
-                        <hr>
+                        <!-- <button mat-menu-item (click)="openEditShipmentContactDialog({}, 'edit')"><mat-icon>build</mat-icon> Edit</button>
+                        <hr> -->
                         <button mat-menu-item (click)="onDeleteContact(row)"><mat-icon>delete</mat-icon> Delete</button>
                       </mat-menu>
                     </mat-cell>
                   </ng-container>
                   <mat-header-row *matHeaderRowDef="displayedContactsColumns; sticky: true"></mat-header-row>
                   <mat-row *matRowDef="let row; columns: displayedContactsColumns;" (click)="onSelectContact(row)"
-                    [ngClass]="{'selected' : row == selectedShipmentContactRow}" [@animate]="{value:'*',params:{y:'100%'}}" matRipple>
+                    [ngClass]="{'selected' : row.shipmentContactID == selectedShipmentContactRow?.shipmentContactID}" [@animate]="{value:'*',params:{y:'100%'}}" matRipple>
                   </mat-row>
                 </mat-table>
               </div>
@@ -704,7 +702,7 @@
       </mat-tab-group>
     </form>
 
-    <div fxHide fxShow.gt-sm style="height: 100%; position: relative;">
+    <div fxHide fxShow.gt-md style="position: relative;">
       <chat-panel-shipments style="height: 100%; position: relative;"></chat-panel-shipments>
     </div>
 

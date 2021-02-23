@@ -30,7 +30,7 @@ export class BusinessService implements OnDestroy {
 
 
   getAllBusinessList(): Observable<any> {
-    return this.http.get(this.apiURL + "/business")
+    return this.http.get(this.apiURL + `/business`)
       .pipe(
         tap((data: Business[]) => {
           this.allBusinesss.next(data);
@@ -40,9 +40,10 @@ export class BusinessService implements OnDestroy {
   }
 
   getBusinessList(userid: string): Observable<any> {
-    return this.http.get<any>(this.apiURL + '/business/user/' + userid)
+    return this.http.get<any>(this.apiURL + `/business/businessuser/user/${userid}`)
       .pipe(
         tap((data: Business) => {
+          console.log(data);
           this.onBusinessSelected.next(data);
         }),
         catchError(this.handleError)
@@ -50,11 +51,7 @@ export class BusinessService implements OnDestroy {
   }
 
   updateBusiness(body: Business): Observable<any> {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      //Authorization: 'Bearer ' + token
-    });
-    return this.http.put<any>(this.apiURL + '/business', body, { headers })
+    return this.http.put<any>(this.apiURL + '/business', body)
       .pipe(
         tap((data: Business) => {
           this.onBusinessSelected.next(data);

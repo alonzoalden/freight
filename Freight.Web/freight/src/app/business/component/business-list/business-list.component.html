@@ -1,5 +1,20 @@
 <div class="main-list-layout list-container">
+  <mat-toolbar *ngIf="!userInfo.businessID" class="primary m-0">
+    <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
 
+      <div fxLayoutAlign="flex-start center">
+        <div style="width: 54px; margin-right: 12px;">
+          <img src="assets/images/logos/fuse.svg">
+        </div>
+        <span>FBASIMPLIFY</span>
+      </div>
+      <button mat-button (click)=logout()>
+        <span>Logout</span>
+        <mat-icon class="ml-8">exit_to_app</mat-icon>
+      </button>
+      
+    </mat-toolbar-row>
+  </mat-toolbar>
   <!-- HEADER  -->
   <div class="sub-header accent" fxLayout="column" fxLayoutAlign="center start">
     <div class="breadcrumb text-truncate h1 p24" [@animate]="{value:'*',params:{x:'50px'}}">
@@ -39,9 +54,9 @@
   <mat-table class="item-list" matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}" *ngIf="!isLoading && dataSource?.data?.length">
     
     <!-- companyName Column -->
-    <ng-container matColumnDef="companyName">
+    <ng-container matColumnDef="businessCompanyName">
       <mat-header-cell *matHeaderCellDef>Company Name</mat-header-cell>
-      <mat-cell *matCellDef="let row">{{row.companyName}}</mat-cell>
+      <mat-cell *matCellDef="let row">{{row.businessCompanyName}}</mat-cell>
     </ng-container>
     <!-- isShipper Column -->
     <ng-container matColumnDef="isShipper">
@@ -63,14 +78,18 @@
     <ng-container matColumnDef="actions">
       <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
       <mat-cell *matCellDef="let row">
-        <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="more">
+        <!-- <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="more">
           <mat-icon>more_horiz</mat-icon>
         </button>
         <mat-menu #moreMenu="matMenu">
           <button mat-menu-item (click)="openEditBusinessDialog(row)">
-            <mat-icon>build</mat-icon> Edit
+            <mat-icon>build</mat-icon> 
           </button>
-        </mat-menu>
+        </mat-menu> -->
+        <button matTooltip="Select Business" mat-icon-button color="primary" (click)="selectBusiness(row)">
+          <mat-icon>check_circle</mat-icon>
+        </button>
+      
       </mat-cell>
     </ng-container>
 

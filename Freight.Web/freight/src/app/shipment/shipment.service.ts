@@ -80,36 +80,72 @@ export class ShipmentService implements OnDestroy {
       );
   }
 
-  createShipment(body: ShipmentDetail): Observable<any> {
+  createShipment(body: any): Observable<any> {
     return this.http.post<any>(this.apiURL + '/shipment', body)
       .pipe(
-        tap((data: Shipment) => {
-          this.onShipmentSelected.next(data);
-        }),
         catchError(this.handleError)
       );
   }
 
+  createShipmentPackage(body: ShipmentPackage): Observable<any> {
+    return this.http.post<any>(this.apiURL + '/shipment/shipmentpackage', body)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
   editShipmentPackage(body: ShipmentPackage): Observable<any> {
-    return this.http.put<any>(this.apiURL + '/shipment/package', body)
+    return this.http.put<any>(this.apiURL + '/shipment/shipmentpackage', body)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
+
+  createShipmentLine(body: ShipmentLine): Observable<any> {
+    return this.http.post<any>(this.apiURL + '/shipment/shipmentline', body)
       .pipe(
         catchError(this.handleError)
       );
   }
   editShipmentLine(body: ShipmentLine): Observable<any> {
-    return this.http.put<any>(this.apiURL + '/shipment/line', body)
+    return this.http.put<any>(this.apiURL + '/shipment/shipmentline', body)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
+  createShipmentFee(body: ShipmentFee): Observable<any> {
+    return this.http.post<any>(this.apiURL + '/shipment/shipmentfee', body)
       .pipe(
         catchError(this.handleError)
       );
   }
   editShipmentFee(body: ShipmentFee): Observable<any> {
-    return this.http.put<any>(this.apiURL + '/shipment/fee', body)
+    return this.http.put<any>(this.apiURL + '/shipment/shipmentfee', body)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+  createShipmentContact(body: ShipmentContact): Observable<any> {
+    return this.http.post<any>(this.apiURL + '/shipment/shipmentcontact', body)
       .pipe(
         catchError(this.handleError)
       );
   }
   editShipmentContact(body: ShipmentContact): Observable<any> {
-    return this.http.put<any>(this.apiURL + '/shipment/contact', body)
+    return this.http.put<any>(this.apiURL + '/shipment/shipmentcontact', body)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+  createShipmentComment(body: ShipmentLine): Observable<any> {
+    return this.http.post<any>(this.apiURL + '/shipment/shipmentcomment', body)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+  editShipmentComment(body: any): Observable<any> {
+    return this.http.put<any>(this.apiURL + '/shipment/shipmentcomment', body)
       .pipe(
         catchError(this.handleError)
       );
@@ -122,25 +158,31 @@ export class ShipmentService implements OnDestroy {
       );
   }
   deleteShipmentLine(id: string): Observable<any> {
-    return this.http.delete<any>(this.apiURL + '/shipment/line/' + id)
+    return this.http.delete<any>(this.apiURL + '/shipment/shipmentline/' + id)
       .pipe(
         catchError(this.handleError)
       );
   }
   deleteShipmentPackage(id: string): Observable<any> {
-    return this.http.delete<any>(this.apiURL + '/shipment/package/' + id)
+    return this.http.delete<any>(this.apiURL + '/shipment/shipmentpackage/' + id)
       .pipe(
         catchError(this.handleError)
       );
   }
   deleteShipmentFee(id: string): Observable<any> {
-    return this.http.delete<any>(this.apiURL + '/shipment/fee/' + id)
+    return this.http.delete<any>(this.apiURL + '/shipment/shipmentfee/' + id)
       .pipe(
         catchError(this.handleError)
       );
   }
   deleteShipmentContact(id: string): Observable<any> {
-    return this.http.delete<any>(this.apiURL + '/shipment/contact/' + id)
+    return this.http.delete<any>(this.apiURL + '/shipment/shipmentcontact/' + id)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+  deleteShipmentComment(id: string): Observable<any> {
+    return this.http.delete<any>(this.apiURL + '/shipment/shipmentcomment/' + id)
       .pipe(
         catchError(this.handleError)
       );
@@ -160,9 +202,9 @@ export class ShipmentService implements OnDestroy {
         catchError(this.handleError)
       );
   }
-  getContactList(businessid): Observable<any> {
+  getContactList(customerid): Observable<any> {
     return this.http
-      .get(this.apiURL + `/customer/business/${businessid}`)
+      .get(this.apiURL + `/contact/customer/${customerid}`)
       .pipe(
         catchError(this.handleError)
       );
@@ -195,7 +237,13 @@ export class ShipmentService implements OnDestroy {
         catchError(this.handleError)
       );
   }
-
+  getLocationsList(businessid): Observable<any> {
+    return this.http
+      .get(this.apiURL + `/location/business/${businessid}`)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
   getShipmentLineList(shipmentid): Observable<any> {
     return this.http
       .get(this.apiURL + `/shipment/${shipmentid}/shipmentline`)
@@ -225,6 +273,7 @@ export class ShipmentService implements OnDestroy {
         catchError(this.handleError)
       );
   }
+  
   getShipmentCommentList(shipmentid): Observable<any> {
     return this.http
       .get(this.apiURL + `/shipment/${shipmentid}/shipmentcomment`)

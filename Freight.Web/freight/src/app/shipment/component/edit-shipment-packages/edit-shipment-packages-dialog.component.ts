@@ -1,26 +1,16 @@
 import { Component, Inject, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-// import { WarehouseItemManagerService } from '../../warehouse-item-manager.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { environment } from 'environments/environment';
-import { NotificationsService } from 'angular2-notifications';
-//import { Item } from 'app/_shared/model/item';
 import { Store } from '@ngrx/store';
 import * as fromShipment from '../../state';
 import { ShipmentApiActions, ShipmentPageActions } from '../../state/actions';
-import { ShipmentEffects } from '../../state/shipment.effect';
 import { Actions, ofType } from '@ngrx/effects';
 import { Shipment, ShipmentPackage } from '../../../_shared/model/shipment';
-import { ShipmentService } from '../../shipment.service';
 import { AppService } from 'app/app.service';
-import { Router } from '@angular/router';
-import { MatTabGroup } from '@angular/material/tabs';
-import { DomSanitizer } from '@angular/platform-browser';
 import { MediaObserver } from '@angular/flex-layout';
 import { fuseAnimations } from '@fuse/animations';
-
 @Component({
   selector: 'edit-shipment-packages-dialog',
   templateUrl: './edit-shipment-packages-dialog.component.html',
@@ -28,7 +18,6 @@ import { fuseAnimations } from '@fuse/animations';
   animations: fuseAnimations
 })
 export class EditShipmentPackagesDialogComponent implements OnInit, OnDestroy {
-  //imageURL = environment.imageURL;
   shipmentPackageForm: FormGroup;
   selectedShipment: Shipment;
   selectedShipmentPackage: ShipmentPackage;
@@ -42,12 +31,7 @@ export class EditShipmentPackagesDialogComponent implements OnInit, OnDestroy {
     private _formBuilder: FormBuilder,
     public matDialogRef: MatDialogRef<EditShipmentPackagesDialogComponent>,
     public appService: AppService,
-    private shipmentService: ShipmentService,
-    private notifyService: NotificationsService,
-    private shipmentEffects: ShipmentEffects,
     private readonly actions$: Actions,
-    private router: Router,
-    private dom: DomSanitizer,
     public media: MediaObserver,
     @Inject(MAT_DIALOG_DATA) private inputData: any,
   ) {
@@ -56,29 +40,33 @@ export class EditShipmentPackagesDialogComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.selectedShipmentPackage = this.inputData;
-    this.shipmentPackageForm = this.createshipmentPackageForm();
+    
     this.store.select(fromShipment.getIsSaving)
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe(loading => {
         this.isSaving = loading
       });
-
+    this.store.select(fromShipment.getSelectedShipment)
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe(data => {
+        this.selectedShipment = data;
+        this.shipmentPackageForm = this.createshipmentPackageForm();
+      });
     this.actions$
       .pipe(
         takeUntil(this._unsubscribeAll),
-        ofType(ShipmentApiActions.updateShipmentSuccess))
+        ofType(ShipmentApiActions.editShipmentPackageSuccess))
+      .subscribe((data) => {
+        this.matDialogRef.close(data);
+      });
+    this.actions$
+      .pipe(
+        takeUntil(this._unsubscribeAll),
+        ofType(ShipmentApiActions.createShipmentPackageSuccess))
       .subscribe((data) => {
         this.matDialogRef.close(data);
       });
 
-    if (this.router.url.includes('all')) {
-    }
-    if (this.router.url.includes('open')) {
-    }
-    if (this.router.url.includes('closed')) {
-    }
-    if (this.router.url.includes('cancelled')) {
-    }
 
   }
   ngOnDestroy(): void {
@@ -89,26 +77,26 @@ export class EditShipmentPackagesDialogComponent implements OnInit, OnDestroy {
 
   createshipmentPackageForm(): FormGroup {
     return this._formBuilder.group({
-      shipmentPackageID: [Number(this.selectedShipmentPackage.shipmentID) || 0],
-      businessID: [Number(this.selectedShipmentPackage.businessID || 1)],
-      shipmentID: [Number(this.selectedShipmentPackage.businessID || 1)],
+      shipmentPackageID: [this.selectedShipmentPackage.shipmentPackageID],
+      businessID: [this.selectedShipment.businessID],
+      shipmentID: [this.selectedShipment.shipmentID],
       status: [this.selectedShipmentPackage.status],
       packageNumber: [this.selectedShipmentPackage.packageNumber],
       dimension: [this.selectedShipmentPackage.dimension],
       weight: [this.selectedShipmentPackage.weight],
       weightUnit: [this.selectedShipmentPackage.weightUnit],
       shipmentPackageRateID: [this.selectedShipmentPackage.shipmentPackageRateID],
-      shippingCarrierID: [this.selectedShipmentPackage.shippingCarrierID],
-      shippingServiceID: [this.selectedShipmentPackage.shippingServiceID],
+      shippingCarrierID: [this.appService.shippingCarriers[0].id],
+      shippingServiceID: [this.appService.shippingServices[0].id],
       shippingPackageID: [this.selectedShipmentPackage.shippingPackageID],
       shippingRate: [this.selectedShipmentPackage.shippingRate],
       trackingNumber: [this.selectedShipmentPackage.trackingNumber],
       uspspicNumber: [this.selectedShipmentPackage.uspspicNumber],
-      shippingLabelPath: [this.selectedShipmentPackage.shippingLabelPath],
+      shippingLabelPath: [this.selectedShipmentPackage.shippingLabelPath || ''],
       shipDate: [this.selectedShipmentPackage.shipDate],
-      isRated: [this.selectedShipmentPackage.isRated],
-      isLabeled: [this.selectedShipmentPackage.isLabeled],
-      isManual: [this.selectedShipmentPackage.isManual]
+      isRated: [this.selectedShipmentPackage.isRated || false],
+      isLabeled: [this.selectedShipmentPackage.isLabeled || false],
+      isManual: [this.selectedShipmentPackage.isManual || false]
     });
   }
   onSave(): void {
@@ -120,96 +108,16 @@ export class EditShipmentPackagesDialogComponent implements OnInit, OnDestroy {
   }
 
   save(): void {
-    this.matDialogRef.close(this.shipmentPackageForm.value);
+    const data = {...this.shipmentPackageForm.value};
+    data.shippingCarrierID = null;
+    data.shippingServiceID = null;
+    this.store.dispatch(ShipmentPageActions.createShipmentPackage({ shipmentPackage: data }));
   }
   edit(): void {
-    this.store.dispatch(ShipmentPageActions.editShipmentPackage({ shipmentPackage: this.shipmentPackageForm.value }));
-  }
-
-  onFileSelected(event, type) {
-
-    this[type] = event.target.files[0];
-    if (!this[type]) {
-      return;
-    }
-
-    // save the selectedFile 
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      this[type + '64'] = this.dom.bypassSecurityTrustResourceUrl(e.target.result.toString());
-      this[type + '64Original'] = e.target.result;
-
-      //this.selectedFile64 = e.target.result;
-      //this.refreshPhotoDataSource(this.selectedFile64, this.selectedFile.name);
-      // const image = new Image();
-      // image.src = this[type + '64'];
-    };
-    reader.readAsDataURL(this[type]);
-
-    // setTimeout(()=> {
-    //     const output: any = document.getElementById(this.selectedFile.name);
-    //     console.log(output);
-    //     output.src = URL.createObjectURL(event.target.files[0]);
-    // }, 100);
-
-    //this.selectedFile = null;
-    this[type] = null;
-    // const formData: FormData = new FormData();
-    // formData.append('uploadedFiles', this.selectedFile, this.selectedFile.name);
-    // this.warehouseOutboundService.uploadMarkShipImage(formData)
-    //     .pipe(takeUntil(this._unsubscribeAll))
-    //     .subscribe(
-    //         (filepath)=> {
-    //             this.refreshPhotoDataSource(filepath);
-    //             this.isImageLoading = false;
-    //             // this.fileInput.nativeElement.value = '';
-    //             this.onSelectPhoto(this.dataSourcePhotos.data[0]);
-
-    //             // save the selectedFile 
-    //             const reader = new FileReader();
-    //             reader.onload = (e) => {
-    //                 this.selectedFile64 = e.target.result;
-    //                 const image = new Image();
-    //                 image.src = this.selectedFile64;
-    //                 image.onload = () => {
-    //                     this.selectedFile64Width = image.width;
-    //                     this.selectedFile64Height = image.height;
-    //                 };
-    //             };
-    //             const file = this.selectedFile;
-    //             reader.readAsDataURL(file);
-    //             this.selectedFile = null;
-    //         },
-    //         (err) => {
-    //             this.notifyService.error('Error', `${err}`, { clickToClose: true });
-    //             this.isImageLoading = false;
-    //             this.selectedFile = null;
-    //             // this.fileInput.nativeElement.value = '';
-    //         }
-    //     );
-  }
-  onRemovePdf(type) {
-    const confirmation = confirm(`Are you sure you want to remove this file?`);
-    if (!confirmation) {
-      return;
-    }
-    this[type] = null;
-  }
-  viewPDF(type) {
-    let win = window.open();
-    win.document.write('<iframe src="data:application/pdf;' + this[type] + '" frameborder="0" style="border:0; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%;" allowfullscreen></iframe>');
-
-  }
-  downloadPDF(type) {
-    const linkSource = 'data:application/pdf;' + this[type];
-    window.open(linkSource);
-    const downloadLink = document.createElement("a");
-    downloadLink.setAttribute('target', '_blank');
-    const fileName = "sample.pdf";
-
-    downloadLink.href = linkSource;
-    downloadLink.download = fileName;
-    downloadLink.click();
+    const data = {...this.shipmentPackageForm.value};
+    data.shippingCarrierID = null;
+    data.shippingServiceID = null;
+    this.store.dispatch(ShipmentPageActions.editShipmentPackage({ shipmentPackage: data }));
   }
 
 }

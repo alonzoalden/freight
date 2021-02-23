@@ -208,5 +208,10 @@ mat-header-row {
   color: #999 !important;
 } 
 .mat-tab-label-active {
-  color: #fff;
+  color: #fff !important;
+}
+edit-shipment-dialog {
+  .mat-tab-body-wrapper {
+    height: 70vh !important;
+  }
 }

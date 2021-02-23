@@ -76,14 +76,17 @@ export class AppComponent implements OnInit {
 
             this.userService.getCurrentUser()
               .subscribe(
-                (user) => {
+                (user: User) => {
                   if (!user.businessID) {
                     // If user is not assigned to company:
-                    this.openCreateCompanyDialog(user);
-
+                    if (!user.firstName || !user.lastName) {
+                      this.openCreateCompanyDialog(user);
+                    } else {
+                      this.router.navigate(['/business']);
+                    }
                   } else {
                     this.store.dispatch(AppPageActions.setCurrentUser({ user }));
-                    this.store.dispatch(AppPageActions.setCurrentBusiness({ currentBusinessId: user.businessID }));
+                    // this.store.dispatch(AppPageActions.setCurrentBusiness({ currentBusinessId: user.businessID }));
                     this.store.dispatch(AppPageActions.loadBusinesses({ userID: user.userID }));
                     if (this.router.url == '/') {
                       this.router.navigate(['/dashboard']);
@@ -212,7 +215,7 @@ export class AppComponent implements OnInit {
           return;
         }
         this.store.dispatch(AppPageActions.setCurrentUser({ user: response }));
-        this.store.dispatch(AppPageActions.setCurrentBusiness({ currentBusinessId: response.businessID }));
+        //this.store.dispatch(AppPageActions.setCurrentBusiness({ currentBusinessId: response.businessID }));
         this.store.dispatch(AppPageActions.loadBusinesses({ userID: response.userID }));
         this.router.navigate(['/business']);
       });

@@ -34,6 +34,7 @@ export class CreateCompanyDialogComponent implements OnInit, OnDestroy {
   selected: any;
   private _unsubscribeAll: Subject<any>;
   isSaving: boolean;
+  userInfo: User;
 
   objectKeys = Object.keys;
 
@@ -58,18 +59,6 @@ export class CreateCompanyDialogComponent implements OnInit, OnDestroy {
     this.selected = this.inputData;
     this.businessForm = this.createBusinessForm();
 
-    // this.store.select(fromApp.getCurrentUser)
-    //   .pipe(takeUntil(this._unsubscribeAll))
-    //   .subscribe(user => {
-    //     this.currentUser = user;
-    //   });
-
-    this.store.select(fromItem.getIsSaving)
-      .pipe(takeUntil(this._unsubscribeAll))
-      .subscribe(loading => {
-        this.isSaving = loading
-      });
-
     this.actions$
       .pipe(
         takeUntil(this._unsubscribeAll),
@@ -84,32 +73,23 @@ export class CreateCompanyDialogComponent implements OnInit, OnDestroy {
     this._unsubscribeAll.complete();
   }
 
-  // createUserForm(): FormGroup {
-  //   return this._formBuilder.group({
-  //     userID: [this.selected?.userID],
-  //     email: [this.selected?.email],
-  //     firstName: [this.selected?.firstName],
-  //     lastName: [this.selected?.lastName],
-  //     businessID: [this.selected?.businessID],
-  //   });
-  // }
   createBusinessForm(): FormGroup {
     return this._formBuilder.group({
-      businessID: [],
+      businessID: [this.selected?.businessID],
       userID: [this.selected?.userID],
       companyName: [''],
       isShipper: [false],
       is3PL: [false],
       isFFW: [false],
-      firstName: [''],
-      lastName: [''],
+      firstName: [this.selected?.firstName],
+      lastName: [this.selected?.lastName],
     });
   }
   createBusiness(): void {
     this.isSaving = true;
-    let businessdata = { ...this.businessForm.value };
-    delete businessdata.firstName;
-    delete businessdata.lastName;
+    // let businessdata = { ...this.businessForm.value };
+    // delete businessdata.firstName;
+    // delete businessdata.lastName;
     let userData = new User(this.inputData.userID, 0, this.inputData.email, this.businessForm.value.firstName, this.businessForm.value.lastName, '', '')
     this.appService.updateUser(userData)
       .subscribe(

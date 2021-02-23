@@ -2,15 +2,13 @@ import {
   Component,
   OnDestroy,
   OnInit,
-  ViewEncapsulation,
   ViewChild,
   ElementRef,
   Input,
   EventEmitter,
   Output,
 } from "@angular/core";
-import { Observable, Subject } from "rxjs";
-import { takeUntil } from "rxjs/operators";
+import { Subject } from "rxjs";
 import { fuseAnimations } from "@fuse/animations";
 import { FuseSidebarService } from "@fuse/components/sidebar/sidebar.service";
 import { ShipmentService } from "../../shipment.service";
@@ -18,7 +16,6 @@ import { MatTableDataSource } from "@angular/material/table";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { MatDialog } from "@angular/material/dialog";
-import { MatSnackBar } from "@angular/material/snack-bar";
 import { AppService } from "app/app.service";
 import { NotificationsService } from "angular2-notifications";
 import { EditShipmentDialogComponent } from "../edit-shipment/edit-shipment-dialog.component";
@@ -26,6 +23,7 @@ import { Item } from "app/_shared/model/item";
 import * as fromItem from '../../state';
 import { Store } from "@ngrx/store";
 import { Shipment } from "app/_shared/model/shipment";
+import { CreateShipmentDialogComponent } from "../create-shipment-dialog/create-shipment-dialog.component";
 @Component({
   selector: 'shipment-list',
   templateUrl: './shipment-list.component.html',
@@ -36,7 +34,9 @@ export class ShipmentListComponent implements OnInit, OnDestroy {
   @Input() shipments: Shipment[] = [];
   @Input() selected: Shipment;
   @Input() isLoading: boolean;
+  @Input() isShipmentListLoading: boolean;
   @Output() select = new EventEmitter<Item>();
+  @Output() deleteShipment = new EventEmitter<any>();
   files: any;
   dataSource: any = new MatTableDataSource();
   displayedColumns = ['shipmentID','hblNumber', 'mblNumber', 'containerNumber', 'etd', 'eta', 'txl', 'status', 'createdOn', 'actions'];
@@ -57,8 +57,6 @@ export class ShipmentListComponent implements OnInit, OnDestroy {
     private _fuseSidebarService: FuseSidebarService,
     private shipmentService: ShipmentService,
     public _matDialog: MatDialog,
-    private store: Store<fromItem.State>,
-    private notifyService: NotificationsService
   ) {
     this._unsubscribeAll = new Subject();
     this.searchTerm = "";
@@ -126,7 +124,6 @@ export class ShipmentListComponent implements OnInit, OnDestroy {
     this.dialogRef = this._matDialog.open(EditShipmentDialogComponent, {
       data: { data },
       width: '100%',
-      height: '100%',
       disableClose: true
     });
     this.dialogRef.afterClosed()
@@ -137,6 +134,20 @@ export class ShipmentListComponent implements OnInit, OnDestroy {
         // this.completePackRequest('managerCompletePack');
       });
   }
+  openCreateShipmentDialog() {
+    this.dialogRef = this._matDialog.open(CreateShipmentDialogComponent, {
+      disableClose: true
+    });
+    this.dialogRef.afterClosed()
+      .subscribe(result => {
+        if (!result) {
+          return;
+        }
+        this.openEditShipmentDialog(result.shipment);
+        // this.completePackRequest('managerCompletePack');
+      });
+  }
+
   focusMainInput() {
     if (this.inputEnabled) {
       setTimeout(() => this.mainInput.nativeElement.focus(), 10);
@@ -146,6 +157,8 @@ export class ShipmentListComponent implements OnInit, OnDestroy {
     this.searchTerm = '';
     this.applyFilter(this.searchTerm);
     this.focusMainInput();
-
+  }
+  onDelete(row) {
+    this.deleteShipment.emit(row.shipmentID);
   }
 }

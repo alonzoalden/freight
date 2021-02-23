@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { Customer } from 'app/_shared/model/customer';
+import { Contact, Customer } from 'app/_shared/model/customer';
 import { Fee } from 'app/_shared/model/fee';
 import { Item } from 'app/_shared/model/item';
 import { Shipment } from '../../../_shared/model/shipment';
@@ -32,11 +32,20 @@ export const updateShipmentFailure = createAction(
 );
 
 export const createShipmentSuccess = createAction(
-  '[Shipment API] Shipment Shipment Success',
+  '[Shipment API] Create Shipment Success',
   props<{ shipment: Shipment }>()
 );
 export const createShipmentFailure = createAction(
   '[Shipment API] Create Shipment Fail',
+  props<{ error: string }>()
+);
+
+export const deleteShipmentSuccess = createAction(
+  '[Shipment API] Delete Shipment Success',
+  props<{ shipmentID: any }>()
+);
+export const deleteShipmentFailure = createAction(
+  '[Shipment API] Delete Shipment Fail',
   props<{ error: string }>()
 );
 
@@ -77,6 +86,50 @@ export const deleteShipmentContactFailure = createAction(
 );
 
 
+
+export const createShipmentLineSuccess = createAction(
+  '[Shipment API] Create Shipment Line Success',
+  props<{ shipmentLine: any }>()
+);
+export const createShipmentLineFailure = createAction(
+  '[Shipment API] Create Shipment Line Fail',
+  props<{ error: string }>()
+);
+export const createShipmentPackageSuccess = createAction(
+  '[Shipment API] Create Shipment Package Success',
+  props<{ shipmentPackage: any }>()
+);
+export const createShipmentPackageFailure = createAction(
+  '[Shipment API] Create Shipment Package Fail',
+  props<{ error: string }>()
+);
+
+export const createShipmentFeeSuccess = createAction(
+  '[Shipment API] Create Shipment Fee Success',
+  props<{ shipmentFee: any }>()
+);
+export const createShipmentFeeFailure = createAction(
+  '[Shipment API] Create Shipment Fee Fail',
+  props<{ error: string }>()
+);
+export const createShipmentContactSuccess = createAction(
+  '[Shipment API] Create Shipment Contact Success',
+  props<{ shipmentContact: any }>()
+);
+export const createShipmentContactFailure = createAction(
+  '[Shipment API] Create Shipment Contact Fail',
+  props<{ error: string }>()
+);
+export const createShipmentCommentSuccess = createAction(
+  '[Shipment API] Create Shipment Comment Success',
+  props<{ shipmentComment: any }>()
+);
+export const createShipmentCommentFailure = createAction(
+  '[Shipment API] Create Shipment Comment Fail',
+  props<{ error: string }>()
+);
+
+
 export const editShipmentPackageSuccess = createAction(
   '[Shipment API] Edit Shipment Package Success',
   props<{ shipmentPackage: any }>()
@@ -112,6 +165,14 @@ export const editShipmentContactFailure = createAction(
   '[Shipment API] Edit Shipment Contact Fail',
   props<{ error: string }>()
 );
+export const editShipmentCommentSuccess = createAction(
+  '[Shipment API] Edit Shipment Comment Success',
+  props<{ shipmentComment: any }>()
+);
+export const editShipmentCommentFailure = createAction(
+  '[Shipment API] Edit Shipment Comment Fail',
+  props<{ error: string }>()
+);
 
 export const loadFeesListSuccess = createAction(
   '[Shipment API] Load Fees List Success',
@@ -123,7 +184,7 @@ export const loadFeesListFailure = createAction(
 );
 export const loadContactsListSuccess = createAction(
   '[Shipment API] Load Contact List Success',
-  props<{ contacts: Customer[] }>()
+  props<{ contacts: Contact[] }>()
 );
 export const loadContactsListFailure = createAction(
   '[Shipment API] Load Contact List Fail',
@@ -174,6 +235,14 @@ export const getCustomersFailure = createAction(
   props<{ error: string }>()
 ); 
 
+export const getLocationsSuccess = createAction(
+  '[Shipment Page] Get Business Locations Success',
+  props<{ locations: any[] }>()
+); 
+export const getLocationsFailure = createAction(
+  '[Shipment Page] Get Business Locations Failure',
+  props<{ error: string }>()
+); 
 
 
 export const loadShipmentLineListSuccess = createAction(

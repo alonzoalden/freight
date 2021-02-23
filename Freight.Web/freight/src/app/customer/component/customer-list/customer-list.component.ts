@@ -163,7 +163,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
     this.applyFilter(this.searchTerm);
     this.focusMainInput();
   }
-  onDelete(id: any): void {
-    this.deleteCustomer.emit(id);
+  onDelete(row: any): void {
+    this.deleteCustomer.emit(row);
   }
 }

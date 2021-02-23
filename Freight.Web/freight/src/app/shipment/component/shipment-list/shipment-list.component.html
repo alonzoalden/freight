@@ -31,7 +31,7 @@
   </div>
   <!-- /HEADER  -->
 
-  <div *ngIf="isLoading" class="loader">
+  <div *ngIf="isShipmentListLoading" class="loader">
     <mat-spinner [@animate]="{value:'*',params:{delay:'400ms', y:'225px'}}"></mat-spinner>
   </div>
 
@@ -93,6 +93,11 @@
           <button mat-menu-item (click)="openEditShipmentDialog(row)">
             <mat-icon>build</mat-icon> Edit
           </button>
+          <hr>
+          <button mat-menu-item (click)="onDelete(row)">
+            <mat-icon>delete</mat-icon> Remove
+          </button>
+
         </mat-menu>
       </mat-cell>
     </ng-container>
@@ -123,7 +128,7 @@
   </div>
   <div class="bottom-section" fxLayout="row" fxLayoutAlign="space-between center">
     <div [@animate]="{value:'*',params:{delay:'500ms',scale:'0.2'}}" >
-      <button mat-raised-button class="accent" (click)="openEditShipmentDialog()"  [disabled]="isLoading" fxLayoutAlign="center center" style="height: 44px;">
+      <button mat-raised-button class="accent" (click)="openCreateShipmentDialog()"  [disabled]="isLoading" fxLayoutAlign="center center" style="height: 44px;">
           <mat-icon>add_circle_outline</mat-icon>
           Add New Shipment
       </button>
