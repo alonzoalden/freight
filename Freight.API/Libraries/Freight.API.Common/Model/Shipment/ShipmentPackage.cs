@@ -14,10 +14,10 @@ namespace Freight.API.Common.Model.Shipment
         public string Dimension { get; set; }
         public decimal? Weight { get; set; }
         public string WeightUnit { get; set; }
-        public int ShipmentPackageRateID { get; set; }
-        public int ShippingCarrierID { get; set; }
-        public int ShippingServiceID { get; set; }
-        public int ShippingPackageID { get; set; }
+        public int? ShipmentPackageRateID { get; set; }
+        public int? ShippingCarrierID { get; set; }
+        public int? ShippingServiceID { get; set; }
+        public int? ShippingPackageID { get; set; }
         public decimal? ShippingRate { get; set; }
         public string TrackingNumber { get; set; }
         public string USPSPICNumber { get; set; }
