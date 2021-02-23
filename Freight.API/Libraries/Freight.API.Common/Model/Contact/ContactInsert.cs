@@ -11,6 +11,6 @@ namespace Freight.API.Common.Model.Contact
         public string FullName { get; set; }
         public string Email { get; set; }
         public string Title { get; set; }
-        public DateTime CreatedBy { get; set; }
+        public int CreatedBy { get; set; }
     }
 }

@@ -39,12 +39,12 @@ namespace Freight.API.DAL
                 return result;
             }
         }
-        public List<Contact> GetContactByCustomerID(int businessid)
+        public List<Contact> GetContactByCustomerID(int customerid)
         {
             using (SqlConnection connection = new SqlConnection(DefaultConnection))
             {
                 DynamicParameters p = new DynamicParameters();
-                p.Add("businessid", businessid);
+                p.Add("customerid", customerid);
                 List<Contact> results = connection.Query<Contact>("spGetContactByCustomerID", p, commandType: CommandType.StoredProcedure).ToList();
 
                 return results;

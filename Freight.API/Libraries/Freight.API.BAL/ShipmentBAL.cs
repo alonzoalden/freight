@@ -34,6 +34,10 @@ namespace Freight.API.BAL
         {           
             return ShipmentDAL.GetShipment(id);
         }
+        public List<Shipment> GetShipmentByBusinessID(int businessid)
+        {
+            return ShipmentDAL.GetShipmentByBusinessID(businessid);
+        }
         public List<ShipmentLine> GetShipmentLineByShipmentID(int shipmentid)
         {            
             return ShipmentDAL.GetShipmentLineByShipmentID(shipmentid);
@@ -80,6 +84,12 @@ namespace Freight.API.BAL
         }
         public Shipment CreateShipment(ShipmentInsert shipment)
         {
+            //Default
+            if(string.IsNullOrEmpty(shipment.Status))
+            {
+                shipment.Status = "Pending";
+            }
+
             return ShipmentDAL.CreateShipment(shipment);
         }
         public ShipmentLine CreateShipmentLine(ShipmentLineInsert shipmentline)

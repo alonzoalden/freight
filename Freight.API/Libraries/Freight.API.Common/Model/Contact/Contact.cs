@@ -14,7 +14,7 @@ namespace Freight.API.Common.Model.Contact
         public string Title { get; set; }
         public int UpdatedBy { get; set; }
         public DateTime? UpdatedOn{ get; set; }
-        public DateTime CreatedBy { get; set; }
+        public int CreatedBy { get; set; }
         public DateTime CreatedOn { get; set; }
     }
 }

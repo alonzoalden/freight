@@ -47,6 +47,19 @@ namespace Freight.API.Controllers
             }
         }
         [HttpGet]
+        [Route("business/{businessid}")]
+        public IActionResult GetShipmentByBusinessID(int businessid)
+        {
+            try
+            {
+                return new JsonResult(ShipmentBAL.GetShipmentByBusinessID(businessid));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Failed to get Shipments");
+            }
+        }
+        [HttpGet]
         [Route("{shipmentid}/shipmentline")]
         public IActionResult GetShipmentLineByShipmentID(int shipmentid)
         {
@@ -108,7 +121,7 @@ namespace Freight.API.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Failed to get Shipment Fee");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Failed to get Shipment Comment");
             }
         }
         [HttpPut]
