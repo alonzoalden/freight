@@ -20,7 +20,7 @@ import { OidcSecurityService } from 'angular-auth-oidc-client';
 import { UserService } from 'app/user/user.service';
 import { Business } from 'app/_shared/model/business';
 import * as fromApp from 'app/_state';
-import { User } from 'app/_shared/model/user';
+import { BusinessUser, User } from 'app/_shared/model/user';
 @Component({
   selector: 'toolbar',
   templateUrl: './toolbar.component.html',
@@ -48,7 +48,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     //private _translateService: TranslateService,
     // private oauthService: OAuthService,
     public appService: AppService,
-    private router: Router,
+    public router: Router,
     private store: Store<fromAppState.State>,
     private userService: UserService,
     private notifyService: NotificationsService,
@@ -71,14 +71,18 @@ export class ToolbarComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((companies: Business[]) => {
         this.companies = companies;
-        this.currentBusiness = this.companies.find(c => c.businessID == this.userInfo.businessID)
+        if (this.userInfo?.businessID) {
+          this.currentBusiness = this.companies.find(c => c.businessID == this.userInfo.businessID)
+        }
       });
 
     this.store.select(fromAppState.getCurrentUser)
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((user: User) => {
         this.userInfo = user;
-        this.currentBusiness = this.companies.find(c => c.businessID == this.userInfo.businessID)
+        if (this.companies) {
+          this.currentBusiness = this.companies.find(c => c.businessID == this.userInfo.businessID)
+        }
       });
 
 
@@ -126,7 +130,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     //this.oauthService.logOut();
     //this.router.navigate(['/']);
   }
-  onUpdateCompany(company: Business) {
+  onUpdateCompany(company: BusinessUser) {
     const userData = {...this.userInfo};
     userData.businessID = company.businessID;
     this.isLoading = true;
@@ -136,7 +140,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
         this.currentBusiness = this.companies.find(c => c.businessID == company.businessID);
         // this.store.dispatch(AppPageActions.setCurrentBusiness({ currentBusinessId: company.businessID }));
         this.store.dispatch(AppPageActions.setCurrentUser({ user }));
-        this.notifyService.success('Success', `Company has been updated to ${this.currentBusiness.companyName}`, {timeOut: 4000, clickToClose: true });
+        this.notifyService.success('Success', `Company has been updated to ${company.businessCompanyName}`, {timeOut: 4000, clickToClose: true });
       });
     
     // const updatedUserInfo = { ...this.appService.userInfo.value };

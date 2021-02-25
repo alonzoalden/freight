@@ -128,22 +128,22 @@ export const navigation: FuseNavigation[] = [
           },
         ]
       },
-      {
-        id: 'Business',
-        title: 'Business',
-        translate: 'Business',
-        type: 'collapsable',
-        icon: '',
-        url: '/business',
-        children: [
-          {
-            id: 'AllBusiness',
-            title: 'All Business',
-            type: 'item',
-            url: '/business',
-          },
-        ]
-      },
+      // {
+      //   id: 'Business',
+      //   title: 'Business',
+      //   translate: 'Business',
+      //   type: 'collapsable',
+      //   icon: '',
+      //   url: '/business',
+      //   children: [
+      //     {
+      //       id: 'AllBusiness',
+      //       title: 'All Business',
+      //       type: 'item',
+      //       url: '/business',
+      //     },
+      //   ]
+      // },
       {
         id: 'Locations',
         title: 'Locations',

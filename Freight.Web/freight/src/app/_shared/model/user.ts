@@ -14,6 +14,7 @@ export class BusinessUser {
     public userID: number,
     public businessID: number,
     public businessUserID: number,
+    public businessCompanyName: string,
     public createdOn: string,
     public isActive: boolean,
     public isAdmin: boolean,

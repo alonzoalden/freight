@@ -55,7 +55,7 @@ export class CreateCompanyDialogComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this._fuseSplashScreenService.hide();
+    
     this.selected = this.inputData;
     this.businessForm = this.createBusinessForm();
 

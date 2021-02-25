@@ -246,7 +246,16 @@ export class EditShipmentDialogComponent implements OnInit, OnDestroy {
     this.store.select(fromShipment.getShipmentCommentList)
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe(data => {
-        this.commentsList = data;
+        if (data?.length) {
+          const updatedListToLocale = data.map(comment => {
+            const utcDate = new Date(comment.createdOn);
+            return {
+              ...comment,
+              localDate: new Date(utcDate + ' UTC')
+            }
+          });
+          this.commentsList = updatedListToLocale;
+        }
       });
 
   }

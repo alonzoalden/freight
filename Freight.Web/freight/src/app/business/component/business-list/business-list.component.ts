@@ -76,6 +76,7 @@ export class BusinessListComponent implements OnInit, OnDestroy {
     this.inputEnabled = true;
   }
   ngOnChanges(changes): void {
+    console.log(changes);
     if (changes.businesss) {
       this.dataSource = new MatTableDataSource<any>(this.businesss);
       this.dataSource.sort = this.sort;
@@ -84,7 +85,7 @@ export class BusinessListComponent implements OnInit, OnDestroy {
     }
   }
   ngOnInit(): void {
-    if (!this.userInfo.businessID) {
+    if (!this.userInfo?.businessID) {
       this._fuseConfigService.config = this._fuseConfigService.hideLayoutConfig();
     }
     this.focusMainInput();
@@ -182,7 +183,7 @@ export class BusinessListComponent implements OnInit, OnDestroy {
         this.notifyService.success('Success', `Company has been updated to ${row.businessCompanyName}`, {timeOut: 4000, clickToClose: true });
       });
 
-    this.store.dispatch(AppPageActions.setCurrentUser({ user: this.userInfo }));
+    //this.store.dispatch(AppPageActions.setCurrentUser({ user: this.userInfo }));
     //this.store.dispatch(AppPageActions.setCurrentBusiness({ currentBusinessId: this.userInfo.businessID }));
   }
 

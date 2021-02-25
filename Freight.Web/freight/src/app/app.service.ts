@@ -145,7 +145,7 @@ export class AppService {
       );
   }
   getBusinessList(userid): Observable<any> {
-    return this.http.get<any>(this.apiURL + '/business/user/' + userid)
+    return this.http.get<any>(this.apiURL + `/business/businessuser/user/${userid}`)
       .pipe(
         catchError(this.handleError)
       );

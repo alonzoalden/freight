@@ -77,6 +77,8 @@ export class AppComponent implements OnInit {
             this.userService.getCurrentUser()
               .subscribe(
                 (user: User) => {
+                  this.store.dispatch(AppPageActions.setCurrentUser({ user }));
+                  //this.store.dispatch(AppPageActions.loadBusinesses({ userID: user.userID }));
                   if (!user.businessID) {
                     // If user is not assigned to company:
                     if (!user.firstName || !user.lastName) {
@@ -85,14 +87,14 @@ export class AppComponent implements OnInit {
                       this.router.navigate(['/business']);
                     }
                   } else {
-                    this.store.dispatch(AppPageActions.setCurrentUser({ user }));
-                    // this.store.dispatch(AppPageActions.setCurrentBusiness({ currentBusinessId: user.businessID }));
+                    // this.store.dispatch(AppPageActions.setCurrentUser({ user }));
+                    // // this.store.dispatch(AppPageActions.setCurrentBusiness({ currentBusinessId: user.businessID }));
                     this.store.dispatch(AppPageActions.loadBusinesses({ userID: user.userID }));
                     if (this.router.url == '/') {
                       this.router.navigate(['/dashboard']);
                     }
-                    this._fuseSplashScreenService.hide();
                   }
+                  this._fuseSplashScreenService.hide();
                 },
                 (err) => {
                   window.location.reload();

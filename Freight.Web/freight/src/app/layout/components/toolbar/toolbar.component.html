@@ -31,7 +31,7 @@
                     <div class="mr-12" fxFlex fxLayout="column" fxLayoutAlign="center center">
                         <ng-container *ngIf="!isLoading && currentBusiness">
                             <span class="sm-header" style="margin: 0;">Company</span>
-                            <span class="username">{{currentBusiness.companyName}}</span>
+                            <span class="username">{{currentBusiness.businessCompanyName}}</span>
                         </ng-container>
                         <mat-spinner diameter="20" *ngIf="isLoading"></mat-spinner>
                     </div>
@@ -42,7 +42,7 @@
             <mat-menu #locationMenu="matMenu" [overlapTrigger]="false">
                 <button mat-menu-item *ngFor="let company of companies"
                     (click)="onUpdateCompany(company)">
-                    <span>{{company.companyName}}</span>
+                    <span>{{company.businessCompanyName}}</span>
                 </button>
             </mat-menu>
             
@@ -59,7 +59,11 @@
             </button>
 
             <mat-menu #userMenu="matMenu" [overlapTrigger]="false">
-
+                
+                <button mat-menu-item (click)="router.navigate(['/business'])">
+                    <span>Manage Business</span>
+                </button>
+                <hr>
                 <button mat-menu-item (click)=logout()>
                     <mat-icon>exit_to_app</mat-icon>
                     <span>Logout</span>

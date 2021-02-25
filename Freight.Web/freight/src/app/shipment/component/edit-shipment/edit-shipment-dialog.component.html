@@ -31,6 +31,7 @@
                 <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
                   <mat-label> Customer </mat-label>
                   <mat-select placeholder="Select Customer" name="customerID" formControlName="customerID">
+                    <mat-option [value]=null>None</mat-option>
                     <mat-option *ngFor="let customer of customersList" [value]=customer.customerID>{{
                       customer.companyName + ' - ' + customer.email }}
                     </mat-option>
@@ -39,27 +40,29 @@
                 <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
                   <mat-label> Origin FFW </mat-label>
                   <mat-select placeholder="Select Origin FFW" name="fee" formControlName="originFFW">
+                    <mat-option [value]=null>None</mat-option>
                     <mat-option *ngFor="let ffw of ffwList" [value]=ffw.businessID>{{ ffw.companyName }}</mat-option>
                   </mat-select>
                 </mat-form-field>
                 <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
                   <mat-label> Origin 3PL </mat-label>
                   <mat-select placeholder="Select Origin 3PL" name="origin3PL" formControlName="origin3PL">
+                    <mat-option [value]=null>None</mat-option>
                     <mat-option *ngFor="let threepl of threePLList" [value]=threepl.businessID>{{ threepl.companyName }}
                     </mat-option>
                   </mat-select>
                 </mat-form-field>
                 <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
                   <mat-label> Destination FFW </mat-label>
-                  <mat-select placeholder="Select Destination FFW" name="destinationFFW"
-                    formControlName="destinationFFW">
+                  <mat-select placeholder="Select Destination FFW" name="destinationFFW" formControlName="destinationFFW">
+                    <mat-option [value]=null>None</mat-option>
                     <mat-option *ngFor="let ffw of ffwList" [value]=ffw.businessID>{{ ffw.companyName }}</mat-option>
                   </mat-select>
                 </mat-form-field>
                 <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
                   <mat-label> Destination 3PL </mat-label>
-                  <mat-select placeholder="Select Destination 3PL" name="destination3PL"
-                    formControlName="destination3PL">
+                  <mat-select placeholder="Select Destination 3PL" name="destination3PL" formControlName="destination3PL">
+                    <mat-option [value]=null>None</mat-option>
                     <mat-option *ngFor="let threepl of threePLList" [value]=threepl.businessID>{{ threepl.companyName }}
                     </mat-option>
                   </mat-select>
@@ -79,8 +82,8 @@
                 <mat-form-field appearance="outline" floatLabel="always" style="width: 33%;">
                   <mat-label>Status</mat-label>
                   <mat-select placeholder="Choose Status" name="status" formControlName="status">
-                    <mat-option *ngFor="let item of appService.dropDownTypes.status" value="{{item}}">{{ item }}
-                    </mat-option>
+                    <mat-option [value]=null>None</mat-option>
+                    <mat-option *ngFor="let item of appService.dropDownTypes.status" value="{{item}}">{{ item }}</mat-option>
                   </mat-select>
                 </mat-form-field>
                 <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
@@ -116,10 +119,9 @@
                 </mat-form-field>
                 <mat-form-field appearance="outline" floatLabel="always" style="width: 33%;">
                   <mat-label>Delivery Location</mat-label>
-                  <mat-select placeholder="Delivery Location" name="locationID"
-                    formControlName="deliveryLocationID">
-                    <mat-option *ngFor="let location of locationsList" [value]="location.locationID">{{ location.locationName }}
-                    </mat-option>
+                  <mat-select placeholder="Delivery Location" name="locationID" formControlName="deliveryLocationID">
+                    <mat-option [value]=null>None</mat-option>
+                    <mat-option *ngFor="let location of locationsList" [value]="location.locationID">{{ location.locationName }}</mat-option>
                   </mat-select>
                 </mat-form-field>
                 <mat-form-field appearance="outline" floatLabel="always" style="width: 66%;">
@@ -724,14 +726,8 @@
           </div>
         </mat-tab>
         <mat-tab *ngIf="media.isActive('lt-md')" [disabled]="isLoading" label="Messages" class="accent">
-          <ng-template mat-tab-label>
-            <span class="mr-8">Messages</span>
-            <span style="font-weight: 400;">(4)</span>
-          </ng-template>
-          <div style="height: 100%; position: relative;">
-            <chat-panel-shipments
-              style="height: 100%; position: relative; background-color: #fff !important; color: rgba(0, 0, 0, .78) !important">
-            </chat-panel-shipments>
+          <div class="fuse-white" style="height: 100%;" fxLayout="column">
+            <ng-container *ngTemplateOutlet="chat"></ng-container>
           </div>
         </mat-tab>
       </mat-tab-group>
@@ -739,29 +735,11 @@
 
 
     <div fxHide fxShow.gt-sm fxLayout="column" style="width: 280px; min-width: 280px; max-width: 280px;">
-
       <div class="title accent" fxLayout="row" fxLayoutAlign="center center" style="height: 65px;">
         <mat-icon class="fuse-white-fg">chat</mat-icon>
         <div class="chat-dialog-title" style="padding-left: 8px;">Messages</div>
       </div>
-      <div fxFlex style="padding: 12px 12px 0 12px; overflow: auto; border-left: 1px solid #ddd">
-        <div *ngFor="let comment of commentsList" style="border-bottom: 1px solid #ddd; padding: 12px 0;">
-          {{comment.comment}}
-        </div>
-        
-      </div>
-      <div class="reply-form" fxFlex="0 0 auto" fxLayout="row" fxLayoutAlign="center center" style="padding: 6px 12px 0 12px; border-left: 1px solid #ddd">
-
-        <mat-form-field class="message-text" fxFlex floatLabel="never" appearance="standard">
-          <input matInput [(ngModel)]="chatComment" name="message" placeholder="Type your message">
-        </mat-form-field>
-
-        <button class="send-message-button" mat-icon-button (click)="addMessage()" aria-label="Send message" style="background-color: #f6f6f6; border-radius: 100%;">
-          <mat-icon class="secondary-text">send</mat-icon>
-        </button>
-
-
-      </div>
+      <ng-container *ngTemplateOutlet="chat"></ng-container>
       <!-- <chat-panel-shipments style="height: 100%; position: relative;"></chat-panel-shipments> -->
     </div>
 
@@ -777,3 +755,21 @@
     </button>
   </div>
 </div>
+
+<ng-template #chat>
+  <div fxFlex style="padding: 12px 6px; overflow: auto; border-left: 1px solid #ddd">
+    <div *ngFor="let comment of commentsList" style="border-bottom: 1px solid #ddd; padding: 8px; margin-bottom: 16px;" class="mat-elevation-z1">
+      <div style="font-weight: 100; font-size: 12px;">{{comment.createdByName}}</div>
+      <div style="margin: 8px 0;">{{comment.comment}}</div>
+      <div style="color: #777; font-weight: 100; font-size: 12px;">{{comment.localDate | date:'MMM d, y, h:mm a'}}</div>
+    </div>
+  </div>
+  <div class="reply-form" fxFlex="0 0 auto" fxLayout="row" fxLayoutAlign="center center" style="padding: 6px 12px 0 12px; border-left: 1px solid #ddd">
+    <mat-form-field class="message-text" fxFlex floatLabel="never" appearance="standard">
+      <input matInput [(ngModel)]="chatComment" name="message" placeholder="Type your message">
+    </mat-form-field>
+    <button class="send-message-button" mat-icon-button (click)="addMessage()" aria-label="Send message" style="background-color: #f6f6f6; border-radius: 100%;">
+      <mat-icon class="secondary-text" color="accent" style="color: rgba(0, 0, 0, 0.54) !important">send</mat-icon>
+    </button>
+  </div>
+</ng-template>
