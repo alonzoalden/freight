@@ -10,6 +10,7 @@ namespace Freight.API.Common.Model.Shipment
         public int ShipmentID { get; set; }
         public string Comment { get; set; }
         public int CreatedBy { get; set; }
+        public string CreatedByName { get; set; }      
         public DateTime CreatedOn { get; set; }
     }
 }
