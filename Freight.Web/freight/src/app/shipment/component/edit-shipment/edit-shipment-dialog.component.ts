@@ -15,7 +15,7 @@ import { Actions, ofType } from '@ngrx/effects';
 import { Shipment, ShipmentContact, ShipmentDetail, ShipmentFee, ShipmentLine, ShipmentPackage } from '../../../_shared/model/shipment';
 import { ShipmentService } from '../../shipment.service';
 import { AppService } from 'app/app.service';
-import { Router } from '@angular/router';
+import { NavigationStart, Router } from '@angular/router';
 import { MatTabGroup } from '@angular/material/tabs';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MediaObserver } from '@angular/flex-layout';
@@ -96,7 +96,6 @@ export class EditShipmentDialogComponent implements OnInit, OnDestroy {
     private shipmentService: ShipmentService,
     private notifyService: NotificationsService,
     private readonly actions$: Actions,
-    private router: Router,
     private dom: DomSanitizer,
     public media: MediaObserver,
     public _matDialog: MatDialog,
@@ -112,7 +111,6 @@ export class EditShipmentDialogComponent implements OnInit, OnDestroy {
     // this.dataSourcePackages = new MatTableDataSource<any>(this.selectedShipmentDetail?.shipmentPackages || []);
     // this.dataSourceFees = new MatTableDataSource<any>(this.selectedShipmentDetail?.shipmentFees || []);
     // this.dataSourceContacts = new MatTableDataSource<any>(this.selectedShipmentDetail?.shipmentContacts || []);
-
 
     this.appStore.select(fromApp.getCurrentBusinessEntityId)
       .pipe(takeUntil(this._unsubscribeAll))

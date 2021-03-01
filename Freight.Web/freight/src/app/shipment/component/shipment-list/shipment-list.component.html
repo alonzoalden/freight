@@ -35,51 +35,51 @@
     <mat-spinner [@animate]="{value:'*',params:{delay:'400ms', y:'225px'}}"></mat-spinner>
   </div>
 
-  <mat-table class="item-list" matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}" *ngIf="!isLoading && dataSource?.data?.length">
+  <mat-table class="item-list" #sort="matSort" matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}" [hidden]="isLoading || !dataSource?.data?.length">
     <ng-template #none><span style="opacity: 0.5;">?</span></ng-template>
     <!-- shipmentID Column -->
     <ng-container matColumnDef="shipmentID">
-      <mat-header-cell *matHeaderCellDef>ID</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
       <mat-cell *matCellDef="let row">{{row.shipmentID}}</mat-cell>
     </ng-container>
     <!-- hblNumber Column -->
     <ng-container matColumnDef="hblNumber">
-      <mat-header-cell *matHeaderCellDef>HBL</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header>HBL</mat-header-cell>
       <mat-cell *matCellDef="let row"><span *ngIf="row.hblNumber; else none">{{row.hblNumber}}</span></mat-cell>
     </ng-container>
     <!-- mblNumber Column -->
     <ng-container matColumnDef="mblNumber">
-      <mat-header-cell *matHeaderCellDef>MBL</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header>MBL</mat-header-cell>
       <mat-cell *matCellDef="let row"><span *ngIf="row.mblNumber; else none">{{row.mblNumber}}</span></mat-cell>
     </ng-container>
     <!-- containerNumber Column -->
     <ng-container matColumnDef="containerNumber">
-      <mat-header-cell *matHeaderCellDef>Container #</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Container #</mat-header-cell>
       <mat-cell *matCellDef="let row"><span *ngIf="row.containerNumber; else none">{{row.containerNumber}}</span></mat-cell>
     </ng-container>
     <!-- etd Column -->
     <ng-container matColumnDef="etd">
-      <mat-header-cell *matHeaderCellDef>ETD</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header>ETD</mat-header-cell>
       <mat-cell *matCellDef="let row"><span *ngIf="row.etd; else none">{{row.etd | date}}</span></mat-cell>
     </ng-container>
     <!-- eta Column -->
     <ng-container matColumnDef="eta">
-      <mat-header-cell *matHeaderCellDef>ETA</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header>ETA</mat-header-cell>
       <mat-cell *matCellDef="let row"><span *ngIf="row.eta; else none">{{row.eta | date}}</span></mat-cell>
     </ng-container>
     <!-- txl Column -->
     <ng-container matColumnDef="txl">
-      <mat-header-cell *matHeaderCellDef>TXL</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header>TXL</mat-header-cell>
       <mat-cell *matCellDef="let row"><span *ngIf="row.txl; else none">{{row.txl | date}}</span></mat-cell>
     </ng-container>
     <!-- createdOn Column -->
     <ng-container matColumnDef="createdOn">
-      <mat-header-cell *matHeaderCellDef>Created On</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Created On</mat-header-cell>
       <mat-cell *matCellDef="let row"><span *ngIf="row.createdOn; else none">{{row.createdOn | date}}</span></mat-cell>
     </ng-container>
     <!-- status Column -->
     <ng-container matColumnDef="status">
-      <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Status</mat-header-cell>
       <mat-cell *matCellDef="let row"><span *ngIf="row.status; else none">{{row.status}}</span></mat-cell>
     </ng-container>
     <!-- Actions Column -->
@@ -133,6 +133,6 @@
           Add New Shipment
       </button>
     </div>
-    <mat-paginator *ngIf="dataSource?.data?.length" #paginator [pageSizeOptions]="[10, 20, 50, 100, 200]" [showFirstLastButtons]="true"></mat-paginator>
+    <mat-paginator [hidden]="!dataSource?.data?.length" #paginator [pageSizeOptions]="[10, 20, 50, 100, 200]" [showFirstLastButtons]="true"></mat-paginator>
   </div>
 </div>

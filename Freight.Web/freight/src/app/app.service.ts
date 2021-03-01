@@ -26,10 +26,13 @@ export class AppService {
       'USD'
     ],
     status: [
-      'Sent',
-      'Received',
-      'Shipped',
-      'Pending'
+      // 'Sent',
+      // 'Received',
+      // 'Shipped',
+      // 'Pending'
+      'Open',
+      'Closed',
+      'Cancelled'
     ]
   }
   public shippingCarriers = [

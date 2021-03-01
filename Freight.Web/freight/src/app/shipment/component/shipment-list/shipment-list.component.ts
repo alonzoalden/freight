@@ -24,6 +24,7 @@ import * as fromItem from '../../state';
 import { Store } from "@ngrx/store";
 import { Shipment } from "app/_shared/model/shipment";
 import { CreateShipmentDialogComponent } from "../create-shipment-dialog/create-shipment-dialog.component";
+import { NavigationEnd, NavigationStart, Router } from "@angular/router";
 @Component({
   selector: 'shipment-list',
   templateUrl: './shipment-list.component.html',
@@ -39,7 +40,7 @@ export class ShipmentListComponent implements OnInit, OnDestroy {
   @Output() deleteShipment = new EventEmitter<any>();
   files: any;
   dataSource: any = new MatTableDataSource();
-  displayedColumns = ['shipmentID','hblNumber', 'mblNumber', 'containerNumber', 'etd', 'eta', 'txl', 'status', 'createdOn', 'actions'];
+  displayedColumns = ['shipmentID', 'hblNumber', 'mblNumber', 'containerNumber', 'etd', 'eta', 'txl', 'status', 'createdOn', 'actions'];
   isLeadRole: boolean;
   filteredCourses: any[];
   currentCategory: string;
@@ -48,7 +49,7 @@ export class ShipmentListComponent implements OnInit, OnDestroy {
   dialogRef: any;
   inputEnabled: boolean;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-  @ViewChild(MatSort, { static: true }) sort: MatSort;
+  @ViewChild('sort', {static: true}) sort: MatSort;
   @ViewChild('mainInput') mainInput: ElementRef;
   private _unsubscribeAll: Subject<any>;
 
@@ -57,6 +58,7 @@ export class ShipmentListComponent implements OnInit, OnDestroy {
     private _fuseSidebarService: FuseSidebarService,
     private shipmentService: ShipmentService,
     public _matDialog: MatDialog,
+    private router: Router,
   ) {
     this._unsubscribeAll = new Subject();
     this.searchTerm = "";
@@ -65,14 +67,91 @@ export class ShipmentListComponent implements OnInit, OnDestroy {
   }
   ngOnChanges(changes): void {
     if (changes.shipments) {
-      this.dataSource = new MatTableDataSource<any>(this.shipments);
-      this.dataSource.sort = this.sort;
-      this.dataSource.paginator = this.paginator;
+      
+      // load shipments based off route
+      if (this.router.url.includes('open')) {
+        const shipments = this.shipments.filter(shipment => shipment.status === 'Open');
+        this.refreshDataSource(shipments);
+      }
+      else if (this.router.url.includes('closed')) {
+        const shipments = this.shipments.filter(shipment => shipment.status === 'Closed');
+        this.refreshDataSource(shipments);
+      }
+      else if (this.router.url.includes('cancelled')) {
+        const shipments = this.shipments.filter(shipment => shipment.status === 'Cancelled');
+        this.refreshDataSource(shipments);
+      }
+      else {
+        this.refreshDataSource(this.shipments);
+      }
+
+      // load shipments if route change
+      this.router.events.forEach((event) => {
+        if (event instanceof NavigationStart) {
+          if (event.url.includes('open')) {
+            const shipments = this.shipments.filter(shipment => shipment.status === 'Open');
+            this.refreshDataSource(shipments);
+          }
+          else if (event.url.includes('closed')) {
+            const shipments = this.shipments.filter(shipment => shipment.status === 'Closed');
+            this.refreshDataSource(shipments);
+          }
+          else if (event.url.includes('cancelled')) {
+            const shipments = this.shipments.filter(shipment => shipment.status === 'Cancelled');
+            this.refreshDataSource(shipments);
+          }
+          else {
+            this.refreshDataSource(this.shipments);
+          }
+        }
+      });
       this.focusMainInput();
     }
+
+
+  }
+  refreshDataSource(shipments): void {
+    if (!shipments) {
+      return;
+    }
+    this.dataSource = new MatTableDataSource<any>(shipments);
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
   }
   ngOnInit(): void {
     this.focusMainInput();
+
+    // this.router.events.forEach((event) => {
+    //   if(event instanceof NavigationStart) {
+    //     if (event.url.includes('open')) {
+    //       console.log(event);
+    //     }
+    //     if (event.url.includes('open')) {
+    //       console.log(event);
+    //     }
+    //     if (event.url.includes('open')) {
+    //       console.log(event);
+    //     }
+    //   }
+    //   // NavigationEnd
+    //   // NavigationCancel
+    //   // NavigationError
+    //   // RoutesRecognized
+
+    //   // if (this.router.url.includes('all')) {
+    //   //   console.log('all')
+    //   // }
+    //   // if (this.router.url.includes('open')) {
+    //   //   console.log('open')
+    //   // }
+    //   // if (this.router.url.includes('closed')) {
+    //   //   console.log('closed')
+    //   // }
+    //   // if (this.router.url.includes('cancelled')) {
+    //   //   console.log('cancelled')
+    //   // }
+    // });
+
   }
 
   ngOnDestroy(): void {

@@ -45,6 +45,7 @@ import { ChatPanelShipmentsComponent } from './component/chat-panel/chat-panel.c
 
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { StepsPreviewComponent } from './component/steps-preview/steps-preview.component';
+import { MatSortModule } from '@angular/material/sort';
 
 const routes: Routes = [];
 
@@ -81,6 +82,7 @@ const routes: Routes = [];
     MatToolbarModule,
     MatTooltipModule,
     MatPaginatorModule,
+    MatSortModule,
     MatTabsModule,
     MatChipsModule,
     MatSnackBarModule,
