@@ -81,9 +81,9 @@ export class EditItemDialogComponent implements OnInit, OnDestroy {
 
   createItemForm(): FormGroup {
     return this._formBuilder.group({
-      itemID: [this.selectedItem.itemID || 0],
+      itemID: [this.selectedItem.itemID],
       businessID: [this.businessID],
-      shipperID: [this.selectedItem.shipperID || 1],
+      shipperID: [null],
       itemNumber: [this.selectedItem.itemNumber],
       itemName: [this.selectedItem.itemName],
       htsCode: [this.selectedItem.htsCode],
