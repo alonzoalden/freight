@@ -68,7 +68,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
   }
   ngOnChanges(changes): void {
     if (changes.customers) {
-      this.dataSource = new MatTableDataSource<any>(this.customers);
+      this.dataSource = new MatTableDataSource<any>(this.customers || []);
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
       this.focusMainInput();

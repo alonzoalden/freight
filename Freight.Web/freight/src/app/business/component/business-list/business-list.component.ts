@@ -76,9 +76,8 @@ export class BusinessListComponent implements OnInit, OnDestroy {
     this.inputEnabled = true;
   }
   ngOnChanges(changes): void {
-    console.log(changes);
     if (changes.businesss) {
-      this.dataSource = new MatTableDataSource<any>(this.businesss);
+      this.dataSource = new MatTableDataSource<any>(this.businesss || []);
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
       this.focusMainInput();

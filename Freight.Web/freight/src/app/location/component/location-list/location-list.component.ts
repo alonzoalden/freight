@@ -67,7 +67,7 @@ export class LocationListComponent implements OnInit, OnDestroy {
   }
   ngOnChanges(changes): void {
     if (changes.locations) {
-      this.dataSource = new MatTableDataSource<any>(this.locations);
+      this.dataSource = new MatTableDataSource<any>(this.locations || []);
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
       this.focusMainInput();

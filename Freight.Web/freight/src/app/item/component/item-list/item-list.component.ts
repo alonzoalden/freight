@@ -67,10 +67,12 @@ export class ItemListComponent implements OnInit, OnDestroy {
     this.inputEnabled = true;
   }
   ngOnChanges(changes): void {
-    this.dataSource = new MatTableDataSource<any>(this.items);
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
-    this.focusMainInput();
+    if (changes.items) {
+      this.dataSource = new MatTableDataSource<any>(this.items || []);
+      this.dataSource.sort = this.sort;
+      this.dataSource.paginator = this.paginator;
+      this.focusMainInput();
+    }
   }
   ngOnInit(): void {
     this.focusMainInput();
