@@ -108,7 +108,7 @@
         Add New Fee
       </button>
     </div>
-    <mat-paginator *ngIf="dataSource?.data?.length" #paginator [pageSizeOptions]="[10, 20, 50, 100, 200]"
+    <mat-paginator [hidden]="!dataSource?.data?.length" #paginator [pageSizeOptions]="[10, 20, 50, 100, 200]"
       [showFirstLastButtons]="true"></mat-paginator>
   </div>
 </div>

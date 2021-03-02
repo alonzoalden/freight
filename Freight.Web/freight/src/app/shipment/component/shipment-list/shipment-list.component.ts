@@ -75,7 +75,7 @@ export class ShipmentListComponent implements OnInit, OnDestroy {
         this.refreshDataSource(shipments);
       }
       else if (this.router.url.includes('pickup')) {
-        const shipments = this.shipments.filter(shipment => shipment.status === 'Carrier Pick Up');
+        const shipments = this.shipments.filter(shipment => shipment.status === 'Carrier Picked Up');
         this.refreshDataSource(shipments);
       }
       else {
@@ -90,7 +90,7 @@ export class ShipmentListComponent implements OnInit, OnDestroy {
             this.refreshDataSource(shipments);
           }
           else if (event.url.includes('pickup')) {
-            const shipments = this.shipments.filter(shipment => shipment.status === 'Carrier Pick Up');
+            const shipments = this.shipments.filter(shipment => shipment.status === 'Carrier Picked Up');
             this.refreshDataSource(shipments);
           }
           else {

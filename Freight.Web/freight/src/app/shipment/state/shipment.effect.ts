@@ -23,7 +23,7 @@ export class ShipmentEffects {
           .pipe(
             map(shipments => ShipmentApiActions.loadShipmentsListSuccess({ shipments })),
             catchError(error => {
-              this.notifyService.error('Error', `${error}`, { clickToClose: true });
+              // this.notifyService.error('Error', `${error}`, { clickToClose: true });
               return of(ShipmentApiActions.loadShipmentsListFailure({ error }));
             })
           )
@@ -42,7 +42,7 @@ export class ShipmentEffects {
               return ShipmentApiActions.createShipmentSuccess({ shipment });
             }),
             catchError(error => {
-              this.notifyService.error('Error', `${error}`, { clickToClose: true });
+              // this.notifyService.error('Error', `${error}`, { clickToClose: true });
               return of(ShipmentApiActions.createShipmentFailure({ error }))
             })
           )
@@ -61,7 +61,7 @@ export class ShipmentEffects {
               return ShipmentApiActions.updateShipmentSuccess({ shipment });
             }),
             catchError(error => {
-              this.notifyService.error('Error', `${error}`, { clickToClose: true });
+              // this.notifyService.error('Error', `${error}`, { clickToClose: true });
               return of(ShipmentApiActions.updateShipmentFailure({ error }))
             })
           )
@@ -80,7 +80,7 @@ export class ShipmentEffects {
               return ShipmentApiActions.deleteShipmentSuccess({ shipmentID: action.shipmentID });
             }),
             catchError(error => {
-              this.notifyService.error('Error', `${error}`, { clickToClose: true });
+              // this.notifyService.error('Error', `${error}`, { clickToClose: true });
               return of(ShipmentApiActions.deleteShipmentFailure({ error }))
             })
           )
@@ -99,7 +99,7 @@ export class ShipmentEffects {
               return ShipmentApiActions.createShipmentLineSuccess({ shipmentLine });
             }),
             catchError(error => {
-              this.notifyService.error('Error', `${error}`, { clickToClose: true });
+              // this.notifyService.error('Error', `${error}`, { clickToClose: true });
               return of(ShipmentApiActions.createShipmentLineFailure({ error }))
             })
           )
@@ -117,7 +117,7 @@ export class ShipmentEffects {
               return ShipmentApiActions.createShipmentPackageSuccess({ shipmentPackage });
             }),
             catchError(error => {
-              this.notifyService.error('Error', `${error}`, { clickToClose: true });
+              // this.notifyService.error('Error', `${error}`, { clickToClose: true });
               return of(ShipmentApiActions.createShipmentPackageFailure({ error }))
             })
           )
@@ -135,7 +135,7 @@ export class ShipmentEffects {
               return ShipmentApiActions.createShipmentFeeSuccess({ shipmentFee });
             }),
             catchError(error => {
-              this.notifyService.error('Error', `${error}`, { clickToClose: true });
+              // this.notifyService.error('Error', `${error}`, { clickToClose: true });
               return of(ShipmentApiActions.createShipmentFeeFailure({ error }))
             })
           )
@@ -153,7 +153,7 @@ export class ShipmentEffects {
               return ShipmentApiActions.createShipmentContactSuccess({ shipmentContact });
             }),
             catchError(error => {
-              this.notifyService.error('Error', `${error}`, { clickToClose: true });
+              // this.notifyService.error('Error', `${error}`, { clickToClose: true });
               return of(ShipmentApiActions.createShipmentContactFailure({ error }))
             })
           )
@@ -171,7 +171,7 @@ export class ShipmentEffects {
               return ShipmentApiActions.createShipmentCommentSuccess({ shipmentComment });
             }),
             catchError(error => {
-              this.notifyService.error('Error', `${error}`, { clickToClose: true });
+              // this.notifyService.error('Error', `${error}`, { clickToClose: true });
               return of(ShipmentApiActions.createShipmentCommentFailure({ error }))
             })
           )
@@ -189,7 +189,7 @@ export class ShipmentEffects {
               return ShipmentApiActions.editShipmentPackageSuccess({ shipmentPackage });
             }),
             catchError(error => {
-              this.notifyService.error('Error', `${error}`, { clickToClose: true });
+              // this.notifyService.error('Error', `${error}`, { clickToClose: true });
               return of(ShipmentApiActions.editShipmentPackageFailure({ error }))
             })
           )
@@ -207,7 +207,7 @@ export class ShipmentEffects {
               return ShipmentApiActions.editShipmentLineSuccess({ shipmentLine });
             }),
             catchError(error => {
-              this.notifyService.error('Error', `${error}`, { clickToClose: true });
+              // this.notifyService.error('Error', `${error}`, { clickToClose: true });
               return of(ShipmentApiActions.editShipmentLineFailure({ error }))
             })
           )
@@ -225,7 +225,7 @@ export class ShipmentEffects {
               return ShipmentApiActions.editShipmentFeeSuccess({ shipmentFee });
             }),
             catchError(error => {
-              this.notifyService.error('Error', `${error}`, { clickToClose: true });
+              // this.notifyService.error('Error', `${error}`, { clickToClose: true });
               return of(ShipmentApiActions.editShipmentFeeFailure({ error }))
             })
           )
@@ -243,7 +243,7 @@ export class ShipmentEffects {
               return ShipmentApiActions.editShipmentContactSuccess({ shipmentContact });
             }),
             catchError(error => {
-              this.notifyService.error('Error', `${error}`, { clickToClose: true });
+              // this.notifyService.error('Error', `${error}`, { clickToClose: true });
               return of(ShipmentApiActions.editShipmentContactFailure({ error }))
             })
           )
@@ -261,7 +261,7 @@ export class ShipmentEffects {
               return ShipmentApiActions.editShipmentCommentSuccess({ shipmentComment });
             }),
             catchError(error => {
-              this.notifyService.error('Error', `${error}`, { clickToClose: true });
+              // this.notifyService.error('Error', `${error}`, { clickToClose: true });
               return of(ShipmentApiActions.editShipmentCommentFailure({ error }))
             })
           )
@@ -279,7 +279,7 @@ export class ShipmentEffects {
               return ShipmentApiActions.deleteShipmentPackageSuccess({ shipmentPackageID: action.shipmentPackageID });
             }),
             catchError(error => {
-              this.notifyService.error('Error', `${error}`, { clickToClose: true });
+              // this.notifyService.error('Error', `${error}`, { clickToClose: true });
               return of(ShipmentApiActions.deleteShipmentPackageFailure({ error }))
             })
           )
@@ -297,7 +297,7 @@ export class ShipmentEffects {
               return ShipmentApiActions.deleteShipmentLineSuccess({ shipmentLineID: action.shipmentLineID });
             }),
             catchError(error => {
-              this.notifyService.error('Error', `${error}`, { clickToClose: true });
+              // this.notifyService.error('Error', `${error}`, { clickToClose: true });
               return of(ShipmentApiActions.deleteShipmentLineFailure({ error }))
             })
           )
@@ -315,7 +315,7 @@ export class ShipmentEffects {
               return ShipmentApiActions.deleteShipmentFeeSuccess({ shipmentFeeID: action.shipmentFeeID });
             }),
             catchError(error => {
-              this.notifyService.error('Error', `${error}`, { clickToClose: true });
+              // this.notifyService.error('Error', `${error}`, { clickToClose: true });
               return of(ShipmentApiActions.deleteShipmentFeeFailure({ error }))
             })
           )
@@ -333,7 +333,7 @@ export class ShipmentEffects {
               return ShipmentApiActions.deleteShipmentContactSuccess({ shipmentContactID: action.shipmentContactID });
             }),
             catchError(error => {
-              this.notifyService.error('Error', `${error}`, { clickToClose: true });
+              // this.notifyService.error('Error', `${error}`, { clickToClose: true });
               return of(ShipmentApiActions.deleteShipmentContactFailure({ error }))
             })
           )
@@ -460,7 +460,7 @@ export class ShipmentEffects {
           .pipe(
             map(shipmentLines => ShipmentApiActions.loadShipmentLineListSuccess({ shipmentLines })),
             catchError(error => {
-              this.notifyService.error('Error', `${error}`, { clickToClose: true });
+              // this.notifyService.error('Error', `${error}`, { clickToClose: true });
               return of(ShipmentApiActions.loadShipmentLineListFailure({ error }))
             })
           )
@@ -476,7 +476,7 @@ export class ShipmentEffects {
           .pipe(
             map(shipmentPackages => ShipmentApiActions.loadShipmentPackageListSuccess({ shipmentPackages })),
             catchError(error => {
-              this.notifyService.error('Error', `${error}`, { clickToClose: true });
+              // this.notifyService.error('Error', `${error}`, { clickToClose: true });
               return of(ShipmentApiActions.loadShipmentPackageListFailure({ error }))
             })
           )
@@ -491,7 +491,7 @@ export class ShipmentEffects {
           .pipe(
             map(shipmentFee => ShipmentApiActions.loadShipmentFeeListSuccess({ shipmentFee })),
             catchError(error => {
-              this.notifyService.error('Error', `${error}`, { clickToClose: true });
+              // this.notifyService.error('Error', `${error}`, { clickToClose: true });
               return of(ShipmentApiActions.loadShipmentFeeListFailure({ error }))
             })
           )
@@ -506,7 +506,7 @@ export class ShipmentEffects {
           .pipe(
             map(shipmentContacts => ShipmentApiActions.loadShipmentContactListSuccess({ shipmentContacts })),
             catchError(error => {
-              this.notifyService.error('Error', `${error}`, { clickToClose: true });
+              // this.notifyService.error('Error', `${error}`, { clickToClose: true });
               return of(ShipmentApiActions.loadShipmentContactListFailure({ error }))
             })
           )
@@ -521,7 +521,7 @@ export class ShipmentEffects {
           .pipe(
             map(shipmentComments => ShipmentApiActions.loadShipmentCommentListSuccess({ shipmentComments })),
             catchError(error => {
-              this.notifyService.error('Error', `${error}`, { clickToClose: true });
+              // this.notifyService.error('Error', `${error}`, { clickToClose: true });
               return of(ShipmentApiActions.loadShipmentCommentListFailure({ error }))
             })
           )
@@ -536,7 +536,7 @@ export class ShipmentEffects {
           .pipe(
             map(locations => ShipmentApiActions.getLocationsSuccess({ locations })),
             catchError(error => {
-              this.notifyService.error('Error', `${error}`, { clickToClose: true });
+              // this.notifyService.error('Error', `${error}`, { clickToClose: true });
               return of(ShipmentApiActions.getLocationsFailure({ error }))
             })
           )

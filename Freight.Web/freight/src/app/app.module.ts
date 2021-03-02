@@ -55,18 +55,16 @@ import { MatProgressSpinnerModule, MatSpinner } from '@angular/material/progress
 import { AuthGuard } from 'app/_general/auth/auth.guard';
 import { TokenInterceptor } from "app/_general/core/request.interceptor";
 import { ResponseInterceptor } from "app/_general/core/response.interceptor";
-
+import { keys } from "../../environment-config";
 
 
 export function configureAuth(oidcConfigService: OidcConfigService): () => any {
   return () =>
     oidcConfigService.withConfig({
-      stsServer: 'https://login.fbasimplify.com',
-      //stsServer: 'https://localhost:5001',
+      stsServer: keys.stsServer,
       redirectUrl: window.location.origin,
       postLogoutRedirectUri: window.location.origin,
-      //clientId: 'angularfreightappclient',
-      clientId: 'localangularfreightappclient',
+      clientId: keys.clientId,
       scope: 'openid profile freightapiscope',
       responseType: 'code',
       silentRenew: true,

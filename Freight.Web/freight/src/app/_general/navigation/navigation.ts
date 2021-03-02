@@ -43,7 +43,7 @@ export const navigation: FuseNavigation[] = [
           },
           {
             id: 'carrierpickup',
-            title: 'Carrier Pick Up',
+            title: 'Carrier Picked Up',
             type: 'item',
             url: '/shipment/pickup',
             exactMatch: true,

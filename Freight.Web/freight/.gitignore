@@ -41,6 +41,7 @@ yarn-error.log
 testem.log
 /typings
 src/ssl
+environment-config.ts
 
 # System Files
 .DS_Store

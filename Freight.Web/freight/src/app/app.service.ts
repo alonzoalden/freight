@@ -34,7 +34,7 @@ export class AppService {
       // 'Closed',
       // 'Cancelled'
       'Carrier Drop Off',
-      'Carrier Pick Up'
+      'Carrier Picked Up'
     ]
   }
   public shippingCarriers = [
