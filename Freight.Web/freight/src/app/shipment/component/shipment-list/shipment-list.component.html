@@ -35,7 +35,7 @@
     <mat-spinner [@animate]="{value:'*',params:{delay:'400ms', y:'225px'}}"></mat-spinner>
   </div>
 
-  <mat-table class="item-list" #sort="matSort" matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}" [hidden]="isLoading || !dataSource?.data?.length">
+  <mat-table class="item-list" #sort="matSort" matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}" [hidden]="isShipmentListLoading || !dataSource?.data?.length">
     <ng-template #none><span style="opacity: 0.5;">?</span></ng-template>
     <!-- shipmentID Column -->
     <ng-container matColumnDef="shipmentID">

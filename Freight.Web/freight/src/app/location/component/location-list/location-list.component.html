@@ -52,6 +52,10 @@
           <button mat-menu-item (click)="openEditLocationDialog(row)">
             <mat-icon>build</mat-icon> Edit
           </button>
+          <hr />
+          <button mat-menu-item (click)="onDelete(row.locationID)">
+            <mat-icon>delete</mat-icon> delete
+          </button>
         </mat-menu>
       </mat-cell>
     </ng-container>

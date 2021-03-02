@@ -91,10 +91,10 @@ export class EditUserDialogComponent implements OnInit, OnDestroy {
       userID: [this.selectedUser.userID],
       businessID: [this.selectedUser.businessID],
       email: [{value: this.selectedUser.userEmail, disabled: this.selectedUser.userID}],
-      userFirstName: [this.selectedUser.userFirstName],
-      userLastName: [this.selectedUser.userLastName],
+      // userFirstName: [this.selectedUser.userFirstName],
+      // userLastName: [this.selectedUser.userLastName],
       isAdmin: [this.selectedUser.isAdmin],
-      isActive: [this.selectedUser.isActive],
+      // isActive: [this.selectedUser.isActive],
       isOwner: [this.selectedUser.isOwner],
     });
   }

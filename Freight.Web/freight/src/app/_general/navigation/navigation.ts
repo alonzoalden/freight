@@ -13,7 +13,7 @@ export const navigation: FuseNavigation[] = [
         title: 'Dashboard',
         translate: 'Dashboard',
         type: 'item',
-        icon: '',
+        icon: 'dashboard',
         url: '/dashboard'
       },
       {
@@ -21,7 +21,7 @@ export const navigation: FuseNavigation[] = [
         title: 'Manage Shipments',
         translate: 'Manage Shipments',
         type: 'collapsable',
-        icon: '',
+        icon: 'local_shipping',
         url: '/shipment',
         children: [
           {
@@ -55,7 +55,7 @@ export const navigation: FuseNavigation[] = [
         title: 'Items',
         translate: 'Items',
         type: 'collapsable',
-        icon: '',
+        icon: 'dns',
         url: '/item',
         exactMatch: true,
         children: [
@@ -101,7 +101,7 @@ export const navigation: FuseNavigation[] = [
         title: 'Customers',
         translate: 'Customers',
         type: 'collapsable',
-        icon: '',
+        icon: 'people',
         url: '/customers',
         children: [
           {
@@ -117,7 +117,7 @@ export const navigation: FuseNavigation[] = [
         title: 'Users',
         translate: 'Users',
         type: 'collapsable',
-        icon: '',
+        icon: 'person',
         url: '/users',
         children: [
           {
@@ -149,7 +149,7 @@ export const navigation: FuseNavigation[] = [
         title: 'Locations',
         translate: 'Locations',
         type: 'collapsable',
-        icon: '',
+        icon: 'location_on',
         url: '/location',
         children: [
           {
@@ -165,7 +165,7 @@ export const navigation: FuseNavigation[] = [
         title: 'Fees',
         translate: 'Fees',
         type: 'collapsable',
-        icon: '',
+        icon: 'monetization_on',
         url: '/fee',
         children: [
           {

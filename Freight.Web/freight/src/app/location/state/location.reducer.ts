@@ -92,12 +92,32 @@ export const locationReducer = createReducer<LocationState>(
     const list = [...state.allLocations];
     list.splice(index, 1, action.location);
     return Object.assign({
+      ...state,
       isSaving: false,
       allLocations: list,
       selectedLocation: action.location
     });
   }),
   on(LocationApiActions.updateLocationFailure, (state, action): LocationState => {
+    return {
+      ...state,
+      isSaving: false,
+    };
+  }),
+  on(LocationPageActions.deleteLocation, (state, action): LocationState => {
+    return {
+      ...state,
+      isSaving: true
+    };
+  }),
+  on(LocationApiActions.deleteLocationSuccess, (state, action): LocationState => {
+    return {
+      ...state,
+      isSaving: false,
+      allLocations: state.allLocations.filter(item => item.locationID !== action.locationid)
+    };
+  }),
+  on(LocationApiActions.deleteLocationFailure, (state, action): LocationState => {
     return {
       ...state,
       isSaving: false,

@@ -39,7 +39,7 @@ export class FeeListComponent implements OnInit, OnDestroy {
   @Output() deleteFee = new EventEmitter<any>();
   files: any;
   dataSource: any = new MatTableDataSource();
-  displayedColumns = ['feeName', 'actions'];
+  displayedColumns = ['feeName', 'description', 'feeAmount', 'createdOn', 'actions'];
   isLeadRole: boolean;
   filteredCourses: any[];
   currentCategory: string;

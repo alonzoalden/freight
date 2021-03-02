@@ -35,11 +35,27 @@
     <mat-spinner [@animate]="{value:'*',params:{delay:'400ms', y:'225px'}}"></mat-spinner>
   </div>
 
-  <mat-table class="item-list" matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}" *ngIf="!isLoading && dataSource?.data?.length">
+  <mat-table class="item-list" matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}"
+    *ngIf="!isLoading && dataSource?.data?.length">
     <!-- Fee Column -->
     <ng-container matColumnDef="feeName">
       <mat-header-cell *matHeaderCellDef>Fee Type</mat-header-cell>
       <mat-cell *matCellDef="let row">{{row?.feeType}}</mat-cell>
+    </ng-container>
+    <!-- description Column -->
+    <ng-container matColumnDef="description">
+      <mat-header-cell *matHeaderCellDef>Description</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{row?.description}}</mat-cell>
+    </ng-container>
+    <!-- feeAmount Column -->
+    <ng-container matColumnDef="feeAmount">
+      <mat-header-cell *matHeaderCellDef>Amount</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{row?.feeAmount | currency}}</mat-cell>
+    </ng-container>
+    <!-- createdOn Column -->
+    <ng-container matColumnDef="createdOn">
+      <mat-header-cell *matHeaderCellDef>Created</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{row?.createdOn | date}}</mat-cell>
     </ng-container>
     <!-- Actions Column -->
     <ng-container matColumnDef="actions">
@@ -49,9 +65,13 @@
           <mat-icon>more_horiz</mat-icon>
         </button>
         <mat-menu #moreMenu="matMenu">
-          <button mat-menu-item (click)="openEditFeeDialog(row)"><mat-icon>build</mat-icon> Edit</button>
+          <button mat-menu-item (click)="openEditFeeDialog(row)">
+            <mat-icon>build</mat-icon> Edit
+          </button>
           <hr>
-          <button mat-menu-item (click)="onDelete(row.feeID)"><mat-icon>delete</mat-icon> Delete</button>
+          <button mat-menu-item (click)="onDelete(row.feeID)">
+            <mat-icon>delete</mat-icon> Delete
+          </button>
         </mat-menu>
       </mat-cell>
     </ng-container>
@@ -76,17 +96,19 @@
     [@animate]="{value:'*',params:{delay:'500ms', y:'225px'}}" class="center-box-message">
     Please search for an fee.
   </div> -->
-  <div *ngIf="!isLoading && dataSource?.data?.length === 0"
-    [@animate]="{value:'*',params:{delay:'400ms', y:'225px'}}" class="center-box-message">
+  <div *ngIf="!isLoading && dataSource?.data?.length === 0" [@animate]="{value:'*',params:{delay:'400ms', y:'225px'}}"
+    class="center-box-message">
     No fees found.
   </div>
   <div class="bottom-section" fxLayout="row" fxLayoutAlign="space-between center">
-    <div [@animate]="{value:'*',params:{delay:'500ms',scale:'0.2'}}" >
-      <button mat-raised-button class="accent" (click)="openEditFeeDialog()"  [disabled]="isLoading" fxLayoutAlign="center center" style="height: 44px;">
-          <mat-icon>add_circle_outline</mat-icon>
-          Add New Fee
+    <div [@animate]="{value:'*',params:{delay:'500ms',scale:'0.2'}}">
+      <button mat-raised-button class="accent" (click)="openEditFeeDialog()" [disabled]="isLoading"
+        fxLayoutAlign="center center" style="height: 44px;">
+        <mat-icon>add_circle_outline</mat-icon>
+        Add New Fee
       </button>
     </div>
-    <mat-paginator *ngIf="dataSource?.data?.length" #paginator [pageSizeOptions]="[10, 20, 50, 100, 200]" [showFirstLastButtons]="true"></mat-paginator>
+    <mat-paginator *ngIf="dataSource?.data?.length" #paginator [pageSizeOptions]="[10, 20, 50, 100, 200]"
+      [showFirstLastButtons]="true"></mat-paginator>
   </div>
 </div>
