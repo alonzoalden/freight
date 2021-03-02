@@ -349,7 +349,7 @@ export class ShipmentEffects {
           .pipe(
             map(fees => ShipmentApiActions.loadFeesListSuccess({ fees })),
             catchError(error => {
-              this.notifyService.error('Error', `${error}`, { clickToClose: true });
+              // this.notifyService.error('Error', `${error}`, { clickToClose: true });
               return of(ShipmentApiActions.loadFeesListFailure({ error }))
             })
           )
@@ -365,7 +365,7 @@ export class ShipmentEffects {
           .pipe(
             map(contacts => ShipmentApiActions.loadContactsListSuccess({ contacts })),
             catchError(error => {
-              this.notifyService.error('Error', `${error}`, { clickToClose: true });
+              // this.notifyService.error('Error', `${error}`, { clickToClose: true });
               return of(ShipmentApiActions.loadContactsListFailure({ error }))
             })
           )
@@ -381,7 +381,7 @@ export class ShipmentEffects {
           .pipe(
             map(items => ShipmentApiActions.loadItemsListSuccess({ items })),
             catchError(error => {
-              this.notifyService.error('Error', `${error}`, { clickToClose: true });
+              //this.notifyService.error('Error', `${error}`, { clickToClose: true });
               return of(ShipmentApiActions.loadItemsListFailure({ error }))
             })
           )
@@ -399,7 +399,7 @@ export class ShipmentEffects {
               return ShipmentApiActions.get3plSuccess({ threePL })
             }),
             catchError(error => {
-              this.notifyService.error('Error', `${error}`, { clickToClose: true });
+              // this.notifyService.error('Error', `${error}`, { clickToClose: true });
               return of(ShipmentApiActions.get3plFailure({ error }))
             })
           )
@@ -414,7 +414,7 @@ export class ShipmentEffects {
           .pipe(
             map(ffw => ShipmentApiActions.getFfwSuccess({ ffw })),
             catchError(error => {
-              this.notifyService.error('Error', `${error}`, { clickToClose: true });
+              // this.notifyService.error('Error', `${error}`, { clickToClose: true });
               return of(ShipmentApiActions.getFfwFailure({ error }))
             })
           )
@@ -429,7 +429,7 @@ export class ShipmentEffects {
           .pipe(
             map(shippers => ShipmentApiActions.getShippersSuccess({ shippers })),
             catchError(error => {
-              this.notifyService.error('Error', `${error}`, { clickToClose: true });
+              // this.notifyService.error('Error', `${error}`, { clickToClose: true });
               return of(ShipmentApiActions.getShipperFailure({ error }))
             })
           )
@@ -444,7 +444,7 @@ export class ShipmentEffects {
           .pipe(
             map(customers => ShipmentApiActions.getCustomersSuccess({ customers })),
             catchError(error => {
-              this.notifyService.error('Error', `${error}`, { clickToClose: true });
+              // this.notifyService.error('Error', `${error}`, { clickToClose: true });
               return of(ShipmentApiActions.getCustomersFailure({ error }))
             })
           )

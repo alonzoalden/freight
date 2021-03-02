@@ -30,9 +30,11 @@ export class AppService {
       // 'Received',
       // 'Shipped',
       // 'Pending'
-      'Open',
-      'Closed',
-      'Cancelled'
+      // 'Open',
+      // 'Closed',
+      // 'Cancelled'
+      'Carrier Drop Off',
+      'Carrier Pick Up'
     ]
   }
   public shippingCarriers = [

@@ -20,6 +20,10 @@ export const createUser = createAction(
   '[User Page] Create User',
   props<{ user: User }>()
 );
+export const createVerifiedUser = createAction(
+  '[User Page] Create Verified User',
+  props<{ user: User }>()
+);
 export const setCurrentUser = createAction(
   '[User Page] Set Current User',
   props<{ currentUser: User }>()

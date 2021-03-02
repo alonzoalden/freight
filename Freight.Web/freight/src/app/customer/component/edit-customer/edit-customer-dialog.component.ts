@@ -95,12 +95,12 @@ export class EditCustomerDialogComponent implements OnInit, OnDestroy {
   }
   inviteCustomerForm(): FormGroup {
     return this._formBuilder.group({
-      // customerID: [Number(this.selectedCustomer.customerID) || 0],
+      customerID: [Number(this.selectedCustomer.customerID)],
       companyName: [this.selectedCustomer?.companyName],
       businessID: [this.user?.businessID],
       email: [this.selectedCustomer.email],
       apEmail: [this.selectedCustomer.apEmail],
-      createdBy: [this.user?.userID]
+      updatedBy: [this.user?.userID]
     });
   }
   save(): void {

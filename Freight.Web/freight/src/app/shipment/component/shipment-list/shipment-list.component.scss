@@ -191,4 +191,35 @@
       justify-content: center !important;
       min-width: 60px !important;
   }
+  .mat-column-shipmentID {
+      flex: 0 0 7% !important;
+      min-width: 60px !important;
+  }
+  .mat-column-hblNumber {
+      // flex: 0 0 20% !important;
+      min-width: 155px !important;
+  }
+  .mat-column-mblNumber {
+      // flex: 0 0 20% !important;
+      min-width: 155px !important;
+  }
+  .mat-column-containerNumber {
+      // flex: 0 0 20% !important;
+      min-width: 155px !important;
+  }
+  .mat-column-status {
+    // flex: 0 0 20% !important;
+    min-width: 120px !important;
+}
+  .mat-column-actions {
+    flex: 0 0 6% !important;
+    min-width: 60px !important;
+    justify-content: center;
+  }
+  // .mat-column-etd,
+  // .mat-column-eta,
+  // .mat-column-txl,
+  // .mat-column-createdOn {
+  //   //font-size: 12px;
+  // }
 }

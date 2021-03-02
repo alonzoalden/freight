@@ -134,9 +134,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
         if (!response) {
           return;
         }
-        else {
-          this.openEditContactDialog(this.selected);
-        }
+        this.openEditContactDialog(this.selected);
       });
   }
   openEditContactDialog(data = {}): void {

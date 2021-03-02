@@ -25,6 +25,7 @@ import { Store } from "@ngrx/store";
 import { Shipment } from "app/_shared/model/shipment";
 import { CreateShipmentDialogComponent } from "../create-shipment-dialog/create-shipment-dialog.component";
 import { NavigationEnd, NavigationStart, Router } from "@angular/router";
+import { ConfirmationDialogComponent } from "app/_shared/confirmation-dialog/confirmation-dialog.component";
 @Component({
   selector: 'shipment-list',
   templateUrl: './shipment-list.component.html',
@@ -69,16 +70,12 @@ export class ShipmentListComponent implements OnInit, OnDestroy {
     if (changes.shipments) {
       
       // load shipments based off route
-      if (this.router.url.includes('open')) {
-        const shipments = this.shipments.filter(shipment => shipment.status === 'Open');
+      if (this.router.url.includes('dropoff')) {
+        const shipments = this.shipments.filter(shipment => shipment.status === 'Carrier Drop Off');
         this.refreshDataSource(shipments);
       }
-      else if (this.router.url.includes('closed')) {
-        const shipments = this.shipments.filter(shipment => shipment.status === 'Closed');
-        this.refreshDataSource(shipments);
-      }
-      else if (this.router.url.includes('cancelled')) {
-        const shipments = this.shipments.filter(shipment => shipment.status === 'Cancelled');
+      else if (this.router.url.includes('pickup')) {
+        const shipments = this.shipments.filter(shipment => shipment.status === 'Carrier Pick Up');
         this.refreshDataSource(shipments);
       }
       else {
@@ -88,16 +85,12 @@ export class ShipmentListComponent implements OnInit, OnDestroy {
       // load shipments if route change
       this.router.events.forEach((event) => {
         if (event instanceof NavigationStart) {
-          if (event.url.includes('open')) {
-            const shipments = this.shipments.filter(shipment => shipment.status === 'Open');
+          if (event.url.includes('dropoff')) {
+            const shipments = this.shipments.filter(shipment => shipment.status === 'Carrier Drop Off');
             this.refreshDataSource(shipments);
           }
-          else if (event.url.includes('closed')) {
-            const shipments = this.shipments.filter(shipment => shipment.status === 'Closed');
-            this.refreshDataSource(shipments);
-          }
-          else if (event.url.includes('cancelled')) {
-            const shipments = this.shipments.filter(shipment => shipment.status === 'Cancelled');
+          else if (event.url.includes('pickup')) {
+            const shipments = this.shipments.filter(shipment => shipment.status === 'Carrier Pick Up');
             this.refreshDataSource(shipments);
           }
           else {
@@ -238,6 +231,15 @@ export class ShipmentListComponent implements OnInit, OnDestroy {
     this.focusMainInput();
   }
   onDelete(row) {
-    this.deleteShipment.emit(row.shipmentID);
+    this.dialogRef = this._matDialog.open(ConfirmationDialogComponent, {
+      data: { message: `Are you sure you want to delete this shipment?` },
+    });
+    this.dialogRef.afterClosed()
+      .subscribe((response) => {
+        if (response) {
+          this.deleteShipment.emit(row.shipmentID);
+        }
+      });
+    
   }
 }

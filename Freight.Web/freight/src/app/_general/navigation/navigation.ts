@@ -7,6 +7,7 @@ export const navigation: FuseNavigation[] = [
     translate: '',
     type: 'group',
     icon: 'apps',
+    exactMatch: true,
     children: [
       {
         id: 'Dashboard',
@@ -14,6 +15,7 @@ export const navigation: FuseNavigation[] = [
         translate: 'Dashboard',
         type: 'item',
         icon: 'dashboard',
+        exactMatch: true,
         url: '/dashboard'
       },
       {
@@ -23,50 +25,48 @@ export const navigation: FuseNavigation[] = [
         type: 'collapsable',
         icon: 'local_shipping',
         url: '/shipment',
+        exactMatch: true,
         children: [
           {
             id: 'allshipments',
             title: 'All Shipments',
             type: 'item',
             url: '/shipment/all',
+            exactMatch: true,
           },
           {
-            id: 'openshipments',
-            title: 'Open Shipments',
+            id: 'carrierdropoff',
+            title: 'Carrier Drop Off',
             type: 'item',
-            url: '/shipment/open',
+            url: '/shipment/dropoff',
+            exactMatch: true,
           },
           {
-            id: 'closedshipments',
-            title: 'Closed Shipments',
+            id: 'carrierpickup',
+            title: 'Carrier Pick Up',
             type: 'item',
-            url: '/shipment/closed',
+            url: '/shipment/pickup',
+            exactMatch: true,
           },
-          {
-            id: 'cancelledshipments',
-            title: 'Cancelled Shipments',
-            type: 'item',
-            url: '/shipment/cancelled',
-          }
         ]
       },
       {
         id: 'Manage Items',
         title: 'Items',
         translate: 'Items',
-        type: 'collapsable',
+        type: 'item',
         icon: 'dns',
         url: '/item',
         exactMatch: true,
-        children: [
-          {
-            id: 'allitems',
-            title: 'All Items',
-            type: 'item',
-            url: '/item/all',
-            exactMatch: true,
-          }
-        ]
+        // children: [
+        //   {
+        //     id: 'allitems',
+        //     title: 'All Items',
+        //     type: 'item',
+        //     url: '/item/all',
+        //     exactMatch: true,
+        //   }
+        // ]
       },
       // {
       //   id: 'Billing',
@@ -100,33 +100,36 @@ export const navigation: FuseNavigation[] = [
         id: 'Customers',
         title: 'Customers',
         translate: 'Customers',
-        type: 'collapsable',
+        type: 'item',
         icon: 'people',
         url: '/customers',
-        children: [
-          {
-            id: 'allcustomers',
-            title: 'All Customers',
-            type: 'item',
-            url: '/customers',
-          }
-        ]
+        exactMatch: true,
+        // children: [
+        //   {
+        //     id: 'allcustomers',
+        //     title: 'All Customers',
+        //     type: 'item',
+        //     url: '/customers',
+        //     exactMatch: true,
+        //   }
+        // ]
       },
       {
         id: 'Users',
         title: 'Users',
         translate: 'Users',
-        type: 'collapsable',
+        type: 'item',
         icon: 'person',
         url: '/users',
-        children: [
-          {
-            id: 'allusers',
-            title: 'All Users',
-            type: 'item',
-            url: '/users',
-          },
-        ]
+        exactMatch: true,
+        // children: [
+        //   {
+        //     id: 'allusers',
+        //     title: 'All Users',
+        //     type: 'item',
+        //     url: '/users',
+        //   },
+        // ]
       },
       // {
       //   id: 'Business',
@@ -148,33 +151,35 @@ export const navigation: FuseNavigation[] = [
         id: 'Locations',
         title: 'Locations',
         translate: 'Locations',
-        type: 'collapsable',
+        type: 'item',
         icon: 'location_on',
         url: '/location',
-        children: [
-          {
-            id: 'All Locations',
-            title: 'All Locations',
-            type: 'item',
-            url: '/location',
-          },
-        ]
+        exactMatch: true,
+        // children: [
+        //   {
+        //     id: 'All Locations',
+        //     title: 'All Locations',
+        //     type: 'item',
+        //     url: '/location',
+        //   },
+        // ]
       },
       {
         id: 'Fees',
         title: 'Fees',
         translate: 'Fees',
-        type: 'collapsable',
+        type: 'item',
         icon: 'monetization_on',
         url: '/fee',
-        children: [
-          {
-            id: 'All Fees',
-            title: 'All Fees',
-            type: 'item',
-            url: '/fee',
-          },
-        ]
+        exactMatch: true,
+        // children: [
+        //   {
+        //     id: 'All Fees',
+        //     title: 'All Fees',
+        //     type: 'item',
+        //     url: '/fee',
+        //   },
+        // ]
       },
       // {
       //   id: 'Settings',

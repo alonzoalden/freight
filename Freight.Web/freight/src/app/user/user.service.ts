@@ -73,7 +73,7 @@ export class UserService implements OnDestroy {
   }
 
   createUser(body: User): Observable<any> {
-    return this.http.post<any>(this.apiURL + '/user', body)
+    return this.http.post<any>(this.apiURL + '/business/businessuser', body)
       .pipe(
         tap((data: User) => {
           this.onUserSelected.next(data);
@@ -88,7 +88,12 @@ export class UserService implements OnDestroy {
         catchError(this.handleError)
       );
   }
-
+  verifyUserEmail(email: any): Observable<any> {
+    return this.http.get<any>(this.apiURL + `/user/email/${email}` )
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
   handleError = (err: HttpErrorResponse) => {
     let errorMessage: string;
     if (err.error instanceof Error) {

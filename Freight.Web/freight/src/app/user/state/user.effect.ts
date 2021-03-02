@@ -52,6 +52,23 @@ export class UserEffects {
     return this.actions$
       .pipe(
         ofType(UserPageActions.createUser),
+        concatMap(action => this.userService.verifyUserEmail(btoa(action.user.email))
+          .pipe(
+            map((user) => {
+              return UserPageActions.createVerifiedUser({ user });
+            }),
+            catchError(error => {
+              this.notifyService.error('Error', `${error}`, { clickToClose: true });
+              return of(UserApiActions.createUserFailure({ error }))
+            })
+          )
+        )
+      );
+  });
+  createVerifiedUser$ = createEffect(() => {
+    return this.actions$
+      .pipe(
+        ofType(UserPageActions.createVerifiedUser),
         concatMap(action => this.userService.createUser(action.user)
           .pipe(
             map((user) => {
@@ -66,6 +83,7 @@ export class UserEffects {
         )
       );
   });
+
   deleteUser$ = createEffect(() => {
     return this.actions$
       .pipe(
@@ -74,11 +92,11 @@ export class UserEffects {
           .pipe(
             map((user) => {
               this.notifyService.success('Success', `User ${action.userid} has been deleted.`, { timeOut:3500, clickToClose: true });
-              return UserApiActions.createUserSuccess({ user });
+              return UserApiActions.deleteUserSuccess({ itemid: action.userid });
             }),
             catchError(error => {
               this.notifyService.error('Error', `${error}`, { clickToClose: true });
-              return of(UserApiActions.createUserFailure({ error }))
+              return of(UserApiActions.deleteUserFailure({ error }))
             })
           )
         )
